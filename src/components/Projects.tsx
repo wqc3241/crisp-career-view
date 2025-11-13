@@ -1,0 +1,76 @@
+import { useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ProjectCard from "./ProjectCard";
+import analyticsImage from "@/assets/project-analytics.jpg";
+import mobileImage from "@/assets/project-mobile.jpg";
+import ecommerceImage from "@/assets/project-ecommerce.jpg";
+
+const careerHighlights = [
+  {
+    title: "AI-Powered Analytics Dashboard",
+    description:
+      "Led the development of a predictive analytics dashboard, increasing customer retention by 15% through actionable insights.",
+    image: analyticsImage,
+    tags: ["Product Strategy", "AI/ML", "Data Visualization", "SaaS"],
+  },
+  {
+    title: "Mobile App Redesign",
+    description:
+      "Managed the end-to-end redesign of our flagship mobile app, resulting in a 40% increase in user engagement and a 4.8-star App Store rating.",
+    image: mobileImage,
+    tags: ["UX/UI", "Mobile First", "Agile", "User Research"],
+  },
+  {
+    title: "E-commerce Checkout Optimization",
+    description:
+      "Streamlined the checkout flow for a major e-commerce platform, reducing cart abandonment by 22% and boosting conversion rates.",
+    image: ecommerceImage,
+    tags: ["A/B Testing", "Conversion Rate Optimization", "E-commerce"],
+  },
+];
+
+const sideProjects = [
+  {
+    title: "Product Manager's Toolkit",
+    description:
+      "Created an open-source collection of templates and frameworks for product managers to streamline their workflow.",
+    image: analyticsImage,
+    tags: ["Open Source", "Community", "Templates"],
+  },
+  {
+    title: "Tech Podcast Host",
+    description:
+      "Host a weekly podcast discussing product management trends, AI innovations, and interviews with industry leaders.",
+    image: mobileImage,
+    tags: ["Content Creation", "Community Building", "Thought Leadership"],
+  },
+];
+
+const Projects = () => {
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <Tabs defaultValue="career" className="w-full">
+        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
+          <TabsTrigger value="career">Career Highlights</TabsTrigger>
+          <TabsTrigger value="side">Side Projects</TabsTrigger>
+        </TabsList>
+        <TabsContent value="career" className="mt-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {careerHighlights.map((project) => (
+              <ProjectCard key={project.title} {...project} />
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="side" className="mt-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sideProjects.map((project) => (
+              <ProjectCard key={project.title} {...project} />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+    </section>
+  );
+};
+
+export default Projects;

@@ -1,0 +1,37 @@
+import { Badge } from "@/components/ui/badge";
+
+interface ProjectCardProps {
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+}
+
+const ProjectCard = ({ title, description, image, tags }: ProjectCardProps) => {
+  return (
+    <div className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="aspect-video w-full overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="p-6">
+        <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
+        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+          {description}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <Badge key={tag} variant="secondary" className="text-xs">
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProjectCard;
