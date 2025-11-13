@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
+import Avatar3D from "@/components/Avatar3D";
 
 const Hero = () => {
   return (
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
+      <Avatar3D />
       <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4">
         Alex Doe
       </h1>
