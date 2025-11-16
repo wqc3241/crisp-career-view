@@ -29,11 +29,13 @@ const CinelyAI = () => {
       techStack={[
         "React",
         "TypeScript",
-        "TensorFlow.js",
-        "Node.js",
-        "AWS S3",
-        "Python",
-        "OpenCV",
+        "Vite",
+        "Tailwind CSS",
+        "Supabase",
+        "React Router",
+        "Radix UI",
+        "JSZip",
+        "Zod",
       ]}
       metrics={[
         { value: "10,000+", label: "Images Processed Daily" },
