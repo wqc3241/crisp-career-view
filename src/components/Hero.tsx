@@ -2,12 +2,8 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
 const Hero = () => {
-  const handleResumeDownload = async () => {
-    const { data } = supabase.storage
-      .from('resumes')
-      .getPublicUrl('Qichao_Wang_Resume.pdf');
-    
-    window.open(data.publicUrl, '_blank');
+  const handleResumeDownload = () => {
+    window.open('https://1drv.ms/b/c/3df2fe05e1e8b622/IQBqQt12-NImS4VU5t4TZbewAYrQSViKhYa5ysAKTUiMp-g?e=OISWPX', '_blank');
   };
   return (
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 text-center">
