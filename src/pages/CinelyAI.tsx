@@ -36,6 +36,7 @@ const CinelyAI = () => {
         "Radix UI",
         "JSZip",
         "Zod",
+        "Gen AI",
       ]}
       metrics={[
         { value: "10,000+", label: "Images Processed Daily" },
