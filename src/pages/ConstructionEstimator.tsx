@@ -8,6 +8,27 @@ const ConstructionEstimator = () => {
       tagline="Smart Construction Cost Estimation"
       description="AI-powered tool that provides accurate construction cost estimates based on project specifications. Streamline your bidding process and win more projects with data-driven estimates."
       image={constructionImage}
+      vision="To revolutionize construction bidding by providing contractors with instant, accurate cost estimates powered by AI and real-time market data, enabling them to win more profitable projects and reduce time spent on manual calculations."
+      painpoints={[
+        "Manual estimation is time-consuming and prone to costly errors",
+        "Fluctuating material prices making budgets outdated quickly",
+        "Difficulty competing with larger firms that have dedicated estimating teams",
+        "Lack of historical data to inform accurate project timelines and costs",
+      ]}
+      customerSegments={[
+        {
+          title: "General Contractors",
+          description: "Mid-sized construction firms seeking to improve bid accuracy and win more competitive projects with data-driven estimates.",
+        },
+        {
+          title: "Specialty Contractors",
+          description: "Electrical, plumbing, and HVAC contractors needing quick, accurate subcontractor bids for multiple concurrent projects.",
+        },
+        {
+          title: "Project Developers",
+          description: "Real estate developers and project managers requiring preliminary cost assessments for feasibility studies and investor presentations.",
+        },
+      ]}
       features={[
         {
           title: "Material Cost Calculation",
@@ -39,6 +60,13 @@ const ConstructionEstimator = () => {
         { value: "92%", label: "Estimation Accuracy" },
         { value: "500+", label: "Projects Estimated" },
         { value: "60%", label: "Faster Bidding" },
+      ]}
+      futureImprovements={[
+        "3D blueprint scanning for automated material takeoff and quantity surveying",
+        "Real-time collaboration features for team-based estimation workflows",
+        "Integration with supplier APIs for live material pricing updates",
+        "Mobile app with photo estimation using computer vision for on-site assessments",
+        "Risk analysis module predicting potential cost overruns and delays",
       ]}
       demoLink="https://construction-estimator.app"
       githubLink="https://github.com/alexdoe/construction-estimator"

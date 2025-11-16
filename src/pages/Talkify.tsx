@@ -8,6 +8,27 @@ const Talkify = () => {
       tagline="Personalized Language Learning"
       description="AI-driven language learning app that adapts to your learning style and pace. Master new languages through personalized lessons, real-time feedback, and interactive conversations with AI tutors."
       image={talkifyImage}
+      vision="To break down language barriers worldwide by providing personalized, accessible, and engaging language education that adapts to each learner's unique journey, making fluency achievable for everyone regardless of location or background."
+      painpoints={[
+        "Traditional language courses are expensive and inflexible with fixed schedules",
+        "Generic learning apps don't adapt to individual learning speeds and styles",
+        "Limited opportunities for real conversation practice with native speakers",
+        "Difficulty maintaining motivation and tracking progress in self-study",
+      ]}
+      customerSegments={[
+        {
+          title: "Students & Academics",
+          description: "University students and researchers needing language proficiency for studies, research, or academic exchanges abroad.",
+        },
+        {
+          title: "Professionals",
+          description: "Business professionals seeking language skills for career advancement, international business, or relocation opportunities.",
+        },
+        {
+          title: "Travel Enthusiasts",
+          description: "Travelers and expatriates wanting to communicate confidently and immerse themselves in local cultures authentically.",
+        },
+      ]}
       features={[
         {
           title: "Personalized Learning Paths",
@@ -38,6 +59,13 @@ const Talkify = () => {
         { value: "5,000+", label: "Active Learners" },
         { value: "4.6★", label: "App Store Rating" },
         { value: "92%", label: "Completion Rate" },
+      ]}
+      futureImprovements={[
+        "AR features for immersive real-world object labeling and contextual learning",
+        "Live conversation sessions with native speakers for cultural immersion",
+        "Offline mode for learning without internet connectivity during travel",
+        "Gamification with achievements, leaderboards, and social challenges",
+        "Corporate training packages with team progress tracking and analytics",
       ]}
       demoLink="https://talkify.app"
     />
