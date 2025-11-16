@@ -1,6 +1,14 @@
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 const Hero = () => {
+  const handleResumeDownload = async () => {
+    const { data } = supabase.storage
+      .from('resumes')
+      .getPublicUrl('Qichao_Wang_Resume.pdf');
+    
+    window.open(data.publicUrl, '_blank');
+  };
   return (
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 text-center">
       <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-2">
@@ -17,17 +25,15 @@ const Hero = () => {
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Button asChild>
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/qichaowang/"
             target="_blank"
             rel="noopener noreferrer"
           >
             View LinkedIn
           </a>
         </Button>
-        <Button variant="outline" asChild>
-          <a href="/resume.pdf" download>
-            Download Resume
-          </a>
+        <Button variant="outline" onClick={handleResumeDownload}>
+          Download Resume
         </Button>
       </div>
     </section>
