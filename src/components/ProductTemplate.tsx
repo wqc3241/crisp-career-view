@@ -14,14 +14,23 @@ interface Metric {
   label: string;
 }
 
+interface CustomerSegment {
+  title: string;
+  description: string;
+}
+
 interface ProductTemplateProps {
   name: string;
   tagline: string;
   description: string;
   image: string;
+  vision: string;
+  painpoints: string[];
+  customerSegments: CustomerSegment[];
   features: Feature[];
   techStack: string[];
   metrics: Metric[];
+  futureImprovements: string[];
   demoLink?: string;
   githubLink?: string;
 }
@@ -31,9 +40,13 @@ const ProductTemplate = ({
   tagline,
   description,
   image,
+  vision,
+  painpoints,
+  customerSegments,
   features,
   techStack,
   metrics,
+  futureImprovements,
   demoLink,
   githubLink,
 }: ProductTemplateProps) => {
@@ -93,21 +106,70 @@ const ProductTemplate = ({
         </div>
       </section>
 
-      {/* Metrics Section */}
+      {/* Vision Section */}
       <section className="bg-muted/50 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">
-                  {metric.value}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {metric.label}
-                </div>
-              </div>
+          <h2 className="text-3xl font-bold text-foreground mb-6">Our Vision</h2>
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl">
+            {vision}
+          </p>
+        </div>
+      </section>
+
+      {/* Painpoints Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <h2 className="text-3xl font-bold text-foreground mb-8">
+          Problems We Solve
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {painpoints.map((painpoint, index) => (
+            <div
+              key={index}
+              className="flex items-start gap-3 p-4 rounded-lg bg-muted/30"
+            >
+              <div className="mt-1 h-2 w-2 rounded-full bg-primary flex-shrink-0" />
+              <p className="text-muted-foreground">{painpoint}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Customer Segmentation Section */}
+      <section className="bg-muted/50 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-foreground mb-8">
+            Who We Serve
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {customerSegments.map((segment) => (
+              <Card key={segment.title}>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold text-foreground mb-3">
+                    {segment.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {segment.description}
+                  </p>
+                </CardContent>
+              </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Metrics Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {metrics.map((metric) => (
+            <div key={metric.label} className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">
+                {metric.value}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {metric.label}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -145,6 +207,24 @@ const ProductTemplate = ({
               </Badge>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Future Improvements Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <h2 className="text-3xl font-bold text-foreground mb-8">
+          Future Roadmap
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {futureImprovements.map((improvement, index) => (
+            <div
+              key={index}
+              className="flex items-start gap-3 p-4 rounded-lg border border-border"
+            >
+              <div className="mt-1 h-2 w-2 rounded-full bg-primary flex-shrink-0" />
+              <p className="text-muted-foreground">{improvement}</p>
+            </div>
+          ))}
         </div>
       </section>
 
