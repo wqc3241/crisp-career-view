@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 
 const Hero = () => {
   return (
-    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
-      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-4">
+    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 text-center">
+      <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-foreground mb-2">
         Alex Doe
       </h1>
-      <p className="text-xl sm:text-2xl text-primary font-medium mb-6">
+      <p className="text-xl sm:text-2xl text-primary font-medium mb-3">
         Senior Product Manager
       </p>
-      <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+      <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
         I specialize in building user-centric products that bridge the gap between
         technology and business goals. With a passion for AI and data-driven
         decisions, I thrive on creating impactful digital experiences.
