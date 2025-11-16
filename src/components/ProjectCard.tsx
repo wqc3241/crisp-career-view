@@ -1,15 +1,17 @@
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 interface ProjectCardProps {
   title: string;
   description: string;
   image: string;
   tags: string[];
+  link?: string;
 }
 
-const ProjectCard = ({ title, description, image, tags }: ProjectCardProps) => {
-  return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps) => {
+  const content = (
+    <>
       <div className="aspect-video w-full overflow-hidden">
         <img
           src={image}
@@ -30,6 +32,23 @@ const ProjectCard = ({ title, description, image, tags }: ProjectCardProps) => {
           ))}
         </div>
       </div>
+    </>
+  );
+
+  if (link) {
+    return (
+      <Link 
+        to={link}
+        className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow block cursor-pointer"
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+      {content}
     </div>
   );
 };

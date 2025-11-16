@@ -31,18 +31,36 @@ const careerHighlights = [
 
 const sideProjects = [
   {
-    title: "Product Manager's Toolkit",
+    title: "Cinely.AI",
     description:
-      "Created an open-source collection of templates and frameworks for product managers to streamline their workflow.",
+      "AI-powered batch image editing tool that processes thousands of images in minutes with intelligent enhancement.",
     image: analyticsImage,
-    tags: ["Open Source", "Community", "Templates"],
+    tags: ["AI/ML", "Image Processing", "SaaS", "Cloud"],
+    link: "/products/cinely-ai",
   },
   {
-    title: "Tech Podcast Host",
+    title: "Talkify",
     description:
-      "Host a weekly podcast discussing product management trends, AI innovations, and interviews with industry leaders.",
+      "Personalized language learning app with AI tutors, speech recognition, and adaptive learning paths for 15+ languages.",
     image: mobileImage,
-    tags: ["Content Creation", "Community Building", "Thought Leadership"],
+    tags: ["AI", "Mobile App", "EdTech", "Speech Recognition"],
+    link: "/products/talkify",
+  },
+  {
+    title: "Medical Bill RCM",
+    description:
+      "Revenue cycle management platform for healthcare providers with automated billing and claims tracking.",
+    image: ecommerceImage,
+    tags: ["Healthcare", "FinTech", "Automation", "HIPAA"],
+    link: "/products/medical-bill-rcm",
+  },
+  {
+    title: "Construction Estimator",
+    description:
+      "Smart cost estimation tool for construction projects using ML to predict accurate material and labor costs.",
+    image: analyticsImage,
+    tags: ["Machine Learning", "Construction", "B2B", "Analytics"],
+    link: "/products/construction-estimator",
   },
 ];
 
