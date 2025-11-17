@@ -6,7 +6,7 @@ interface CompanyListItemProps {
   name: string;
   logo: string;
   roleTitle: string;
-  keyImpact: string;
+  keyImpact: string[];
   tags: string[];
   link: string;
 }
