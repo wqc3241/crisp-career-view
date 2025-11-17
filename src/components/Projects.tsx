@@ -19,9 +19,7 @@ const { data: talkifyImageData } = supabase.storage
 const talkifyImage = talkifyImageData.publicUrl;
 
 // Get Medical Bill RCM slideshow image from cloud storage
-const { data: rcmImageData } = supabase.storage
-  .from("project")
-  .getPublicUrl("Side project/medical-bill-rcm/slideshow/slide1.png");
+const { data: rcmImageData } = supabase.storage.from("project").getPublicUrl("Side project/RCM/slideshow/slide1.png");
 const rcmImage = rcmImageData.publicUrl;
 
 const careerHighlights = [
