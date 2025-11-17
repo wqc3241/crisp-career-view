@@ -8,10 +8,9 @@ const HarmonyPlus = () => {
     <CompanyTemplate
       companyName="Harmony Plus"
       logo={logoData.publicUrl}
-      roleTitle="Associate Product Manager"
+      roleTitle="Product Manager"
       duration="November 2020 - October 2021"
       location="San Francisco, CA"
-      teamSize="Team of 6"
       companyDescription="Harmony Plus is a SaaS platform providing team collaboration and project management tools designed to enhance productivity and streamline workflows for distributed teams."
       keyMetrics={[
         { label: "User Activation Increase", value: "25%" },
