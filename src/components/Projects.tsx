@@ -12,6 +12,12 @@ const { data: cinelyImageData } = supabase.storage
   .getPublicUrl('Side project/cinely/slideshow/slide1.png');
 const cinelyImage = cinelyImageData.publicUrl;
 
+// Get Talkify slideshow image from cloud storage
+const { data: talkifyImageData } = supabase.storage
+  .from('project')
+  .getPublicUrl('Side project/talkify/slideshow/slide1.jpg');
+const talkifyImage = talkifyImageData.publicUrl;
+
 const careerHighlights = [
   {
     title: "AI-Powered Analytics Dashboard",
@@ -49,7 +55,7 @@ const sideProjects = [
     title: "Talkify",
     description:
       "Personalized language learning app with AI tutors, speech recognition, and adaptive learning paths for 15+ languages.",
-    image: mobileImage,
+    image: talkifyImage,
     tags: ["AI", "Mobile App", "EdTech", "Speech Recognition"],
     link: "/products/talkify",
   },
