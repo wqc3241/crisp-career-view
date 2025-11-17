@@ -14,7 +14,7 @@ interface CompanyListItemProps {
 const CompanyListItem = ({ name, logo, roleTitle, keyImpact, tags, link }: CompanyListItemProps) => {
   return (
     <Link to={link}>
-      <div className="group flex items-start gap-6 p-6 rounded-lg border border-border bg-card hover:bg-accent/50 transition-all duration-300 hover:shadow-lg">
+      <div className="group flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-6 rounded-lg border border-border bg-card hover:bg-accent/50 transition-all duration-300 hover:shadow-lg">
         <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-background border border-border">
           <img src={logo} alt={`${name} logo`} className="w-full h-full object-contain p-2" />
         </div>
