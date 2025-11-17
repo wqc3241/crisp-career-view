@@ -18,46 +18,45 @@ const Talkify = () => {
       customerSegments={[
         {
           title: "Students & Academics",
-          description: "University students and researchers needing language proficiency for studies, research, or academic exchanges abroad.",
+          description:
+            "University students and researchers needing language proficiency for studies, research, or academic exchanges abroad.",
         },
         {
           title: "Professionals",
-          description: "Business professionals seeking language skills for career advancement, international business, or relocation opportunities.",
+          description:
+            "Business professionals seeking language skills for career advancement, international business, or relocation opportunities.",
         },
         {
           title: "Travel Enthusiasts",
-          description: "Travelers and expatriates wanting to communicate confidently and immerse themselves in local cultures authentically.",
+          description:
+            "Travelers and expatriates wanting to communicate confidently and immerse themselves in local cultures authentically.",
         },
       ]}
       features={[
         {
           title: "Personalized Learning Paths",
-          description: "AI analyzes your progress and adapts lesson difficulty and content to match your learning pace and goals.",
+          description:
+            "AI analyzes your progress and adapts lesson difficulty and content to match your learning pace and goals.",
         },
         {
           title: "Speech Recognition",
-          description: "Practice pronunciation with advanced speech recognition that provides instant feedback on your accent and fluency.",
+          description:
+            "Practice pronunciation with advanced speech recognition that provides instant feedback on your accent and fluency.",
         },
         {
           title: "Real-Time Feedback",
-          description: "Get immediate corrections and suggestions as you practice, helping you learn from mistakes instantly.",
+          description:
+            "Get immediate corrections and suggestions as you practice, helping you learn from mistakes instantly.",
         },
         {
           title: "15+ Languages",
-          description: "Learn from a wide selection of languages including Spanish, French, Japanese, Mandarin, and more.",
+          description:
+            "Learn from a wide selection of languages including Spanish, French, Japanese, Mandarin, and more.",
         },
       ]}
-      techStack={[
-        "React Native",
-        "TypeScript",
-        "OpenAI API",
-        "Firebase",
-        "WebRTC",
-        "TensorFlow",
-      ]}
+      techStack={["React Native", "TypeScript", "OpenAI API", "Firebase", "WebRTC", "TensorFlow"]}
       metrics={[
-        { value: "5,000+", label: "Active Learners" },
-        { value: "4.6★", label: "App Store Rating" },
+        { value: "15+", label: "Supported Languages" },
         { value: "92%", label: "Completion Rate" },
       ]}
       futureImprovements={[
@@ -67,7 +66,8 @@ const Talkify = () => {
         "Gamification with achievements, leaderboards, and social challenges",
         "Corporate training packages with team progress tracking and analytics",
       ]}
-      demoLink="https://talkify.app"
+      demoLink="https://speak-smart-clips.lovable.app/auth"
+      githubLink="https://github.com/wqc3241/lovable-gemini-draw"
     />
   );
 };
