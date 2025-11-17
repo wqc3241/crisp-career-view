@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 const VortexAutogroup = () => {
   const { data: logoData } = supabase.storage
     .from("project")
-    .getPublicUrl("Career/vortex-autogroup/logo.png");
+    .getPublicUrl("career project/VortexAuto/logo.png");
 
   return (
     <CompanyTemplate

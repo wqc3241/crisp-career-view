@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 const HarmonyPlus = () => {
   const { data: logoData } = supabase.storage
     .from("project")
-    .getPublicUrl("Career/harmony-plus/logo.png");
+    .getPublicUrl("career project/HarmonyPlus/logo.png");
 
   return (
     <CompanyTemplate
