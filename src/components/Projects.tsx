@@ -41,15 +41,15 @@ const companies = [
       "Delivered a high-reliability financing funnel that drove $62M incremental financed transactions and 36% revenue growth.",
       "Reduced end-to-end financing order & approval latency by 99% (1 week → 3 min) via re-architected multi-step workflows.",
       "Improved lease deal operational efficiency 20% with automated pricing recalculation logic.",
-      "Automated the vehicle matching flow, reducing manual processing 15% and improving allocation accuracy."
+      "Automated the vehicle matching flow, reducing manual processing 15% and improving allocation accuracy.",
     ],
     tags: [
-      "Auto Finance", 
-      "Pricing Engine", 
-      "AI/LLM Automation", 
-      "Risk Decisioning", 
+      "Auto Finance",
+      "Pricing Engine",
+      "AI/LLM Automation",
+      "Risk Decisioning",
       "Global Market Launches",
-      "Digital Experience"
+      "Digital Experience",
     ],
     link: "/career/lucid-motors",
   },
@@ -62,15 +62,9 @@ const companies = [
       "Improved onboarding & payment workflow efficiency 35% by simplifying internal processes.",
       "Increased operational accuracy from 70% → 98% by redesigning data pipelines.",
       "Drove 25% acquisition growth and 20% engagement lift through data-driven UX updates.",
-      "Reduced revenue loss 15% by launching automated risk & dispute workflows."
+      "Reduced revenue loss 15% by launching automated risk & dispute workflows.",
     ],
-    tags: [
-      "Payments", 
-      "Fraud & Risk", 
-      "Merchant Onboarding", 
-      "KYC/KYB Automation",
-      "Checkout Optimization"
-    ],
+    tags: ["Payments", "Fraud & Risk", "Merchant Onboarding", "KYC/KYB Automation", "Checkout Optimization"],
     link: "/career/bluesnap",
   },
 
@@ -82,15 +76,9 @@ const companies = [
       "Drove 15% increase in user conversion through SEO improvements.",
       "2X product sales online ($30k in 1 month) with new e-commerce platform.",
       "Led a 3-person team delivering a CRM module, reducing redundant work time by 40%.",
-      "Rebuilt company website with A/B testing to deliver +30% session time and −20% bounce rate."
+      "Rebuilt company website with A/B testing to deliver +30% session time and −20% bounce rate.",
     ],
-    tags: [
-      "EdTech",
-      "SEO & Growth",
-      "E-commerce",
-      "CRM Development",
-      "A/B Testing"
-    ],
+    tags: ["EdTech", "SEO & Growth", "E-commerce", "CRM Development", "A/B Testing"],
     link: "/career/harmony-plus",
   },
 
@@ -102,15 +90,9 @@ const companies = [
       "Led a 20+ person team to achieve 30% YoY revenue increase from 2017–2019.",
       "Achieved $5M revenue in 2019 through A/B testing and optimized product matching.",
       "Built foundational digital commerce and operational systems for auto dealership.",
-      "Improved business intelligence with data-driven strategy across sales & service."
+      "Improved business intelligence with data-driven strategy across sales & service.",
     ],
-    tags: [
-      "Automotive Commerce",
-      "Product Strategy",
-      "Data Analytics",
-      "Growth Optimization",
-      "Founding Leadership"
-    ],
+    tags: ["Automotive Commerce", "Product Strategy", "Data Analytics", "Growth Optimization", "Founding Leadership"],
     link: "/career/vortex-autogroup",
   },
 ];
