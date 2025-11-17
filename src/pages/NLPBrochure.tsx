@@ -14,16 +14,13 @@ const { data: slide3Data } = supabase.storage
   .from("project")
   .getPublicUrl("Side project/nlp-brochure/slideshow/slide3.jpg");
 
-const images = [
-  slide1Data.publicUrl,
-  slide2Data.publicUrl,
-  slide3Data.publicUrl,
-];
+const images = [slide1Data.publicUrl, slide2Data.publicUrl, slide3Data.publicUrl];
 
 const features = [
   {
     title: "Extensive Product Catalog",
-    description: "1000+ SKUs of performance parts and accessories across multiple categories including intakes, exhausts, suspension, and lighting.",
+    description:
+      "180k+ SKUs of performance parts and accessories across multiple categories including intakes, exhausts, suspension, and lighting.",
   },
   {
     title: "Vehicle Compatibility Search",
@@ -48,8 +45,8 @@ const features = [
 ];
 
 const metrics = [
-  { label: "Products", value: "1,000+", description: "SKUs available" },
-  { label: "Categories", value: "12+", description: "Product lines" },
+  { label: "Products", value: "180k+", description: "SKUs available" },
+  { label: "Categories", value: "36+", description: "Product lines" },
   { label: "Shipping", value: "2-5 days", description: "Average delivery" },
   { label: "Support", value: "24/7", description: "Customer service" },
 ];
@@ -76,11 +73,7 @@ const customerSegments = [
   {
     title: "Racing Teams",
     description: "Competitive racing organizations requiring specialized performance components.",
-    needsMet: [
-      "Premium performance parts",
-      "Priority shipping options",
-      "Custom part sourcing assistance",
-    ],
+    needsMet: ["Premium performance parts", "Priority shipping options", "Custom part sourcing assistance"],
   },
 ];
 
@@ -102,16 +95,7 @@ const NLPBrochure = () => {
       customerSegments={customerSegments}
       metrics={metrics}
       features={features}
-      techStack={[
-        "React",
-        "TypeScript",
-        "Vite",
-        "TailwindCSS",
-        "Shopify",
-        "React Query",
-        "Shadcn UI",
-        "React Router",
-      ]}
+      techStack={["React", "TypeScript", "Vite", "TailwindCSS", "Shopify", "React Query", "Shadcn UI", "React Router"]}
       futureImprovements={[
         "AI-powered part recommendations based on vehicle and driving style",
         "Augmented reality for visualizing parts on vehicles",
