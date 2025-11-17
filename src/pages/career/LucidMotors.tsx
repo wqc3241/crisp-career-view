@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 const LucidMotors = () => {
   const { data: logoData } = supabase.storage
     .from("project")
-    .getPublicUrl("Career/lucid-motors/logo.png");
+    .getPublicUrl("career project/LucidMotors/logo.png");
 
   return (
     <CompanyTemplate

@@ -35,7 +35,7 @@ const nlpImage = nlpImageData.publicUrl;
 const companies = [
   {
     name: "Lucid Motors",
-    logo: supabase.storage.from("project").getPublicUrl("Career/lucid-motors/logo.png").data.publicUrl,
+    logo: supabase.storage.from("project").getPublicUrl("career project/LucidMotors/logo.png").data.publicUrl,
     roleTitle: "Sr. Product Manager, Financial Services, Customer Experience",
     keyImpact: [
       "Delivered a high-reliability financing funnel that drove $62M incremental financed transactions and 36% revenue growth.",
@@ -56,7 +56,7 @@ const companies = [
 
   {
     name: "BlueSnap",
-    logo: supabase.storage.from("project").getPublicUrl("Career/bluesnap/logo.png").data.publicUrl,
+    logo: supabase.storage.from("project").getPublicUrl("career project/Bluesnap/logo.png").data.publicUrl,
     roleTitle: "Product Manager, Payment, Fraud, Merchant Onboarding, User Experience",
     keyImpact: [
       "Improved onboarding & payment workflow efficiency 35% by simplifying internal processes.",
@@ -76,7 +76,7 @@ const companies = [
 
   {
     name: "Harmony Plus",
-    logo: supabase.storage.from("project").getPublicUrl("Career/harmony-plus/logo.png").data.publicUrl,
+    logo: supabase.storage.from("project").getPublicUrl("career project/HarmonyPlus/logo.png").data.publicUrl,
     roleTitle: "Product Manager, EdTech",
     keyImpact: [
       "Drove 15% increase in user conversion through SEO improvements.",
@@ -96,7 +96,7 @@ const companies = [
 
   {
     name: "Vortex Autogroup",
-    logo: supabase.storage.from("project").getPublicUrl("Career/vortex-autogroup/logo.png").data.publicUrl,
+    logo: supabase.storage.from("project").getPublicUrl("career project/VortexAuto/logo.png").data.publicUrl,
     roleTitle: "Chief Product Officer & Founder",
     keyImpact: [
       "Led a 20+ person team to achieve 30% YoY revenue increase from 2017–2019.",

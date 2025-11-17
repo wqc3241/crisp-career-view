@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 const Bluesnap = () => {
   const { data: logoData } = supabase.storage
     .from("project")
-    .getPublicUrl("Career/bluesnap/logo.png");
+    .getPublicUrl("career project/Bluesnap/logo.png");
 
   return (
     <CompanyTemplate
