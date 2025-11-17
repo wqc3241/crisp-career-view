@@ -8,7 +8,7 @@ const Hero = () => {
     window.open(data.publicUrl, "_blank");
   };
   return (
-    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 text-center">
+    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 text-center">
       {user ? (
         <div className="mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Welcome back{isAdmin ? ", Admin" : ""}!</h2>
