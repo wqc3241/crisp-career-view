@@ -80,6 +80,8 @@ const Talkify = () => {
       ]}
       demoLink="https://speak-smart-clips.lovable.app/auth"
       githubLink="https://github.com/wqc3241/speak-smart-clips"
+      testEmail="qichaotomwang+1@gmail.com"
+      testPassword="Test123"
     />
   );
 };
