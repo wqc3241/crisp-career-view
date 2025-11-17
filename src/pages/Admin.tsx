@@ -126,7 +126,7 @@ const Admin = () => {
         if (item.id === null) {
           // Regular folder
           folderSet.add(item.name);
-        } else if (item.name.endsWith('/.gitkeep')) {
+        } else if (item.name.includes('/.gitkeep')) {
           // Extract folder name from .gitkeep path
           const folderName = item.name.replace('/.gitkeep', '');
           if (folderName) {
