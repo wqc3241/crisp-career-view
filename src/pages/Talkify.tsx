@@ -2,7 +2,14 @@ import ProductTemplate from "@/components/ProductTemplate";
 import { supabase } from "@/integrations/supabase/client";
 
 const Talkify = () => {
-  const slideshowImages = ["Side project/talkify/slideshow/image1.jpg"].map((path) => {
+  const slideshowImages = [
+    "Side project/talkify/slideshow/slide1.jpg",
+    "Side project/talkify/slideshow/slide2.jpg",
+    "Side project/talkify/slideshow/slide3.jpg",
+    "Side project/talkify/slideshow/slide4.jpg",
+    "Side project/talkify/slideshow/slide5.jpg",
+    "Side project/talkify/slideshow/slide6.jpg",
+  ].map((path) => {
     const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
   });
