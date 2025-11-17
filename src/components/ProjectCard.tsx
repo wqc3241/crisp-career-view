@@ -12,11 +12,11 @@ interface ProjectCardProps {
 const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps) => {
   const content = (
     <>
-      <div className="aspect-video w-full overflow-hidden">
+      <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20">
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
       <div className="p-6">
