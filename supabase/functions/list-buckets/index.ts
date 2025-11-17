@@ -55,13 +55,59 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Create service role client to list buckets
+    // Create service role client
     const supabaseAdmin = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // List all storage buckets
+    // Handle POST request to create a bucket
+    if (req.method === 'POST') {
+      const { bucketName, options } = await req.json();
+      
+      // Validate bucket name
+      if (!bucketName || typeof bucketName !== 'string') {
+        return new Response(
+          JSON.stringify({ error: 'Invalid bucket name' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      // Validate bucket name format (lowercase, alphanumeric, hyphens only)
+      if (!/^[a-z0-9-]+$/.test(bucketName)) {
+        return new Response(
+          JSON.stringify({ error: 'Bucket name must be lowercase alphanumeric with hyphens only' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      // Create bucket with service role client
+      const { data: bucket, error: createError } = await supabaseAdmin.storage.createBucket(
+        bucketName,
+        {
+          public: options?.public ?? false,
+          fileSizeLimit: options?.fileSizeLimit ?? 52428800, // 50MB default
+          allowedMimeTypes: options?.allowedMimeTypes ?? null
+        }
+      );
+      
+      if (createError) {
+        console.error('Error creating bucket:', createError);
+        return new Response(
+          JSON.stringify({ error: createError.message }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+      
+      console.log('Successfully created bucket:', bucketName, 'by admin user:', user.id);
+      
+      return new Response(
+        JSON.stringify({ bucket }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Handle GET request to list buckets
     const { data: buckets, error: bucketsError } = await supabaseAdmin.storage.listBuckets();
 
     if (bucketsError) {
