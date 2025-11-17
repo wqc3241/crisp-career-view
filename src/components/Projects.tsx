@@ -25,7 +25,7 @@ const rcmImage = rcmImageData.publicUrl;
 // Get Construction Estimator slideshow image from cloud storage
 const { data: constructionImageData } = supabase.storage
   .from("project")
-  .getPublicUrl("Side project/Estimator/slideshow/image1.jpg");
+  .getPublicUrl("Side project/Estimator/slideshow/Slide1.jpg");
 const constructionImage = constructionImageData.publicUrl;
 
 const careerHighlights = [
