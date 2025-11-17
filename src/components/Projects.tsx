@@ -68,7 +68,7 @@ const sideProjects = [
     description:
       "Revenue cycle management platform for healthcare providers with automated billing and claims tracking.",
     image: rcmImage,
-    tags: ["Healthcare", "FinTech", "Automation", "HIPAA"],
+    tags: ["Healthcare", "AI/LLM", "Platform Tool", "RCM", "Ops Console", "To B"],
     link: "/products/medical-bill-rcm",
   },
   {
