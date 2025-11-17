@@ -3,11 +3,11 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ConstructionEstimator = () => {
   const slideshowImages = [
-    "Side project/Estimator/slideshow/slide1.jpg",
-    "Side project/Estimator/slideshow/slide2.jpg",
-    "Side project/Estimator/slideshow/slide3.jpg",
-    "Side project/Estimator/slideshow/slide4.jpg",
-    "Side project/Estimator/slideshow/slide5.jpg",
+    "Side project/Estimator/slideshow/Slide1.jpg",
+    "Side project/Estimator/slideshow/Slide2.jpg",
+    "Side project/Estimator/slideshow/Slide3.jpg",
+    "Side project/Estimator/slideshow/Slide4.jpg",
+    "Side project/Estimator/slideshow/Slide5.jpg",
   ].map((path) => {
     const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
