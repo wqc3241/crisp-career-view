@@ -69,6 +69,16 @@ const ProductTemplate = ({
             <p className="text-base text-muted-foreground mb-8 leading-relaxed">
               {description}
             </p>
+            {demoLink && (
+              <div className="mb-6 p-3 bg-muted/50 rounded-lg border border-border">
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">Test Account:</span> qichaotomwang+1@gmail.com
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">Test Password:</span> Test123
+                </p>
+              </div>
+            )}
             <div className="flex flex-wrap gap-4">
               {demoLink && <Button asChild>
                   <a href={demoLink} target="_blank" rel="noopener noreferrer">
