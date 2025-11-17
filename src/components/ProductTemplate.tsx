@@ -3,29 +3,19 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 interface Feature {
   title: string;
   description: string;
 }
-
 interface Metric {
   value: string;
   label: string;
 }
-
 interface CustomerSegment {
   title: string;
   description: string;
 }
-
 interface ProductTemplateProps {
   name: string;
   tagline: string;
@@ -41,7 +31,6 @@ interface ProductTemplateProps {
   demoLink?: string;
   githubLink?: string;
 }
-
 const ProductTemplate = ({
   name,
   tagline,
@@ -55,20 +44,14 @@ const ProductTemplate = ({
   metrics,
   futureImprovements,
   demoLink,
-  githubLink,
+  githubLink
 }: ProductTemplateProps) => {
   const navigate = useNavigate();
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="gap-2"
-          >
+          <Button variant="ghost" onClick={() => navigate("/")} className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             Back to Portfolio
           </Button>
@@ -87,47 +70,32 @@ const ProductTemplate = ({
               {description}
             </p>
             <div className="flex flex-wrap gap-4">
-              {demoLink && (
-                <Button asChild>
+              {demoLink && <Button asChild>
                   <a href={demoLink} target="_blank" rel="noopener noreferrer">
                     Try Demo
                   </a>
-                </Button>
-              )}
-              {githubLink && (
-                <Button variant="outline" asChild>
+                </Button>}
+              {githubLink && <Button variant="outline" asChild>
                   <a href={githubLink} target="_blank" rel="noopener noreferrer">
                     View on GitHub
                   </a>
-                </Button>
-              )}
+                </Button>}
             </div>
           </div>
           <div className="relative w-full">
             <Carousel className="w-full">
               <CarouselContent>
-                {images.map((image, index) => (
-                  <CarouselItem key={index}>
+                {images.map((image, index) => <CarouselItem key={index}>
                     <div className="aspect-video w-full overflow-hidden rounded-lg border border-border relative bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20">
-                      <img
-                        src={image}
-                        alt={`${name} - Image ${index + 1}`}
-                        className="w-full h-full object-contain relative z-10"
-                      />
+                      <img src={image} alt={`${name} - Image ${index + 1}`} className="w-full h-full object-contain relative z-10" />
                     </div>
-                  </CarouselItem>
-                ))}
+                  </CarouselItem>)}
               </CarouselContent>
               <CarouselPrevious className="left-4" />
               <CarouselNext className="right-4" />
             </Carousel>
             <div className="flex justify-center gap-2 mt-4">
-              {images.map((_, index) => (
-                <div
-                  key={index}
-                  className="w-2 h-2 rounded-full bg-muted-foreground/30"
-                />
-              ))}
+              {images.map((_, index) => <div key={index} className="w-2 h-2 rounded-full bg-muted-foreground/30" />)}
             </div>
           </div>
         </div>
@@ -149,15 +117,10 @@ const ProductTemplate = ({
           Problems We Solve
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {painpoints.map((painpoint, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 p-4 rounded-lg bg-muted/30"
-            >
+          {painpoints.map((painpoint, index) => <div key={index} className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
               <div className="mt-1 h-2 w-2 rounded-full bg-primary flex-shrink-0" />
               <p className="text-muted-foreground">{painpoint}</p>
-            </div>
-          ))}
+            </div>)}
         </div>
       </section>
 
@@ -168,8 +131,7 @@ const ProductTemplate = ({
             Who We Serve
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {customerSegments.map((segment) => (
-              <Card key={segment.title}>
+            {customerSegments.map(segment => <Card key={segment.title}>
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold text-foreground mb-3">
                     {segment.title}
@@ -178,25 +140,22 @@ const ProductTemplate = ({
                     {segment.description}
                   </p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
 
       {/* Metrics Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {metrics.map((metric) => (
-            <div key={metric.label} className="text-center">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-8">
+          {metrics.map(metric => <div key={metric.label} className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">
                 {metric.value}
               </div>
               <div className="text-sm text-muted-foreground">
                 {metric.label}
               </div>
-            </div>
-          ))}
+            </div>)}
         </div>
       </section>
 
@@ -206,8 +165,7 @@ const ProductTemplate = ({
           Key Features
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {features.map((feature) => (
-            <Card key={feature.title}>
+          {features.map(feature => <Card key={feature.title}>
               <CardContent className="p-6">
                 <h3 className="text-xl font-semibold text-foreground mb-3">
                   {feature.title}
@@ -216,8 +174,7 @@ const ProductTemplate = ({
                   {feature.description}
                 </p>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
       </section>
 
@@ -228,11 +185,9 @@ const ProductTemplate = ({
             Tech Stack
           </h2>
           <div className="flex flex-wrap gap-3">
-            {techStack.map((tech) => (
-              <Badge key={tech} variant="secondary" className="text-sm px-4 py-2">
+            {techStack.map(tech => <Badge key={tech} variant="secondary" className="text-sm px-4 py-2">
                 {tech}
-              </Badge>
-            ))}
+              </Badge>)}
           </div>
         </div>
       </section>
@@ -243,15 +198,10 @@ const ProductTemplate = ({
           Future Roadmap
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {futureImprovements.map((improvement, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-3 p-4 rounded-lg border border-border"
-            >
+          {futureImprovements.map((improvement, index) => <div key={index} className="flex items-start gap-3 p-4 rounded-lg border border-border">
               <div className="mt-1 h-2 w-2 rounded-full bg-primary flex-shrink-0" />
               <p className="text-muted-foreground">{improvement}</p>
-            </div>
-          ))}
+            </div>)}
         </div>
       </section>
 
@@ -269,8 +219,6 @@ const ProductTemplate = ({
           </Button>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default ProductTemplate;
