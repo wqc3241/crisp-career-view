@@ -294,22 +294,8 @@ const Admin = () => {
     const filePath = currentPath ? `${currentPath}/${file.name}` : file.name;
     const { data } = supabase.storage.from(selectedBucket).getPublicUrl(filePath);
     
-    setPreviewUrl(data.publicUrl);
-    setSelectedFile(file);
-    
-    // Determine preview type based on file extension
-    const ext = file.name.split('.').pop()?.toLowerCase();
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext || '')) {
-      setPreviewType('image');
-    } else if (ext === 'pdf') {
-      setPreviewType('pdf');
-    } else if (['txt', 'md', 'json', 'csv', 'xml', 'html', 'css', 'js', 'ts', 'tsx'].includes(ext || '')) {
-      setPreviewType('text');
-    } else {
-      setPreviewType('other');
-    }
-    
-    setIsPreviewOpen(true);
+    // Open file in new tab
+    window.open(data.publicUrl, '_blank');
   };
 
   const handleDelete = async () => {
@@ -794,6 +780,55 @@ const Admin = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Rename Dialog */}
+        <Dialog open={isRenameOpen} onOpenChange={setIsRenameOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Rename File</DialogTitle>
+              <DialogDescription>
+                Enter a new name for "{selectedFile?.name}"
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="newName">New Name</Label>
+                <Input
+                  id="newName"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="Enter new file name"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsRenameOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleRenameFile}>
+                Rename
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Delete Confirmation Dialog */}
+        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete "{selectedFile?.name}". This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </ProtectedRoute>
   );
