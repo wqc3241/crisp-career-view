@@ -9,7 +9,27 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Upload, Folder, Trash2, LogOut, Download } from 'lucide-react';
+import { 
+  Upload, 
+  Folder, 
+  Trash2, 
+  LogOut, 
+  Download, 
+  FolderPlus,
+  Edit,
+  Eye,
+  Home,
+  ArrowLeft,
+  FileText,
+  FileImage,
+  File as FileIcon,
+  ChevronRight
+} from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Admin = () => {
   const { signOut } = useAuth();
@@ -19,8 +39,23 @@ const Admin = () => {
   const [buckets, setBuckets] = useState<any[]>([]);
   const [selectedBucket, setSelectedBucket] = useState<string>('');
   const [files, setFiles] = useState<any[]>([]);
+  const [folders, setFolders] = useState<any[]>([]);
   const [uploading, setUploading] = useState(false);
-  const [folderPath, setFolderPath] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [currentPath, setCurrentPath] = useState<string>('');
+  
+  // Dialog states
+  const [isCreateFolderOpen, setIsCreateFolderOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  
+  // Form states
+  const [newFolderName, setNewFolderName] = useState('');
+  const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [newName, setNewName] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewType, setPreviewType] = useState<'image' | 'pdf' | 'text' | 'other'>('other');
 
   useEffect(() => {
     loadBuckets();
@@ -30,7 +65,7 @@ const Admin = () => {
     if (selectedBucket) {
       loadFiles();
     }
-  }, [selectedBucket]);
+  }, [selectedBucket, currentPath]);
 
   const loadBuckets = async () => {
     try {
@@ -57,11 +92,14 @@ const Admin = () => {
   const loadFiles = async () => {
     if (!selectedBucket) return;
     
-    const { data, error } = await supabase.storage.from(selectedBucket).list('', {
+    setLoading(true);
+    const { data, error } = await supabase.storage.from(selectedBucket).list(currentPath, {
       limit: 100,
       offset: 0,
       sortBy: { column: 'name', order: 'asc' },
     });
+
+    setLoading(false);
 
     if (error) {
       toast({
@@ -70,7 +108,11 @@ const Admin = () => {
         variant: 'destructive',
       });
     } else {
-      setFiles(data || []);
+      // Separate folders and files (folders have id: null)
+      const folderItems = (data || []).filter(item => item.id === null);
+      const fileItems = (data || []).filter(item => item.id !== null);
+      setFolders(folderItems);
+      setFiles(fileItems);
     }
   };
 
@@ -79,7 +121,7 @@ const Admin = () => {
     if (!file || !selectedBucket) return;
 
     setUploading(true);
-    const filePath = folderPath ? `${folderPath}/${file.name}` : file.name;
+    const filePath = currentPath ? `${currentPath}/${file.name}` : file.name;
 
     const { error } = await supabase.storage
       .from(selectedBucket)
@@ -102,18 +144,152 @@ const Admin = () => {
         description: 'File uploaded successfully',
       });
       loadFiles();
+      e.target.value = '';
     }
   };
 
-  const handleDelete = async (fileName: string) => {
-    if (!selectedBucket) return;
-    
-    const confirmed = window.confirm(`Delete ${fileName}?`);
-    if (!confirmed) return;
+  const handleNavigateToFolder = (folderName: string) => {
+    const newPath = currentPath ? `${currentPath}/${folderName}` : folderName;
+    setCurrentPath(newPath);
+  };
+
+  const handleNavigateBack = () => {
+    const pathParts = currentPath.split('/');
+    pathParts.pop();
+    setCurrentPath(pathParts.join('/'));
+  };
+
+  const handleNavigateToPath = (index: number) => {
+    const pathParts = currentPath.split('/');
+    const newPath = pathParts.slice(0, index + 1).join('/');
+    setCurrentPath(newPath);
+  };
+
+  const handleCreateFolder = async () => {
+    if (!selectedBucket || !newFolderName.trim()) {
+      toast({
+        title: 'Invalid folder name',
+        description: 'Please enter a valid folder name',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Validate folder name
+    if (/[/\\]/.test(newFolderName)) {
+      toast({
+        title: 'Invalid folder name',
+        description: 'Folder name cannot contain / or \\',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Create folder by uploading a .gitkeep file
+    const folderPath = currentPath 
+      ? `${currentPath}/${newFolderName}/.gitkeep` 
+      : `${newFolderName}/.gitkeep`;
 
     const { error } = await supabase.storage
       .from(selectedBucket)
-      .remove([fileName]);
+      .upload(folderPath, new Blob([''], { type: 'text/plain' }), {
+        cacheControl: '3600',
+      });
+
+    if (error) {
+      toast({
+        title: 'Create folder failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Success',
+        description: 'Folder created successfully',
+      });
+      setIsCreateFolderOpen(false);
+      setNewFolderName('');
+      loadFiles();
+    }
+  };
+
+  const handleRenameFile = async () => {
+    if (!selectedBucket || !selectedFile || !newName.trim()) {
+      toast({
+        title: 'Invalid file name',
+        description: 'Please enter a valid file name',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    // Validate file name
+    if (/[/\\]/.test(newName)) {
+      toast({
+        title: 'Invalid file name',
+        description: 'File name cannot contain / or \\',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const oldPath = currentPath ? `${currentPath}/${selectedFile.name}` : selectedFile.name;
+    const newPath = currentPath ? `${currentPath}/${newName}` : newName;
+
+    const { error } = await supabase.storage
+      .from(selectedBucket)
+      .move(oldPath, newPath);
+
+    if (error) {
+      toast({
+        title: 'Rename failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Success',
+        description: 'File renamed successfully',
+      });
+      setIsRenameOpen(false);
+      setSelectedFile(null);
+      setNewName('');
+      loadFiles();
+    }
+  };
+
+  const handlePreviewFile = (file: any) => {
+    if (!selectedBucket) return;
+
+    const filePath = currentPath ? `${currentPath}/${file.name}` : file.name;
+    const { data } = supabase.storage.from(selectedBucket).getPublicUrl(filePath);
+    
+    setPreviewUrl(data.publicUrl);
+    setSelectedFile(file);
+    
+    // Determine preview type based on file extension
+    const ext = file.name.split('.').pop()?.toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext || '')) {
+      setPreviewType('image');
+    } else if (ext === 'pdf') {
+      setPreviewType('pdf');
+    } else if (['txt', 'md', 'json', 'csv', 'xml', 'html', 'css', 'js', 'ts', 'tsx'].includes(ext || '')) {
+      setPreviewType('text');
+    } else {
+      setPreviewType('other');
+    }
+    
+    setIsPreviewOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!selectedBucket || !selectedFile) return;
+
+    const filePath = currentPath ? `${currentPath}/${selectedFile.name}` : selectedFile.name;
+
+    const { error } = await supabase.storage
+      .from(selectedBucket)
+      .remove([filePath]);
 
     if (error) {
       toast({
@@ -126,6 +302,8 @@ const Admin = () => {
         title: 'Success',
         description: 'File deleted successfully',
       });
+      setIsDeleteDialogOpen(false);
+      setSelectedFile(null);
       loadFiles();
     }
   };
@@ -145,6 +323,29 @@ const Admin = () => {
       a.click();
       URL.revokeObjectURL(url);
     }
+  };
+
+  const getFileIcon = (fileName: string) => {
+    const ext = fileName.split('.').pop()?.toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext || '')) {
+      return <FileImage className="h-4 w-4" />;
+    } else if (['txt', 'md', 'json', 'csv', 'xml'].includes(ext || '')) {
+      return <FileText className="h-4 w-4" />;
+    }
+    return <FileIcon className="h-4 w-4" />;
+  };
+
+  const formatBreadcrumbs = () => {
+    if (!currentPath) return [];
+    return currentPath.split('/');
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
   };
 
   const handleSignOut = async () => {
@@ -188,76 +389,207 @@ const Admin = () => {
 
               {selectedBucket && (
                 <>
-                  <div className="space-y-2">
-                    <Label>Folder Path (optional)</Label>
-                    <div className="flex gap-2">
-                      <Folder className="h-4 w-4 mt-2" />
-                      <Input
-                        placeholder="e.g., images/avatars"
-                        value={folderPath}
-                        onChange={(e) => setFolderPath(e.target.value)}
-                      />
-                    </div>
+                  {/* Breadcrumb Navigation */}
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setCurrentPath('')}
+                      disabled={!currentPath}
+                    >
+                      <Home className="h-4 w-4" />
+                    </Button>
+                    {currentPath && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleNavigateBack}
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                      </Button>
+                    )}
+                    <Breadcrumb>
+                      <BreadcrumbList>
+                        <BreadcrumbItem>
+                          <BreadcrumbLink onClick={() => setCurrentPath('')} className="cursor-pointer">
+                            Root
+                          </BreadcrumbLink>
+                        </BreadcrumbItem>
+                        {formatBreadcrumbs().map((part, index) => (
+                          <>
+                            <BreadcrumbSeparator key={`sep-${index}`}>
+                              <ChevronRight className="h-4 w-4" />
+                            </BreadcrumbSeparator>
+                            <BreadcrumbItem key={index}>
+                              {index === formatBreadcrumbs().length - 1 ? (
+                                <BreadcrumbPage>{part}</BreadcrumbPage>
+                              ) : (
+                                <BreadcrumbLink 
+                                  onClick={() => handleNavigateToPath(index)}
+                                  className="cursor-pointer"
+                                >
+                                  {part}
+                                </BreadcrumbLink>
+                              )}
+                            </BreadcrumbItem>
+                          </>
+                        ))}
+                      </BreadcrumbList>
+                    </Breadcrumb>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="file-upload">Upload File</Label>
-                    <div className="flex gap-2">
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <Dialog open={isCreateFolderOpen} onOpenChange={setIsCreateFolderOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="outline">
+                          <FolderPlus className="mr-2 h-4 w-4" />
+                          Create Folder
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Create New Folder</DialogTitle>
+                          <DialogDescription>
+                            Enter a name for the new folder
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div>
+                            <Label htmlFor="folderName">Folder Name</Label>
+                            <Input
+                              id="folderName"
+                              value={newFolderName}
+                              onChange={(e) => setNewFolderName(e.target.value)}
+                              placeholder="my-folder"
+                            />
+                          </div>
+                        </div>
+                        <DialogFooter>
+                          <Button variant="outline" onClick={() => setIsCreateFolderOpen(false)}>
+                            Cancel
+                          </Button>
+                          <Button onClick={handleCreateFolder}>Create</Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Label htmlFor="file-upload" className="cursor-pointer">
+                      <Button variant="outline" disabled={uploading} asChild>
+                        <span>
+                          <Upload className="mr-2 h-4 w-4" />
+                          {uploading ? 'Uploading...' : 'Upload File'}
+                        </span>
+                      </Button>
                       <Input
                         id="file-upload"
                         type="file"
                         onChange={handleFileUpload}
-                        disabled={uploading}
+                        className="hidden"
                       />
-                      <Button disabled={uploading}>
-                        <Upload className="mr-2 h-4 w-4" />
-                        {uploading ? 'Uploading...' : 'Upload'}
-                      </Button>
-                    </div>
+                    </Label>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label>Files ({files.length})</Label>
-                    <div className="border rounded-md max-h-96 overflow-y-auto">
-                      {files.length === 0 ? (
-                        <div className="p-4 text-center text-muted-foreground">
-                          No files in this bucket
-                        </div>
-                      ) : (
-                        <div className="divide-y">
-                          {files.map((file) => (
-                            <div
-                              key={file.name}
-                              className="p-3 flex items-center justify-between hover:bg-muted/50"
-                            >
-                              <div className="flex-1">
-                                <p className="font-medium">{file.name}</p>
-                                <p className="text-sm text-muted-foreground">
-                                  {(file.metadata?.size / 1024).toFixed(2)} KB
+                  <Separator />
+
+                  {/* Loading State */}
+                  {loading && (
+                    <div className="space-y-2">
+                      <Skeleton className="h-12 w-full" />
+                      <Skeleton className="h-12 w-full" />
+                      <Skeleton className="h-12 w-full" />
+                    </div>
+                  )}
+
+                  {/* Folders */}
+                  {!loading && folders.length > 0 && (
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-muted-foreground">Folders</h3>
+                      <div className="space-y-1">
+                        {folders.map((folder) => (
+                          <div
+                            key={folder.name}
+                            className="flex items-center justify-between p-3 rounded-md border bg-card hover:bg-accent cursor-pointer transition-colors"
+                            onClick={() => handleNavigateToFolder(folder.name)}
+                          >
+                            <div className="flex items-center gap-3">
+                              <Folder className="h-5 w-5 text-primary" />
+                              <span className="font-medium">{folder.name}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Files */}
+                  {!loading && files.length > 0 && (
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-muted-foreground">Files</h3>
+                      <div className="space-y-1">
+                        {files.map((file) => (
+                          <div
+                            key={file.id}
+                            className="flex items-center justify-between p-3 rounded-md border bg-card hover:bg-accent/50 transition-colors"
+                          >
+                            <div className="flex items-center gap-3 flex-1 min-w-0">
+                              {getFileIcon(file.name)}
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium truncate">{file.name}</p>
+                                <p className="text-xs text-muted-foreground">
+                                  {formatFileSize(file.metadata?.size || 0)}
                                 </p>
                               </div>
-                              <div className="flex gap-2">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleDownload(file.name)}
-                                >
-                                  <Download className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  onClick={() => handleDelete(file.name)}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
                             </div>
-                          ))}
-                        </div>
-                      )}
+                            <div className="flex gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handlePreviewFile(file)}
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedFile(file);
+                                  setNewName(file.name);
+                                  setIsRenameOpen(true);
+                                }}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleDownload(file)}
+                              >
+                                <Download className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setSelectedFile(file);
+                                  setIsDeleteDialogOpen(true);
+                                }}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {!loading && folders.length === 0 && files.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <Folder className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No files or folders in this directory</p>
+                    </div>
+                  )}
                 </>
               )}
             </CardContent>
