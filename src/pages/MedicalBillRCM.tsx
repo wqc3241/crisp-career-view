@@ -80,7 +80,7 @@ const MedicalBillRCM = () => {
         "Advanced reporting dashboard with real-time KPI tracking",
       ]}
       demoLink="https://lovable-rcm-ai.lovable.app/"
-      githubLink="https://github.com/wqc3241/crisp-career-view"
+      githubLink="https://github.com/wqc3241/lovable-rcm-ai"
     />
   );
 };
