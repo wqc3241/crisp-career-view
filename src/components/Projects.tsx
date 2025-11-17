@@ -36,33 +36,80 @@ const companies = [
   {
     name: "Lucid Motors",
     logo: supabase.storage.from("project").getPublicUrl("Career/lucid-motors/logo.png").data.publicUrl,
-    roleTitle: "Senior Product Manager",
-    keyImpact: "Led EV platform development reducing time-to-market by 30%",
-    tags: ["EV Technology", "Product Strategy", "Cross-functional Leadership"],
+    roleTitle: "Sr. Product Manager, Financial Services, Customer Experience",
+    keyImpact: [
+      "Delivered a high-reliability financing funnel that drove $62M incremental financed transactions and 36% revenue growth.",
+      "Reduced end-to-end financing order & approval latency by 99% (1 week → 3 min) via re-architected multi-step workflows.",
+      "Improved lease deal operational efficiency 20% with automated pricing recalculation logic.",
+      "Automated the vehicle matching flow, reducing manual processing 15% and improving allocation accuracy."
+    ],
+    tags: [
+      "Auto Finance", 
+      "Pricing Engine", 
+      "AI/LLM Automation", 
+      "Risk Decisioning", 
+      "Global Market Launches"
+    ],
     link: "/career/lucid-motors",
   },
+
   {
-    name: "Bluesnap",
+    name: "BlueSnap",
     logo: supabase.storage.from("project").getPublicUrl("Career/bluesnap/logo.png").data.publicUrl,
-    roleTitle: "Product Manager",
-    keyImpact: "Launched payment gateway features increasing transaction volume by 45%",
-    tags: ["FinTech", "Payment Systems", "API Design"],
+    roleTitle: "Product Manager, Payment, Fraud, Merchant Onboarding, User Experience",
+    keyImpact: [
+      "Improved onboarding & payment workflow efficiency 35% by simplifying internal processes.",
+      "Increased operational accuracy from 70% → 98% by redesigning data pipelines.",
+      "Drove 25% acquisition growth and 20% engagement lift through data-driven UX updates.",
+      "Reduced revenue loss 15% by launching automated risk & dispute workflows."
+    ],
+    tags: [
+      "Payments", 
+      "Fraud & Risk", 
+      "Merchant Onboarding", 
+      "KYC/KYB Automation",
+      "Checkout Optimization"
+    ],
     link: "/career/bluesnap",
   },
+
   {
     name: "Harmony Plus",
     logo: supabase.storage.from("project").getPublicUrl("Career/harmony-plus/logo.png").data.publicUrl,
-    roleTitle: "Associate Product Manager",
-    keyImpact: "Optimized user onboarding flow, boosting activation rate by 25%",
-    tags: ["SaaS", "User Experience", "Growth"],
+    roleTitle: "Product Manager, EdTech",
+    keyImpact: [
+      "Drove 15% increase in user conversion through SEO improvements.",
+      "2X product sales online ($30k in 1 month) with new e-commerce platform.",
+      "Led a 3-person team delivering a CRM module, reducing redundant work time by 40%.",
+      "Rebuilt company website with A/B testing to deliver +30% session time and −20% bounce rate."
+    ],
+    tags: [
+      "EdTech",
+      "SEO & Growth",
+      "E-commerce",
+      "CRM Development",
+      "A/B Testing"
+    ],
     link: "/career/harmony-plus",
   },
+
   {
     name: "Vortex Autogroup",
     logo: supabase.storage.from("project").getPublicUrl("Career/vortex-autogroup/logo.png").data.publicUrl,
-    roleTitle: "Product Analyst",
-    keyImpact: "Built analytics dashboard that improved decision-making across 5 departments",
-    tags: ["Automotive", "Data Analytics", "Business Intelligence"],
+    roleTitle: "Chief Product Officer & Founder",
+    keyImpact: [
+      "Led a 20+ person team to achieve 30% YoY revenue increase from 2017–2019.",
+      "Achieved $5M revenue in 2019 through A/B testing and optimized product matching.",
+      "Built foundational digital commerce and operational systems for auto dealership.",
+      "Improved business intelligence with data-driven strategy across sales & service."
+    ],
+    tags: [
+      "Automotive Commerce",
+      "Product Strategy",
+      "Data Analytics",
+      "Growth Optimization",
+      "Founding Leadership"
+    ],
     link: "/career/vortex-autogroup",
   },
 ];
