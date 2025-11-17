@@ -3,9 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 const NLPBrochure = () => {
   const slideshowImages = [
-    "Side project/nlp-brochure/slideshow/slide1.jpg",
-    "Side project/nlp-brochure/slideshow/slide2.jpg",
-    "Side project/nlp-brochure/slideshow/slide3.jpg",
+    "Side project/nlp/slideshow/slide1.png",
+    "Side project/nlp/slideshow/slide2.png",
+    "Side project/nlp/slideshow/slide3.png",
   ].map((path) => {
     const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
@@ -28,15 +28,18 @@ const NLPBrochure = () => {
       customerSegments={[
         {
           title: "Car Enthusiasts & Tuners",
-          description: "Performance-focused individuals looking to upgrade and customize their vehicles with high-quality aftermarket parts, detailed technical specifications, and competitive pricing.",
+          description:
+            "Performance-focused individuals looking to upgrade and customize their vehicles with high-quality aftermarket parts, detailed technical specifications, and competitive pricing.",
         },
         {
           title: "Professional Mechanics",
-          description: "Auto repair professionals sourcing reliable parts for customer vehicles with bulk ordering capabilities, fast shipping, and technical support.",
+          description:
+            "Auto repair professionals sourcing reliable parts for customer vehicles with bulk ordering capabilities, fast shipping, and technical support.",
         },
         {
           title: "Racing Teams",
-          description: "Competitive racing organizations requiring premium performance parts, priority shipping, and custom part sourcing assistance.",
+          description:
+            "Competitive racing organizations requiring premium performance parts, priority shipping, and custom part sourcing assistance.",
         },
       ]}
       metrics={[
@@ -61,7 +64,8 @@ const NLPBrochure = () => {
         },
         {
           title: "Secure Checkout",
-          description: "Shopify-powered payment processing with support for multiple payment methods and shipping options.",
+          description:
+            "Shopify-powered payment processing with support for multiple payment methods and shipping options.",
         },
         {
           title: "Detailed Product Info",
