@@ -2,9 +2,7 @@ import CompanyTemplate from "@/components/CompanyTemplate";
 import { supabase } from "@/integrations/supabase/client";
 
 const LucidMotors = () => {
-  const { data: logoData } = supabase.storage
-    .from("project")
-    .getPublicUrl("career project/LucidMotors/logo.png");
+  const { data: logoData } = supabase.storage.from("project").getPublicUrl("career project/LucidMotors/logo.png");
 
   return (
     <CompanyTemplate
@@ -22,28 +20,48 @@ const LucidMotors = () => {
       ]}
       projects={[
         {
-          title: "Digitalize Customer purchasing journey",
-          description: "Led the product strategy and roadmap for Lucid's next-generation EV platform, coordinating across engineering, design, and manufacturing teams.",
-          impact: "Reduced time-to-market by 30% through agile methodologies and streamlined cross-functional workflows.",
-          tags: ["Product Strategy", "Agile", "Cross-functional Leadership"],
+          title: "Digital Purchasing App (Mobile Web)",
+          description:
+            "Led the end-to-end product development of Lucid’s new mobile purchasing flow, including financing, trade-in, document upload, and offer selection.",
+          impact: [
+            "Increased funnel completion by 30% through redesigned UX and automated financing flows",
+            "Reduced approval time from 1 week to 10 minutes by integrating Experian, LexisNexis, and lender APIs",
+            "Accelerated release cadence by implementing modular UI components and a scalable backend architecture",
+          ],
+          tags: ["E-Commerce", "FinTech", "UX Optimization", "API Integration"],
         },
         {
-          title: "Advanced Driver Assistance System (ADAS)",
-          description: "Managed the development of Level 2+ autonomous driving features, including adaptive cruise control and lane-keeping assistance.",
-          impact: "Achieved 85% feature adoption rate among early users, exceeding targets by 20%.",
-          tags: ["Autonomous Driving", "AI/ML", "User Safety"],
+          title: "FinOps Intelligence Dashboard",
+          description:
+            "Built a centralized financial operations dashboard to streamline lender submission, fraud validation, contract review, and post-decision workflows.",
+          impact: [
+            "Cut FinOps workload by 80% through automated validation, pricing recalculation, and lender routing",
+            "Improved financing accuracy by 95% using a rules-engine-driven audit system",
+            "Enabled cross-team visibility and faster deal resolution through real-time operational metrics",
+          ],
+          tags: ["Internal Tools", "Automation", "Fraud Prevention", "Operations Intelligence"],
         },
         {
-          title: "Connected Car Platform",
-          description: "Oversaw the launch of Lucid's connected vehicle services, enabling over-the-air updates and remote diagnostics.",
-          impact: "Improved customer satisfaction scores by 25% through seamless software updates and proactive issue resolution.",
-          tags: ["IoT", "Cloud Infrastructure", "Customer Experience"],
+          title: "Global Payment Calculator",
+          description:
+            "Designed a unified multi-market payment engine supporting US, Canada, EU, KSA, and UAE with localized tax rules, fees, rates, and incentives.",
+          impact: [
+            "Delivered a single backend calculator replacing five regional systems",
+            "Reduced engineering dependency by 70% through configurable tax and fee master data",
+            "Improved pricing accuracy and update speed across global markets",
+          ],
+          tags: ["FinTech", "Pricing Engine", "Internationalization", "Payments"],
         },
         {
-          title: "Sustainability Initiatives",
-          description: "Championed product features focused on energy efficiency and sustainable materials sourcing.",
-          impact: "Contributed to company-wide 15% reduction in carbon footprint per vehicle produced.",
-          tags: ["Sustainability", "Innovation", "ESG"],
+          title: "Financial Services Data Structure Rebuild",
+          description:
+            "Re-architected Lucid's financing data structures, including bulletin pricing, lender programs, APR/MF/RV tables, and discount rules.",
+          impact: [
+            "Improved data reliability and reduced program mismatches by 90%",
+            "Enabled faster rollout of promotional offers and regional programs",
+            "Established scalable schemas for multi-lender, multi-market expansion",
+          ],
+          tags: ["Data Architecture", "Financing Programs", "Supabase", "System Design"],
         },
       ]}
       techStack={[
