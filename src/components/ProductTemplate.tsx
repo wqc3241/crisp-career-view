@@ -3,6 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 interface Feature {
   title: string;
@@ -23,7 +30,7 @@ interface ProductTemplateProps {
   name: string;
   tagline: string;
   description: string;
-  image: string;
+  images: string[];
   vision: string;
   painpoints: string[];
   customerSegments: CustomerSegment[];
@@ -39,7 +46,7 @@ const ProductTemplate = ({
   name,
   tagline,
   description,
-  image,
+  images,
   vision,
   painpoints,
   customerSegments,
@@ -96,12 +103,32 @@ const ProductTemplate = ({
               )}
             </div>
           </div>
-          <div className="aspect-video w-full overflow-hidden rounded-lg border border-border">
-            <img
-              src={image}
-              alt={name}
-              className="w-full h-full object-cover"
-            />
+          <div className="relative w-full">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {images.map((image, index) => (
+                  <CarouselItem key={index}>
+                    <div className="aspect-video w-full overflow-hidden rounded-lg border border-border">
+                      <img
+                        src={image}
+                        alt={`${name} - Image ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4" />
+              <CarouselNext className="right-4" />
+            </Carousel>
+            <div className="flex justify-center gap-2 mt-4">
+              {images.map((_, index) => (
+                <div
+                  key={index}
+                  className="w-2 h-2 rounded-full bg-muted-foreground/30"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>

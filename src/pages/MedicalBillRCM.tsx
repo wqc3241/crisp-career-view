@@ -7,7 +7,7 @@ const MedicalBillRCM = () => {
       name="Medical Bill RCM"
       tagline="Revenue Cycle Management Solution"
       description="Streamline medical billing processes with automated claim management and revenue tracking. Built for healthcare providers to reduce administrative overhead and improve cash flow."
-      image={medicalImage}
+      images={[medicalImage]}
       vision="To transform healthcare revenue cycle management by eliminating billing complexity and delays, ensuring healthcare providers get paid accurately and promptly so they can focus on patient care rather than paperwork."
       painpoints={[
         "High claim rejection rates due to manual errors and incomplete information",

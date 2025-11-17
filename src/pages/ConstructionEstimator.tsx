@@ -7,7 +7,7 @@ const ConstructionEstimator = () => {
       name="Construction Estimator"
       tagline="Smart Construction Cost Estimation"
       description="AI-powered tool that provides accurate construction cost estimates based on project specifications. Streamline your bidding process and win more projects with data-driven estimates."
-      image={constructionImage}
+      images={[constructionImage]}
       vision="To revolutionize construction bidding by providing contractors with instant, accurate cost estimates powered by AI and real-time market data, enabling them to win more profitable projects and reduce time spent on manual calculations."
       painpoints={[
         "Manual estimation is time-consuming and prone to costly errors",
