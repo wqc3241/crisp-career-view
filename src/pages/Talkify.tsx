@@ -66,7 +66,7 @@ const Talkify = () => {
             "Learn from a wide selection of languages including Spanish, French, Japanese, Mandarin, and more.",
         },
       ]}
-      techStack={["React Native", "TypeScript", "OpenAI API", "Firebase", "WebRTC", "TensorFlow"]}
+      techStack={["React", "TypeScript", "Vite", "Tailwind CSS", "Supabase", "Radix UI", "React Router", "React Hook Form", "Zod"]}
       metrics={[
         { value: "15+", label: "Supported Languages" },
         { value: "92%", label: "Completion Rate" },
