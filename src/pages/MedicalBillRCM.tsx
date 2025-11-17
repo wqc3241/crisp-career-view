@@ -70,7 +70,6 @@ const MedicalBillRCM = () => {
       metrics={[
         { value: "95%", label: "Claim Acceptance Rate" },
         { value: "30%", label: "Faster Processing" },
-        { value: "50+", label: "Healthcare Partners" },
       ]}
       futureImprovements={[
         "AI-powered coding suggestions to reduce manual coding time",
