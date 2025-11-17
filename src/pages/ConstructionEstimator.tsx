@@ -1,5 +1,9 @@
 import ProductTemplate from "@/components/ProductTemplate";
-import constructionImage from "@/assets/product-construction.jpg";
+import { supabase } from "@/integrations/supabase/client";
+
+const slideshowImages = [
+  supabase.storage.from("project").getPublicUrl("Side project/Estimator/slideshow/image1.jpg").data.publicUrl,
+];
 
 const ConstructionEstimator = () => {
   return (
@@ -7,7 +11,7 @@ const ConstructionEstimator = () => {
       name="Construction Estimator"
       tagline="Smart Construction Cost Estimation"
       description="AI-powered tool that provides accurate construction cost estimates based on project specifications. Streamline your bidding process and win more projects with data-driven estimates."
-      images={[constructionImage]}
+      images={slideshowImages}
       vision="To revolutionize construction bidding by providing contractors with instant, accurate cost estimates powered by AI and real-time market data, enabling them to win more profitable projects and reduce time spent on manual calculations."
       painpoints={[
         "Manual estimation is time-consuming and prone to costly errors",
