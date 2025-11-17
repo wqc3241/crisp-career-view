@@ -2,9 +2,7 @@ import ProductTemplate from "@/components/ProductTemplate";
 import { supabase } from "@/integrations/supabase/client";
 
 const Talkify = () => {
-  const slideshowImages = [
-    "Side project/talkify/slideshow/image1.jpg",
-  ].map((path) => {
+  const slideshowImages = ["Side project/talkify/slideshow/image1.jpg"].map((path) => {
     const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
   });
@@ -74,7 +72,7 @@ const Talkify = () => {
         "Corporate training packages with team progress tracking and analytics",
       ]}
       demoLink="https://speak-smart-clips.lovable.app/auth"
-      githubLink="https://github.com/wqc3241/lovable-gemini-draw"
+      githubLink="https://github.com/wqc3241/speak-smart-clips"
     />
   );
 };
