@@ -18,6 +18,12 @@ const { data: talkifyImageData } = supabase.storage
   .getPublicUrl("Side project/talkify/slideshow/slide1.jpg");
 const talkifyImage = talkifyImageData.publicUrl;
 
+// Get Medical Bill RCM slideshow image from cloud storage
+const { data: rcmImageData } = supabase.storage
+  .from("project")
+  .getPublicUrl("Side project/medical-bill-rcm/slideshow/slide1.png");
+const rcmImage = rcmImageData.publicUrl;
+
 const careerHighlights = [
   {
     title: "AI-Powered Analytics Dashboard",
@@ -63,7 +69,7 @@ const sideProjects = [
     title: "Medical Bill RCM",
     description:
       "Revenue cycle management platform for healthcare providers with automated billing and claims tracking.",
-    image: ecommerceImage,
+    image: rcmImage,
     tags: ["Healthcare", "FinTech", "Automation", "HIPAA"],
     link: "/products/medical-bill-rcm",
   },
