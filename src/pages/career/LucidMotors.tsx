@@ -65,11 +65,11 @@ const LucidMotors = () => {
         },
       ]}
       techStack={[
-        "Electric Vehicle Platforms",
-        "Autonomous Driving",
-        "IoT & Connected Services",
+        "AI Automation",
+        "Product Management",
+        "Product Strategy",
         "Agile/Scrum",
-        "Product Analytics",
+        "Data-driven decision",
         "User Research",
         "A/B Testing",
         "Roadmap Planning",
