@@ -33,15 +33,24 @@ const Admin = () => {
   }, [selectedBucket]);
 
   const loadBuckets = async () => {
-    const { data, error } = await supabase.storage.listBuckets();
-    if (error) {
+    try {
+      const { data, error } = await supabase.functions.invoke('list-buckets');
+      
+      if (error) {
+        toast({
+          title: 'Error loading buckets',
+          description: error.message,
+          variant: 'destructive',
+        });
+      } else if (data?.buckets) {
+        setBuckets(data.buckets);
+      }
+    } catch (error: any) {
       toast({
         title: 'Error loading buckets',
-        description: error.message,
+        description: error.message || 'Failed to load buckets',
         variant: 'destructive',
       });
-    } else {
-      setBuckets(data || []);
     }
   };
 
