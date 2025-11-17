@@ -72,7 +72,7 @@ const CinelyAI = () => {
         "Collaborative workspace for team-based editing projects",
       ]}
       demoLink="https://cinely.ai"
-      githubLink="https://github.com/alexdoe/cinely-ai"
+      githubLink="https://github.com/wqc3241/lovable-gemini-draw"
     />
   );
 };
