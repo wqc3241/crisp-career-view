@@ -13,6 +13,10 @@ import Talkify from "./pages/Talkify";
 import MedicalBillRCM from "./pages/MedicalBillRCM";
 import ConstructionEstimator from "./pages/ConstructionEstimator";
 import NLPBrochure from "./pages/NLPBrochure";
+import LucidMotors from "./pages/career/LucidMotors";
+import Bluesnap from "./pages/career/Bluesnap";
+import HarmonyPlus from "./pages/career/HarmonyPlus";
+import VortexAutogroup from "./pages/career/VortexAutogroup";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +37,10 @@ const App = () => {
               <Route path="/products/medical-bill-rcm" element={<MedicalBillRCM />} />
               <Route path="/products/construction-estimator" element={<ConstructionEstimator />} />
               <Route path="/products/nlp-brochure" element={<NLPBrochure />} />
+              <Route path="/career/lucid-motors" element={<LucidMotors />} />
+              <Route path="/career/bluesnap" element={<Bluesnap />} />
+              <Route path="/career/harmony-plus" element={<HarmonyPlus />} />
+              <Route path="/career/vortex-autogroup" element={<VortexAutogroup />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
