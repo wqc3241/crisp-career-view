@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCard from "./ProjectCard";
+import { supabase } from "@/integrations/supabase/client";
 import analyticsImage from "@/assets/project-analytics.jpg";
 import mobileImage from "@/assets/project-mobile.jpg";
 import ecommerceImage from "@/assets/project-ecommerce.jpg";
+
+// Get Cinely slideshow image from cloud storage
+const { data: cinelyImageData } = supabase.storage
+  .from('project')
+  .getPublicUrl('Side project/cinely/slideshow/slide1.png');
+const cinelyImage = cinelyImageData.publicUrl;
 
 const careerHighlights = [
   {
@@ -34,7 +41,7 @@ const sideProjects = [
     title: "Cinely.AI",
     description:
       "AI-powered batch image editing tool that processes thousands of images in minutes with intelligent enhancement.",
-    image: analyticsImage,
+    image: cinelyImage,
     tags: ["AI/ML", "Image Processing", "SaaS", "Cloud"],
     link: "/products/cinely-ai",
   },
