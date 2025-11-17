@@ -4,7 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 const MedicalBillRCM = () => {
   // Get slideshow images from Lovable Cloud storage
   const slideshowImages = [
-    "Side project/medical-bill-rcm/slideshow/slide1.png",
+    "Side project/RCM/slideshow/slide1.png",
+    "Side project/RCM/slideshow/slide2.png",
+    "Side project/RCM/slideshow/slide3.png",
+    "Side project/RCM/slideshow/slide4.png",
+    "Side project/RCM/slideshow/slide5.png",
+    "Side project/RCM/slideshow/slide6.png",
+    "Side project/RCM/slideshow/slide7.png",
   ].map((path) => {
     const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
@@ -26,25 +32,30 @@ const MedicalBillRCM = () => {
       customerSegments={[
         {
           title: "Small Clinics",
-          description: "Independent practices and small clinics seeking to reduce billing staff costs while improving collection rates.",
+          description:
+            "Independent practices and small clinics seeking to reduce billing staff costs while improving collection rates.",
         },
         {
           title: "Multi-Specialty Groups",
-          description: "Larger medical groups managing diverse billing requirements across multiple specialties and locations.",
+          description:
+            "Larger medical groups managing diverse billing requirements across multiple specialties and locations.",
         },
         {
           title: "Billing Companies",
-          description: "Medical billing service providers looking to scale operations and serve more healthcare clients efficiently.",
+          description:
+            "Medical billing service providers looking to scale operations and serve more healthcare clients efficiently.",
         },
       ]}
       features={[
         {
           title: "Automated Billing",
-          description: "Automatically generate and submit insurance claims with smart validation to reduce errors and rejections.",
+          description:
+            "Automatically generate and submit insurance claims with smart validation to reduce errors and rejections.",
         },
         {
           title: "Claims Tracking",
-          description: "Real-time tracking of claim status from submission to payment with automated follow-ups on pending claims.",
+          description:
+            "Real-time tracking of claim status from submission to payment with automated follow-ups on pending claims.",
         },
         {
           title: "Analytics Dashboard",
@@ -55,15 +66,7 @@ const MedicalBillRCM = () => {
           description: "Fully compliant with HIPAA regulations ensuring patient data security and privacy.",
         },
       ]}
-      techStack={[
-        "React",
-        "TypeScript",
-        "Python",
-        "PostgreSQL",
-        "Stripe",
-        "AWS",
-        "Redis",
-      ]}
+      techStack={["React", "TypeScript", "Python", "PostgreSQL", "Stripe", "AWS", "Redis"]}
       metrics={[
         { value: "95%", label: "Claim Acceptance Rate" },
         { value: "30%", label: "Faster Processing" },
