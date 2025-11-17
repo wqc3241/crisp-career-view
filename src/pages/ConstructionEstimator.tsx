@@ -1,11 +1,18 @@
 import ProductTemplate from "@/components/ProductTemplate";
 import { supabase } from "@/integrations/supabase/client";
 
-const slideshowImages = [
-  supabase.storage.from("project").getPublicUrl("Side project/Estimator/slideshow/image1.jpg").data.publicUrl,
-];
-
 const ConstructionEstimator = () => {
+  const slideshowImages = [
+    "Side project/Estimator/slideshow/slide1.jpg",
+    "Side project/Estimator/slideshow/slide2.jpg",
+    "Side project/Estimator/slideshow/slide3.jpg",
+    "Side project/Estimator/slideshow/slide4.jpg",
+    "Side project/Estimator/slideshow/slide5.jpg",
+  ].map((path) => {
+    const { data } = supabase.storage.from("project").getPublicUrl(path);
+    return data.publicUrl;
+  });
+
   return (
     <ProductTemplate
       name="Construction Estimator"
