@@ -11,19 +11,18 @@ const LucidMotors = () => {
       companyName="Lucid Motors"
       logo={logoData.publicUrl}
       roleTitle="Senior Product Manager"
-      duration="January 2021 - December 2023"
+      duration="January 2024 - October 2025"
       location="Newark, CA"
-      teamSize="Team of 12"
       companyDescription="Lucid Motors is a luxury electric vehicle manufacturer focused on delivering high-performance, sustainable transportation with cutting-edge technology and innovative design."
       keyMetrics={[
-        { label: "Time-to-Market Reduction", value: "30%" },
-        { label: "Feature Adoption Rate", value: "85%" },
-        { label: "Customer Satisfaction", value: "4.8/5" },
-        { label: "Cross-Team Collaboration", value: "5 Depts" },
+        { label: "Customer Conversion Growth", value: "30%" },
+        { label: "Revenue Growth", value: "$62M" },
+        { label: "Operation Effeciency Boost", value: "80%" },
+        { label: "Market Expansion", value: "5 Countries" },
       ]}
       projects={[
         {
-          title: "EV Platform Development",
+          title: "Digitalize Customer purchasing journey",
           description: "Led the product strategy and roadmap for Lucid's next-generation EV platform, coordinating across engineering, design, and manufacturing teams.",
           impact: "Reduced time-to-market by 30% through agile methodologies and streamlined cross-functional workflows.",
           tags: ["Product Strategy", "Agile", "Cross-functional Leadership"],
