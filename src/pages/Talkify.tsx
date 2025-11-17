@@ -18,7 +18,7 @@ const Talkify = () => {
     <ProductTemplate
       name="Talkify"
       tagline="Personalized Language Learning"
-      description="AI-driven language learning app that adapts to your learning style and pace. Master new languages through personalized lessons, real-time feedback, and interactive conversations with AI tutors.  Test account: qichaotomwang+1@gmail.com, Test Password: Test123"
+      description="AI-driven language learning app that adapts to your learning style and pace. Master new languages through personalized lessons, real-time feedback, and interactive conversations with AI tutors."
       images={slideshowImages}
       vision="To break down language barriers worldwide by providing personalized, accessible, and engaging language education that adapts to each learner's unique journey, making fluency achievable for everyone regardless of location or background."
       painpoints={[
