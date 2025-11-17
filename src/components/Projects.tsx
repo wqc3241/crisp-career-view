@@ -82,7 +82,7 @@ const sideProjects = [
     description:
       "Smart cost estimation tool for construction projects using ML to predict accurate material and labor costs.",
     image: constructionImage,
-    tags: ["Machine Learning", "Construction", "B2B", "Analytics"],
+    tags: ["GenAI", "Construction", "To B", "Estimation", "Visualization"],
     link: "/products/construction-estimator",
   },
 ];
