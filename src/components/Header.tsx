@@ -36,7 +36,7 @@ const Header = () => {
             Resume
           </button>
           
-          {user ? (
+          {user && (
             <>
               {isAdmin && (
                 <Button
@@ -56,10 +56,6 @@ const Header = () => {
                 Sign Out
               </Button>
             </>
-          ) : (
-            <Button variant="default" size="sm" onClick={() => navigate('/auth')}>
-              Sign In
-            </Button>
           )}
         </nav>
       </div>
