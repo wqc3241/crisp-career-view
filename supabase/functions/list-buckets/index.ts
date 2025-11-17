@@ -61,9 +61,18 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    // Handle POST request to create a bucket
-    if (req.method === 'POST') {
-      const { bucketName, options } = await req.json();
+    // Try to parse JSON body to check if this is a bucket creation request
+    let requestBody;
+    try {
+      const text = await req.text();
+      requestBody = text ? JSON.parse(text) : null;
+    } catch {
+      requestBody = null;
+    }
+
+    // Handle bucket creation if bucketName is provided in the request body
+    if (requestBody && requestBody.bucketName) {
+      const { bucketName, options } = requestBody;
       
       // Validate bucket name
       if (!bucketName || typeof bucketName !== 'string') {
@@ -107,7 +116,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Handle GET request to list buckets
+    // Default: List all storage buckets
     const { data: buckets, error: bucketsError } = await supabaseAdmin.storage.listBuckets();
 
     if (bucketsError) {
