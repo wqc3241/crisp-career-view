@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 const MedicalBillRCM = () => {
   // Get slideshow images from Lovable Cloud storage
   const slideshowImages = [
-    "Side project/medical-bill-rcm/slideshow/slide1.jpg",
+    "Side project/medical-bill-rcm/slideshow/slide1.png",
   ].map((path) => {
     const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
