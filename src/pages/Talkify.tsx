@@ -14,9 +14,19 @@ const Talkify = () => {
     return data.publicUrl;
   });
 
+  const testCredentialsFooter = (
+    <div className="text-center">
+      <p className="text-foreground font-bold text-lg mb-2">
+        Test Account: qichaotomwang+1@gmail.com
+      </p>
+      <p className="text-foreground font-bold text-lg">
+        Test Password: Test123
+      </p>
+    </div>
+  );
+
   return (
-    <>
-      <ProductTemplate
+    <ProductTemplate
         name="Talkify"
         tagline="Personalized Language Learning"
         description="AI-driven language learning app that adapts to your learning style and pace. Master new languages through personalized lessons, real-time feedback, and interactive conversations with AI tutors."
@@ -81,18 +91,8 @@ const Talkify = () => {
         ]}
         demoLink="https://speak-smart-clips.lovable.app/auth"
         githubLink="https://github.com/wqc3241/speak-smart-clips"
+        heroFooter={testCredentialsFooter}
       />
-      <footer className="border-t border-border bg-muted/30 py-8 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-foreground font-bold text-lg mb-2">
-            Test Account: qichaotomwang+1@gmail.com
-          </p>
-          <p className="text-foreground font-bold text-lg">
-            Test Password: Test123
-          </p>
-        </div>
-      </footer>
-    </>
   );
 };
 
