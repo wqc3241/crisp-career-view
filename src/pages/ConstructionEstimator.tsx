@@ -54,9 +54,8 @@ const ConstructionEstimator = () => {
       ]}
       techStack={["React", "TypeScript", "Machine Learning", "Node.js", "MongoDB", "Python", "scikit-learn"]}
       metrics={[
-        { value: "92%", label: "Estimation Accuracy" },
-        { value: "500+", label: "Projects Estimated" },
-        { value: "60%", label: "Faster Bidding" },
+        { value: "80%", label: "Estimation Accuracy" },
+        { value: "95%", label: "Estimation Faster" },
       ]}
       futureImprovements={[
         "3D blueprint scanning for automated material takeoff and quantity surveying",
