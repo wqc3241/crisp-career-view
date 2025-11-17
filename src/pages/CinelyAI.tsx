@@ -4,12 +4,12 @@ import { supabase } from "@/integrations/supabase/client";
 const CinelyAI = () => {
   // Get slideshow images from Lovable Cloud storage
   const slideshowImages = [
-    'Side project/cinely/slideshow/slide1.png',
-    'Side project/cinely/slideshow/slide2.png',
-    'Side project/cinely/slideshow/slide3.png',
-    'Side project/cinely/slideshow/slide4.png',
-  ].map(path => {
-    const { data } = supabase.storage.from('project').getPublicUrl(path);
+    "Side project/cinely/slideshow/slide1.png",
+    "Side project/cinely/slideshow/slide2.png",
+    "Side project/cinely/slideshow/slide3.png",
+    "Side project/cinely/slideshow/slide4.png",
+  ].map((path) => {
+    const { data } = supabase.storage.from("project").getPublicUrl(path);
     return data.publicUrl;
   });
 
@@ -29,33 +29,40 @@ const CinelyAI = () => {
       customerSegments={[
         {
           title: "E-commerce Businesses",
-          description: "Online stores needing consistent product photography across thousands of SKUs with fast turnaround times.",
+          description:
+            "Online stores needing consistent product photography across thousands of SKUs with fast turnaround times.",
         },
         {
           title: "Professional Photographers",
-          description: "Wedding, event, and portrait photographers processing hundreds of photos per project efficiently.",
+          description:
+            "Wedding, event, and portrait photographers processing hundreds of photos per project efficiently.",
         },
         {
           title: "Content Creators",
-          description: "Social media influencers and digital marketers requiring optimized images at scale for multiple platforms.",
+          description:
+            "Social media influencers and digital marketers requiring optimized images at scale for multiple platforms.",
         },
       ]}
       features={[
         {
-          title: "AI-Powered Enhancement",
-          description: "Automatically enhance image quality, adjust colors, and optimize lighting using advanced machine learning algorithms.",
+          title: "AI Creative Engine",
+          description:
+            "Unleash limitless imagination—generate, edit, or reverse-engineer stunning images with next-gen GenAI that brings every idea to life.",
         },
         {
-          title: "Batch Processing",
-          description: "Process thousands of images simultaneously with customizable presets and automated workflows.",
+          title: "Ultra-Fast Batch Studio",
+          description:
+            "Edit up to 9 images in parallel with precision and speed—no more trial-and-error or waiting forever for results.",
         },
         {
-          title: "Format Conversion",
-          description: "Convert between multiple image formats (JPG, PNG, WEBP, AVIF) with intelligent compression settings.",
+          title: "Image-to-Prompt Decoder",
+          description:
+            "Curious how those viral masterpieces were created? Instantly reveal the exact prompt behind any image and recreate the magic.",
         },
         {
-          title: "Cloud-Based Storage",
-          description: "Secure cloud storage with instant access to your processed images from anywhere.",
+          title: "Smart Component Re-Design",
+          description:
+            "Want to change just one detail—an outfit, object, or background? Drop component clues into your prompt and we transform the image seamlessly.",
         },
       ]}
       techStack={[
