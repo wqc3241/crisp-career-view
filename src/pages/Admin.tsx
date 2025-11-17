@@ -114,9 +114,33 @@ const Admin = () => {
         variant: 'destructive',
       });
     } else {
-      // Separate folders and files (folders have id: null)
-      const folderItems = (data || []).filter(item => item.id === null);
-      const fileItems = (data || []).filter(item => item.id !== null);
+      // Filter out .gitkeep files from the file list
+      const fileItems = (data || []).filter(item => 
+        item.id !== null && !item.name.endsWith('.gitkeep')
+      );
+      
+      // Identify folders: items with id === null OR items that are .gitkeep files
+      const folderSet = new Set<string>();
+      
+      (data || []).forEach(item => {
+        if (item.id === null) {
+          // Regular folder
+          folderSet.add(item.name);
+        } else if (item.name.endsWith('/.gitkeep')) {
+          // Extract folder name from .gitkeep path
+          const folderName = item.name.replace('/.gitkeep', '');
+          if (folderName) {
+            folderSet.add(folderName);
+          }
+        }
+      });
+      
+      // Convert set to array of folder objects
+      const folderItems = Array.from(folderSet).map(name => ({
+        name,
+        id: null,
+      }));
+      
       setFolders(folderItems);
       setFiles(fileItems);
     }
@@ -181,11 +205,11 @@ const Admin = () => {
       return;
     }
 
-    // Validate folder name
-    if (/[/\\]/.test(newFolderName)) {
+    // Validate folder name - prevent spaces and special characters
+    if (/[/\\\s]/.test(newFolderName)) {
       toast({
         title: 'Invalid folder name',
-        description: 'Folder name cannot contain / or \\',
+        description: 'Folder name cannot contain spaces, / or \\',
         variant: 'destructive',
       });
       return;
@@ -754,12 +778,6 @@ const Admin = () => {
                     </div>
                   )}
 
-                  {!loading && folders.length === 0 && files.length === 0 && (
-                    <div className="text-center py-12 text-muted-foreground">
-                      <Folder className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                      <p>No files or folders in this directory</p>
-                    </div>
-                  )}
                 </>
               )}
             </CardContent>
