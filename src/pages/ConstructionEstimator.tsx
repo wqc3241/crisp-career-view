@@ -18,21 +18,25 @@ const ConstructionEstimator = () => {
       customerSegments={[
         {
           title: "General Contractors",
-          description: "Mid-sized construction firms seeking to improve bid accuracy and win more competitive projects with data-driven estimates.",
+          description:
+            "Mid-sized construction firms seeking to improve bid accuracy and win more competitive projects with data-driven estimates.",
         },
         {
           title: "Specialty Contractors",
-          description: "Electrical, plumbing, and HVAC contractors needing quick, accurate subcontractor bids for multiple concurrent projects.",
+          description:
+            "Electrical, plumbing, and HVAC contractors needing quick, accurate subcontractor bids for multiple concurrent projects.",
         },
         {
           title: "Project Developers",
-          description: "Real estate developers and project managers requiring preliminary cost assessments for feasibility studies and investor presentations.",
+          description:
+            "Real estate developers and project managers requiring preliminary cost assessments for feasibility studies and investor presentations.",
         },
       ]}
       features={[
         {
           title: "Material Cost Calculation",
-          description: "Real-time pricing data for materials with automatic updates based on market conditions and supplier quotes.",
+          description:
+            "Real-time pricing data for materials with automatic updates based on market conditions and supplier quotes.",
         },
         {
           title: "Labor Estimation",
@@ -44,18 +48,11 @@ const ConstructionEstimator = () => {
         },
         {
           title: "Professional Reports",
-          description: "Generate detailed PDF reports with itemized costs, timelines, and professional presentation for clients.",
+          description:
+            "Generate detailed PDF reports with itemized costs, timelines, and professional presentation for clients.",
         },
       ]}
-      techStack={[
-        "React",
-        "TypeScript",
-        "Machine Learning",
-        "Node.js",
-        "MongoDB",
-        "Python",
-        "scikit-learn",
-      ]}
+      techStack={["React", "TypeScript", "Machine Learning", "Node.js", "MongoDB", "Python", "scikit-learn"]}
       metrics={[
         { value: "92%", label: "Estimation Accuracy" },
         { value: "500+", label: "Projects Estimated" },
@@ -68,8 +65,8 @@ const ConstructionEstimator = () => {
         "Mobile app with photo estimation using computer vision for on-site assessments",
         "Risk analysis module predicting potential cost overruns and delays",
       ]}
-      demoLink="https://construction-estimator.app"
-      githubLink="https://github.com/alexdoe/construction-estimator"
+      demoLink="https://preview--home-cost-view.lovable.app/"
+      githubLink="https://github.com/wqc3241/home-cost-view"
     />
   );
 };
