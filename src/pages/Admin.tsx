@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -46,12 +47,17 @@ const Admin = () => {
   
   // Dialog states
   const [isCreateFolderOpen, setIsCreateFolderOpen] = useState(false);
+  const [isCreateBucketOpen, setIsCreateBucketOpen] = useState(false);
   const [isRenameOpen, setIsRenameOpen] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   
   // Form states
   const [newFolderName, setNewFolderName] = useState('');
+  const [newBucketName, setNewBucketName] = useState('');
+  const [isPublicBucket, setIsPublicBucket] = useState(false);
+  const [fileSizeLimit, setFileSizeLimit] = useState('50');
+  const [allowedMimeTypes, setAllowedMimeTypes] = useState('');
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [newName, setNewName] = useState('');
   const [previewUrl, setPreviewUrl] = useState('');
@@ -348,6 +354,65 @@ const Admin = () => {
     return `${(bytes / Math.pow(k, i)).toFixed(1)} ${sizes[i]}`;
   };
 
+  const handleCreateBucket = async () => {
+    if (!newBucketName.trim()) {
+      toast({
+        title: 'Invalid bucket name',
+        description: 'Please enter a valid bucket name',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    // Validate bucket name format
+    if (!/^[a-z0-9-]+$/.test(newBucketName)) {
+      toast({
+        title: 'Invalid bucket name',
+        description: 'Bucket name must be lowercase alphanumeric with hyphens only',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
+    setUploading(true);
+    
+    // Convert file size limit to bytes
+    const fileSizeLimitBytes = parseInt(fileSizeLimit) * 1024 * 1024; // Convert MB to bytes
+    
+    const { data, error } = await supabase.functions.invoke('list-buckets', {
+      method: 'POST',
+      body: {
+        bucketName: newBucketName,
+        options: {
+          public: isPublicBucket,
+          fileSizeLimit: fileSizeLimitBytes,
+          allowedMimeTypes: allowedMimeTypes ? allowedMimeTypes.split(',').map(t => t.trim()) : null
+        }
+      }
+    });
+    
+    setUploading(false);
+    
+    if (error) {
+      toast({
+        title: 'Create bucket failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        title: 'Success',
+        description: `Bucket "${newBucketName}" created successfully`,
+      });
+      setIsCreateBucketOpen(false);
+      setNewBucketName('');
+      setIsPublicBucket(false);
+      setFileSizeLimit('50');
+      setAllowedMimeTypes('');
+      loadBuckets(); // Refresh bucket list
+    }
+  };
+
   const handleSignOut = async () => {
     await signOut();
     navigate('/');
@@ -371,20 +436,105 @@ const Admin = () => {
               <CardDescription>Upload and manage files in storage buckets</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Select Bucket</Label>
-                <Select value={selectedBucket} onValueChange={setSelectedBucket}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose a bucket" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {buckets.map((bucket) => (
-                      <SelectItem key={bucket.id} value={bucket.id}>
-                        {bucket.name} {bucket.public && '(Public)'}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 space-y-2">
+                  <Label>Select Bucket</Label>
+                  <Select value={selectedBucket} onValueChange={setSelectedBucket}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a bucket" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {buckets.map((bucket) => (
+                        <SelectItem key={bucket.id} value={bucket.id}>
+                          {bucket.name} {bucket.public && '(Public)'}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="pt-8">
+                  <Dialog open={isCreateBucketOpen} onOpenChange={setIsCreateBucketOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <FolderPlus className="mr-2 h-4 w-4" />
+                        Create Bucket
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Create New Storage Bucket</DialogTitle>
+                        <DialogDescription>
+                          Create a new bucket to organize your files. Bucket names must be lowercase alphanumeric with hyphens only.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="bucketName">Bucket Name *</Label>
+                          <Input
+                            id="bucketName"
+                            value={newBucketName}
+                            onChange={(e) => setNewBucketName(e.target.value.toLowerCase())}
+                            placeholder="my-bucket"
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Only lowercase letters, numbers, and hyphens
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            id="isPublic"
+                            checked={isPublicBucket}
+                            onCheckedChange={setIsPublicBucket}
+                          />
+                          <Label htmlFor="isPublic">Public Bucket</Label>
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                          Public buckets allow anyone to download files without authentication
+                        </p>
+                        
+                        <div>
+                          <Label htmlFor="fileSize">File Size Limit (MB)</Label>
+                          <Select value={fileSizeLimit} onValueChange={setFileSizeLimit}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1">1 MB</SelectItem>
+                              <SelectItem value="5">5 MB</SelectItem>
+                              <SelectItem value="10">10 MB</SelectItem>
+                              <SelectItem value="50">50 MB</SelectItem>
+                              <SelectItem value="100">100 MB</SelectItem>
+                              <SelectItem value="500">500 MB</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div>
+                          <Label htmlFor="mimeTypes">Allowed MIME Types (optional)</Label>
+                          <Input
+                            id="mimeTypes"
+                            value={allowedMimeTypes}
+                            onChange={(e) => setAllowedMimeTypes(e.target.value)}
+                            placeholder="image/*, application/pdf"
+                          />
+                          <p className="text-xs text-muted-foreground mt-1">
+                            Leave empty to allow all file types. Separate multiple types with commas.
+                          </p>
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsCreateBucketOpen(false)}>
+                          Cancel
+                        </Button>
+                        <Button onClick={handleCreateBucket} disabled={uploading}>
+                          {uploading ? 'Creating...' : 'Create Bucket'}
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
 
               {selectedBucket && (
