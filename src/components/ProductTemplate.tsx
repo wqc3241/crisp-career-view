@@ -30,6 +30,7 @@ interface ProductTemplateProps {
   futureImprovements: string[];
   demoLink?: string;
   githubLink?: string;
+  heroFooter?: React.ReactNode;
 }
 const ProductTemplate = ({
   name,
@@ -44,7 +45,8 @@ const ProductTemplate = ({
   metrics,
   futureImprovements,
   demoLink,
-  githubLink
+  githubLink,
+  heroFooter
 }: ProductTemplateProps) => {
   const navigate = useNavigate();
   return <div className="min-h-screen bg-background">
@@ -100,6 +102,14 @@ const ProductTemplate = ({
           </div>
         </div>
       </section>
+
+      {heroFooter && (
+        <section className="border-t border-border bg-muted/30 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {heroFooter}
+          </div>
+        </section>
+      )}
 
       {/* Vision Section */}
       <section className="bg-muted/50 py-12">
