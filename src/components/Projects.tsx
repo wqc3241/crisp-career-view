@@ -29,9 +29,7 @@ const { data: constructionImageData } = supabase.storage
 const constructionImage = constructionImageData.publicUrl;
 
 // Get NLP Brochure slideshow image from cloud storage
-const { data: nlpImageData } = supabase.storage
-  .from("project")
-  .getPublicUrl("Side project/nlp-brochure/slideshow/slide1.jpg");
+const { data: nlpImageData } = supabase.storage.from("project").getPublicUrl("Side project/nlp/slideshow/slide1.png");
 const nlpImage = nlpImageData.publicUrl;
 
 const careerHighlights = [
