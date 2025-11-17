@@ -22,6 +22,12 @@ const talkifyImage = talkifyImageData.publicUrl;
 const { data: rcmImageData } = supabase.storage.from("project").getPublicUrl("Side project/RCM/slideshow/slide1.png");
 const rcmImage = rcmImageData.publicUrl;
 
+// Get Construction Estimator slideshow image from cloud storage
+const { data: constructionImageData } = supabase.storage
+  .from("project")
+  .getPublicUrl("Side project/Estimator/slideshow/image1.jpg");
+const constructionImage = constructionImageData.publicUrl;
+
 const careerHighlights = [
   {
     title: "AI-Powered Analytics Dashboard",
@@ -75,7 +81,7 @@ const sideProjects = [
     title: "Construction Estimator",
     description:
       "Smart cost estimation tool for construction projects using ML to predict accurate material and labor costs.",
-    image: analyticsImage,
+    image: constructionImage,
     tags: ["Machine Learning", "Construction", "B2B", "Analytics"],
     link: "/products/construction-estimator",
   },
