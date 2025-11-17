@@ -389,6 +389,12 @@ const Admin = () => {
 
               {selectedBucket && (
                 <>
+                  {/* Bucket Indicator */}
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-md mb-4">
+                    <Folder className="h-4 w-4" />
+                    <span>Current Bucket: <strong className="text-foreground">{selectedBucket}</strong></span>
+                  </div>
+
                   {/* Breadcrumb Navigation */}
                   <div className="flex items-center gap-2">
                     <Button
@@ -412,7 +418,7 @@ const Admin = () => {
                       <BreadcrumbList>
                         <BreadcrumbItem>
                           <BreadcrumbLink onClick={() => setCurrentPath('')} className="cursor-pointer">
-                            Root
+                            {selectedBucket} (Bucket Root)
                           </BreadcrumbLink>
                         </BreadcrumbItem>
                         {formatBreadcrumbs().map((part, index) => (
@@ -451,7 +457,7 @@ const Admin = () => {
                         <DialogHeader>
                           <DialogTitle>Create New Folder</DialogTitle>
                           <DialogDescription>
-                            Enter a name for the new folder
+                            Creating folder in: {selectedBucket}/{currentPath || '(bucket root)'}
                           </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-4">
@@ -498,6 +504,20 @@ const Admin = () => {
                       <Skeleton className="h-12 w-full" />
                       <Skeleton className="h-12 w-full" />
                       <Skeleton className="h-12 w-full" />
+                    </div>
+                  )}
+
+                  {/* Empty State */}
+                  {!loading && folders.length === 0 && files.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground">
+                      <Folder className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p className="font-medium">No folders or files in this location</p>
+                      <p className="text-sm mt-2">
+                        {currentPath 
+                          ? `Create a folder or upload files to ${currentPath}` 
+                          : `Create your first folder in "${selectedBucket}" bucket`
+                        }
+                      </p>
                     </div>
                   )}
 
