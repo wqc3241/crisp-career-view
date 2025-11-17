@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Hero = () => {
   const { user, isAdmin } = useAuth();
   
-  const handleResumeDownload = () => {
-    window.open('https://1drv.ms/b/c/3df2fe05e1e8b622/IQBqQt12-NImS4VU5t4TZbewAYrQSViKhYa5ysAKTUiMp-g?e=OISWPX', '_blank');
+  const handleResumeView = () => {
+    const { data } = supabase.storage.from('resumes').getPublicUrl('QichaoWangResume.pdf');
+    window.open(data.publicUrl, '_blank');
   };
   
   return (
@@ -45,8 +47,8 @@ const Hero = () => {
             View LinkedIn
           </a>
         </Button>
-        <Button variant="outline" onClick={handleResumeDownload}>
-          Download Resume
+        <Button variant="outline" onClick={handleResumeView}>
+          View Resume
         </Button>
       </div>
     </section>
