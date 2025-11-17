@@ -338,18 +338,29 @@ const Admin = () => {
     }
   };
 
-  const handleDownload = async (fileName: string) => {
+  const handleDownload = async (file: any) => {
     if (!selectedBucket) return;
 
-    const { data } = await supabase.storage
+    const filePath = currentPath ? `${currentPath}/${file.name}` : file.name;
+
+    const { data, error } = await supabase.storage
       .from(selectedBucket)
-      .download(fileName);
+      .download(filePath);
+
+    if (error) {
+      toast({
+        title: 'Download failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+      return;
+    }
 
     if (data) {
       const url = URL.createObjectURL(data);
       const a = document.createElement('a');
       a.href = url;
-      a.download = fileName;
+      a.download = file.name;
       a.click();
       URL.revokeObjectURL(url);
     }
