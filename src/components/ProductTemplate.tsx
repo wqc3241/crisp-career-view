@@ -30,6 +30,8 @@ interface ProductTemplateProps {
   futureImprovements: string[];
   demoLink?: string;
   githubLink?: string;
+  testEmail?: string;
+  testPassword?: string;
 }
 const ProductTemplate = ({
   name,
@@ -44,7 +46,9 @@ const ProductTemplate = ({
   metrics,
   futureImprovements,
   demoLink,
-  githubLink
+  githubLink,
+  testEmail,
+  testPassword
 }: ProductTemplateProps) => {
   const navigate = useNavigate();
   return <div className="min-h-screen bg-background">
@@ -69,13 +73,13 @@ const ProductTemplate = ({
             <p className="text-base text-muted-foreground mb-8 leading-relaxed">
               {description}
             </p>
-            {demoLink && (
+            {testEmail && testPassword && (
               <div className="mb-6 p-3 bg-muted/50 rounded-lg border border-border">
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">Test Account:</span> qichaotomwang+1@gmail.com
+                  <span className="font-semibold text-foreground">Test Account:</span> {testEmail}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-semibold text-foreground">Test Password:</span> Test123
+                  <span className="font-semibold text-foreground">Test Password:</span> {testPassword}
                 </p>
               </div>
             )}
