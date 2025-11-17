@@ -12,6 +12,7 @@ import CinelyAI from "./pages/CinelyAI";
 import Talkify from "./pages/Talkify";
 import MedicalBillRCM from "./pages/MedicalBillRCM";
 import ConstructionEstimator from "./pages/ConstructionEstimator";
+import NLPBrochure from "./pages/NLPBrochure";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/products/talkify" element={<Talkify />} />
               <Route path="/products/medical-bill-rcm" element={<MedicalBillRCM />} />
               <Route path="/products/construction-estimator" element={<ConstructionEstimator />} />
+              <Route path="/products/nlp-brochure" element={<NLPBrochure />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

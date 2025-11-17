@@ -28,6 +28,12 @@ const { data: constructionImageData } = supabase.storage
   .getPublicUrl("Side project/Estimator/slideshow/Slide1.jpg");
 const constructionImage = constructionImageData.publicUrl;
 
+// Get NLP Brochure slideshow image from cloud storage
+const { data: nlpImageData } = supabase.storage
+  .from("project")
+  .getPublicUrl("Side project/nlp-brochure/slideshow/slide1.jpg");
+const nlpImage = nlpImageData.publicUrl;
+
 const careerHighlights = [
   {
     title: "AI-Powered Analytics Dashboard",
@@ -84,6 +90,14 @@ const sideProjects = [
     image: constructionImage,
     tags: ["GenAI", "Construction", "To B", "Estimation", "Visualization"],
     link: "/products/construction-estimator",
+  },
+  {
+    title: "NLP Brochure",
+    description:
+      "E-commerce platform for high-performance automotive parts and accessories with 1000+ SKUs and real-time inventory.",
+    image: nlpImage,
+    tags: ["E-commerce", "Shopify", "Automotive", "To C", "Inventory Management"],
+    link: "/products/nlp-brochure",
   },
 ];
 
