@@ -71,9 +71,8 @@ const CinelyAI = () => {
         "Gen AI",
       ]}
       metrics={[
-        { value: "10,000+", label: "Images Processed Daily" },
+        { value: "9", label: "Images parallel process max" },
         { value: "80%", label: "Time Saved" },
-        { value: "4.8★", label: "User Rating" },
       ]}
       futureImprovements={[
         "Advanced AI filters with custom style training for brand consistency",
