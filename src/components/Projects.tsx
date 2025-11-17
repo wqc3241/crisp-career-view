@@ -56,7 +56,7 @@ const sideProjects = [
     description:
       "Personalized language learning app with AI tutors, speech recognition, and adaptive learning paths for 15+ languages.",
     image: talkifyImage,
-    tags: ["AI/LLM", "Web App", "EdTech", "Speech Recognition", "Customized Lesson", "To C"],
+    tags: ["AI/LLM", "Web App", "EdTech", "Video to Lesson", "To C"],
     link: "/products/talkify",
   },
   {
