@@ -65,7 +65,7 @@ const CompanyTemplate = ({
               <img
                 src={logo}
                 alt={`${companyName} logo`}
-                className="w-full h-full object-contain p-3"
+                className="w-full h-full object-cover"
               />
             </div>
             

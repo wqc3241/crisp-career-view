@@ -16,7 +16,7 @@ const CompanyListItem = ({ name, logo, roleTitle, keyImpact, tags, link }: Compa
     <Link to={link}>
       <div className="group flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-6 rounded-lg border border-border bg-card hover:bg-accent/50 transition-all duration-300 hover:shadow-lg">
         <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-background border border-border">
-          <img src={logo} alt={`${name} logo`} className="w-full h-full object-contain p-2" />
+          <img src={logo} alt={`${name} logo`} className="w-full h-full object-cover" />
         </div>
 
         <div className="flex-1 min-w-0">
