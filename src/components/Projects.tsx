@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCard from "./ProjectCard";
+import CompanyListItem from "./CompanyListItem";
 import { supabase } from "@/integrations/supabase/client";
 import analyticsImage from "@/assets/project-analytics.jpg";
 import mobileImage from "@/assets/project-mobile.jpg";
@@ -32,27 +32,38 @@ const constructionImage = constructionImageData.publicUrl;
 const { data: nlpImageData } = supabase.storage.from("project").getPublicUrl("Side project/nlp/slideshow/slide1.png");
 const nlpImage = nlpImageData.publicUrl;
 
-const careerHighlights = [
+const companies = [
   {
-    title: "AI-Powered Analytics Dashboard",
-    description:
-      "Led the development of a predictive analytics dashboard, increasing customer retention by 15% through actionable insights.",
-    image: analyticsImage,
-    tags: ["Product Strategy", "AI/ML", "Data Visualization", "SaaS"],
+    name: "Lucid Motors",
+    logo: supabase.storage.from("project").getPublicUrl("Career/lucid-motors/logo.png").data.publicUrl,
+    roleTitle: "Senior Product Manager",
+    keyImpact: "Led EV platform development reducing time-to-market by 30%",
+    tags: ["EV Technology", "Product Strategy", "Cross-functional Leadership"],
+    link: "/career/lucid-motors",
   },
   {
-    title: "Mobile App Redesign",
-    description:
-      "Managed the end-to-end redesign of our flagship mobile app, resulting in a 40% increase in user engagement and a 4.8-star App Store rating.",
-    image: mobileImage,
-    tags: ["UX/UI", "Mobile First", "Agile", "User Research"],
+    name: "Bluesnap",
+    logo: supabase.storage.from("project").getPublicUrl("Career/bluesnap/logo.png").data.publicUrl,
+    roleTitle: "Product Manager",
+    keyImpact: "Launched payment gateway features increasing transaction volume by 45%",
+    tags: ["FinTech", "Payment Systems", "API Design"],
+    link: "/career/bluesnap",
   },
   {
-    title: "E-commerce Checkout Optimization",
-    description:
-      "Streamlined the checkout flow for a major e-commerce platform, reducing cart abandonment by 22% and boosting conversion rates.",
-    image: ecommerceImage,
-    tags: ["A/B Testing", "Conversion Rate Optimization", "E-commerce"],
+    name: "Harmony Plus",
+    logo: supabase.storage.from("project").getPublicUrl("Career/harmony-plus/logo.png").data.publicUrl,
+    roleTitle: "Associate Product Manager",
+    keyImpact: "Optimized user onboarding flow, boosting activation rate by 25%",
+    tags: ["SaaS", "User Experience", "Growth"],
+    link: "/career/harmony-plus",
+  },
+  {
+    name: "Vortex Autogroup",
+    logo: supabase.storage.from("project").getPublicUrl("Career/vortex-autogroup/logo.png").data.publicUrl,
+    roleTitle: "Product Analyst",
+    keyImpact: "Built analytics dashboard that improved decision-making across 5 departments",
+    tags: ["Automotive", "Data Analytics", "Business Intelligence"],
+    link: "/career/vortex-autogroup",
   },
 ];
 
@@ -108,9 +119,9 @@ const Projects = () => {
           <TabsTrigger value="side">Side Projects</TabsTrigger>
         </TabsList>
         <TabsContent value="career" className="mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {careerHighlights.map((project) => (
-              <ProjectCard key={project.title} {...project} />
+          <div className="space-y-4">
+            {companies.map((company) => (
+              <CompanyListItem key={company.name} {...company} />
             ))}
           </div>
         </TabsContent>
