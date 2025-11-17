@@ -42,7 +42,7 @@ const sideProjects = [
     description:
       "AI-powered batch image editing tool that processes thousands of images in minutes with intelligent enhancement.",
     image: cinelyImage,
-    tags: ["AI/ML", "Image Processing", "SaaS", "Cloud"],
+    tags: ["Gen AI", "Batch Editing", "SaaS", "To C", "Cloud", "LLM"],
     link: "/products/cinely-ai",
   },
   {
