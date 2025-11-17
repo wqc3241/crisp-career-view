@@ -66,7 +66,7 @@ const MedicalBillRCM = () => {
           description: "Fully compliant with HIPAA regulations ensuring patient data security and privacy.",
         },
       ]}
-      techStack={["React", "TypeScript", "Python", "PostgreSQL", "Stripe", "AWS", "Redis"]}
+      techStack={["React", "TypeScript", "Vite", "TailwindCSS", "Supabase", "React Query", "Shadcn UI", "React Router", "Recharts"]}
       metrics={[
         { value: "95%", label: "Claim Acceptance Rate" },
         { value: "30%", label: "Faster Processing" },
