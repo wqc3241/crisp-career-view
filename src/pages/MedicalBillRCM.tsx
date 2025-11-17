@@ -1,13 +1,21 @@
 import ProductTemplate from "@/components/ProductTemplate";
-import medicalImage from "@/assets/product-medical-rcm.jpg";
+import { supabase } from "@/integrations/supabase/client";
 
 const MedicalBillRCM = () => {
+  // Get slideshow images from Lovable Cloud storage
+  const slideshowImages = [
+    "Side project/medical-bill-rcm/slideshow/slide1.jpg",
+  ].map((path) => {
+    const { data } = supabase.storage.from("project").getPublicUrl(path);
+    return data.publicUrl;
+  });
+
   return (
     <ProductTemplate
       name="Medical Bill RCM"
       tagline="Revenue Cycle Management Solution"
       description="Streamline medical billing processes with automated claim management and revenue tracking. Built for healthcare providers to reduce administrative overhead and improve cash flow."
-      images={[medicalImage]}
+      images={slideshowImages}
       vision="To transform healthcare revenue cycle management by eliminating billing complexity and delays, ensuring healthcare providers get paid accurately and promptly so they can focus on patient care rather than paperwork."
       painpoints={[
         "High claim rejection rates due to manual errors and incomplete information",
@@ -68,7 +76,8 @@ const MedicalBillRCM = () => {
         "Integration with major EHR systems for seamless data flow",
         "Advanced reporting dashboard with real-time KPI tracking",
       ]}
-      demoLink="https://medicalbillrcm.com"
+      demoLink="https://lovable-rcm-ai.lovable.app/"
+      githubLink="https://github.com/wqc3241/crisp-career-view"
     />
   );
 };
