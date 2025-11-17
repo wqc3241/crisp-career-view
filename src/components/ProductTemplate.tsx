@@ -108,11 +108,11 @@ const ProductTemplate = ({
               <CarouselContent>
                 {images.map((image, index) => (
                   <CarouselItem key={index}>
-                    <div className="aspect-video w-full overflow-hidden rounded-lg border border-border">
+                    <div className="aspect-video w-full overflow-hidden rounded-lg border border-border relative bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20">
                       <img
                         src={image}
                         alt={`${name} - Image ${index + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain relative z-10"
                       />
                     </div>
                   </CarouselItem>

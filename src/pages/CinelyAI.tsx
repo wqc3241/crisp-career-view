@@ -1,5 +1,6 @@
 import ProductTemplate from "@/components/ProductTemplate";
-import cinelyImage from "@/assets/product-cinely.jpg";
+import image1 from "@/assets/projects/side-projects/cinely/slideshow/image1.jpg";
+import image2 from "@/assets/projects/side-projects/cinely/slideshow/image2.png";
 
 const CinelyAI = () => {
   return (
@@ -7,7 +8,7 @@ const CinelyAI = () => {
       name="Cinely.AI"
       tagline="AI-Powered Batch Image Editing"
       description="Intelligent batch image editing tool that uses AI to enhance, resize, and optimize thousands of images in minutes. Perfect for photographers, e-commerce businesses, and content creators who need to process large volumes of images efficiently."
-      images={[cinelyImage]}
+      images={[image1, image2]}
       vision="To democratize professional-grade image editing by making AI-powered tools accessible to everyone, from individual creators to large enterprises. We envision a future where time-consuming manual editing is eliminated, allowing creators to focus on their creative vision."
       painpoints={[
         "Manual image editing is time-consuming and repetitive for large batches",
