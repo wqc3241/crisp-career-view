@@ -60,7 +60,7 @@ const CompanyTemplate = ({
 
         {/* Hero Section */}
         <section className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-8">
+          <div className="flex items-start gap-8 px-4 sm:px-0">
             <div className="flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden bg-background border border-border">
               <img
                 src={logo}
