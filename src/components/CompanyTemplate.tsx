@@ -134,13 +134,13 @@ const CompanyTemplate = ({
                   <div className="p-4 bg-accent/50 rounded-lg border-l-4 border-primary">
                     <p className="font-semibold text-sm text-foreground">Impact:</p>
                     {Array.isArray(project.impact) ? (
-                      <ul className="text-sm text-muted-foreground mt-1 list-disc list-inside space-y-1">
+                      <ul className="text-sm text-foreground mt-1 list-disc list-inside space-y-1">
                         {project.impact.map((item, idx) => (
                           <li key={idx}>{item}</li>
                         ))}
                       </ul>
                     ) : (
-                      <p className="text-sm text-muted-foreground mt-1">{project.impact}</p>
+                      <p className="text-sm text-foreground mt-1">{project.impact}</p>
                     )}
                   </div>
                   <div className="flex flex-wrap gap-2">
