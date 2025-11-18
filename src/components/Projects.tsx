@@ -143,7 +143,7 @@ const sideProjects = [
 const Projects = () => {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-      <Tabs defaultValue="career" className="w-full">
+      <Tabs defaultValue="side" className="w-full">
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
           <TabsTrigger value="career">Career</TabsTrigger>
           <TabsTrigger value="side">AI Projects</TabsTrigger>
