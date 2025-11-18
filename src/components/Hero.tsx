@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { RESUME_FILE_PATH, RESUME_BUCKET } from "@/constants/config";
+
 const Hero = () => {
   const { user, isAdmin } = useAuth();
+
   const handleResumeView = () => {
-    const { data } = supabase.storage.from("resumes").getPublicUrl("QichaoWangResume.pdf");
+    const { data } = supabase.storage.from(RESUME_BUCKET).getPublicUrl(RESUME_FILE_PATH);
     window.open(data.publicUrl, "_blank");
   };
+
   return (
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 text-center">
       {user ? (
@@ -38,4 +42,6 @@ const Hero = () => {
     </section>
   );
 };
+
 export default Hero;
+
