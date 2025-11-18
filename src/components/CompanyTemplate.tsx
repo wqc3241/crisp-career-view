@@ -9,7 +9,7 @@ import Footer from "./Footer";
 interface CompanyProject {
   title: string;
   description: string;
-  impact: string;
+  impact: string | string[];
   tags: string[];
 }
 
@@ -59,8 +59,8 @@ const CompanyTemplate = ({
         </div>
 
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-start gap-8">
+        <section className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 py-12">
+          <div className="flex items-start gap-8 px-4 sm:px-0">
             <div className="flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden bg-background border border-border">
               <img
                 src={logo}
@@ -133,7 +133,15 @@ const CompanyTemplate = ({
                   </p>
                   <div className="p-4 bg-accent/50 rounded-lg border-l-4 border-primary">
                     <p className="font-semibold text-sm text-foreground">Impact:</p>
-                    <p className="text-sm text-muted-foreground mt-1">{project.impact}</p>
+                    {Array.isArray(project.impact) ? (
+                      <ul className="text-sm text-muted-foreground mt-1 list-disc list-inside space-y-1">
+                        {project.impact.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="text-sm text-muted-foreground mt-1">{project.impact}</p>
+                    )}
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
