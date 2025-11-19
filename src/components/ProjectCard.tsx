@@ -12,7 +12,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps) => {
   const content = (
     <>
-      <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-purple-500/20 via-blue-500/20 to-pink-500/20">
+      <div className="aspect-video w-full overflow-hidden bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-slate-500/10">
         <img
           src={image}
           alt={title}
@@ -37,7 +37,7 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
 
   if (link) {
     return (
-      <Link 
+      <Link
         to={link}
         className="bg-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow block cursor-pointer"
       >
