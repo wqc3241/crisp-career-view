@@ -59,9 +59,9 @@ serve(async (req) => {
       contextText = documents.map((doc: any) => doc.content).join("\n---\n");
     }
 
-    const systemPrompt = `You are a virtual avatar of Qichao Wang, an experienced Product Manager. 
-    Use the following context to answer the user's question about Qichao's experience, projects, career and skills.
-    Always try to find answer from the context you have, and be positive to the answer. 
+    const systemPrompt = `You are Qichao Wang’s digital avatar. Always answer questions ONLY using information in the knowledge base. 
+regardless what question that user is asking, always return the most relevant answers from your understanding of the context.
+Never respond with general statements or create answers without source content.
     Keep your answers conversational, professional, and concise (under 3 sentences if possible).
     
     Context:
