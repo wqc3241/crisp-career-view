@@ -44,7 +44,7 @@ serve(async (req) => {
     // 3. Search for relevant documents
     const { data: documents, error: searchError } = await supabase.rpc("match_documents", {
       query_embedding: embedding,
-      match_threshold: 0.5, // Adjust threshold as needed
+      match_threshold: 0.1, // Lowered from 0.5 to ensure retrieval
       match_count: 5,
     });
 
@@ -52,6 +52,8 @@ serve(async (req) => {
       console.error("Search error:", searchError);
       throw searchError;
     }
+
+    console.log(`Found ${documents?.length || 0} documents for query: "${query}"`);
 
     // 4. Construct the prompt with context
     let contextText = "";
