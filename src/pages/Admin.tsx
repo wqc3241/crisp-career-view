@@ -19,7 +19,7 @@ import { StorageFile } from './admin/types';
 import { DEFAULT_FILE_SIZE_LIMIT } from './admin/constants';
 
 const Admin = () => {
-  const { signOut } = useAuth();
+  const { signOut, user, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const [selectedBucket, setSelectedBucket] = useState<string>('');
@@ -61,8 +61,10 @@ const Admin = () => {
   } = useStorageFiles(selectedBucket);
 
   useEffect(() => {
-    loadBuckets();
-  }, []);
+    if (user && isAdmin) {
+      loadBuckets();
+    }
+  }, [user, isAdmin]);
 
   useEffect(() => {
     if (selectedBucket) {
