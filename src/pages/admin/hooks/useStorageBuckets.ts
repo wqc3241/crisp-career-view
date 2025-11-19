@@ -11,12 +11,14 @@ export const useStorageBuckets = () => {
 
     const loadBuckets = async () => {
         try {
-            const { data: { session } } = await supabase.auth.getSession();
+            // Refresh the session to ensure we have a valid token
+            const { data: { session }, error: sessionError } = await supabase.auth.refreshSession();
             
-            if (!session) {
+            if (sessionError || !session) {
+                console.error('Session refresh error:', sessionError);
                 toast({
                     title: 'Authentication required',
-                    description: 'Please sign in to access this feature',
+                    description: 'Please sign in again',
                     variant: 'destructive',
                 });
                 return;
@@ -62,12 +64,14 @@ export const useStorageBuckets = () => {
 
         setLoading(true);
 
-        const { data: { session } } = await supabase.auth.getSession();
+        // Refresh the session to ensure we have a valid token
+        const { data: { session }, error: sessionError } = await supabase.auth.refreshSession();
         
-        if (!session) {
+        if (sessionError || !session) {
+            console.error('Session refresh error:', sessionError);
             toast({
                 title: 'Authentication required',
-                description: 'Please sign in to access this feature',
+                description: 'Please sign in again',
                 variant: 'destructive',
             });
             setLoading(false);
