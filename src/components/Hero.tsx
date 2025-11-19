@@ -40,11 +40,11 @@ const Hero = () => {
         <div className="flex flex-row gap-4 justify-center items-center">
           <Button asChild variant="outline">
             <a href="https://www.linkedin.com/in/qichaowang/" target="_blank" rel="noopener noreferrer">
-              View LinkedIn
+              LinkedIn
             </a>
           </Button>
           <Button variant="outline" onClick={handleResumeView}>
-            View Resume
+            Resume
           </Button>
         </div>
       </div>
