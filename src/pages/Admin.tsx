@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LogOut, FolderPlus } from 'lucide-react';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BucketSelector } from './admin/components/BucketSelector';
 import { FileExplorer } from './admin/components/FileExplorer';
 import { CreateFolderDialog } from './admin/components/CreateFolderDialog';
 import { RenameFileDialog } from './admin/components/RenameFileDialog';
 import { DeleteConfirmDialog } from './admin/components/DeleteConfirmDialog';
+import KnowledgeBaseManager from './admin/components/KnowledgeBaseManager';
 import { useStorageBuckets } from './admin/hooks/useStorageBuckets';
 import { useStorageFiles } from './admin/hooks/useStorageFiles';
 import { StorageFile } from './admin/types';
@@ -161,61 +163,74 @@ const Admin = () => {
             </Button>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Storage Management</CardTitle>
-              <CardDescription>Manage your storage buckets and files</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <BucketSelector
-                buckets={buckets}
-                selectedBucket={selectedBucket}
-                onBucketChange={setSelectedBucket}
-                isCreateBucketOpen={isCreateBucketOpen}
-                onCreateBucketOpenChange={setIsCreateBucketOpen}
-                newBucketName={newBucketName}
-                onNewBucketNameChange={setNewBucketName}
-                isPublicBucket={isPublicBucket}
-                onIsPublicBucketChange={setIsPublicBucket}
-                fileSizeLimit={fileSizeLimit}
-                onFileSizeLimitChange={setFileSizeLimit}
-                allowedMimeTypes={allowedMimeTypes}
-                onAllowedMimeTypesChange={setAllowedMimeTypes}
-                onCreateBucket={handleCreateBucket}
-                uploading={uploading}
-              />
+          <Tabs defaultValue="storage" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="storage">Storage Management</TabsTrigger>
+              <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
+            </TabsList>
 
-              {selectedBucket && (
-                <FileExplorer
-                  selectedBucket={selectedBucket}
-                  files={files}
-                  folders={folders}
-                  loading={filesLoading}
-                  uploading={uploading}
-                  currentPath={currentPath}
-                  onFileUpload={handleFileUpload}
-                  onNavigateToFolder={navigateToFolder}
-                  onNavigateBack={navigateBack}
-                  onNavigateToPath={navigateToPath}
-                  onNavigateToRoot={navigateToRoot}
-                  onDownloadFile={handleDownloadFile}
-                  onPreviewFile={handlePreviewFile}
-                  onSelectFileForRename={handleSelectFileForRename}
-                  onSelectFileForDelete={handleSelectFileForDelete}
-                  CreateFolderDialogTrigger={
-                    <Dialog open={isCreateFolderOpen} onOpenChange={setIsCreateFolderOpen}>
-                      <DialogTrigger asChild>
-                        <Button variant="outline">
-                          <FolderPlus className="mr-2 h-4 w-4" />
-                          Create Folder
-                        </Button>
-                      </DialogTrigger>
-                    </Dialog>
-                  }
-                />
-              )}
-            </CardContent>
-          </Card>
+            <TabsContent value="storage" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Storage Management</CardTitle>
+                  <CardDescription>Manage your storage buckets and files</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <BucketSelector
+                    buckets={buckets}
+                    selectedBucket={selectedBucket}
+                    onBucketChange={setSelectedBucket}
+                    isCreateBucketOpen={isCreateBucketOpen}
+                    onCreateBucketOpenChange={setIsCreateBucketOpen}
+                    newBucketName={newBucketName}
+                    onNewBucketNameChange={setNewBucketName}
+                    isPublicBucket={isPublicBucket}
+                    onIsPublicBucketChange={setIsPublicBucket}
+                    fileSizeLimit={fileSizeLimit}
+                    onFileSizeLimitChange={setFileSizeLimit}
+                    allowedMimeTypes={allowedMimeTypes}
+                    onAllowedMimeTypesChange={setAllowedMimeTypes}
+                    onCreateBucket={handleCreateBucket}
+                    uploading={uploading}
+                  />
+
+                  {selectedBucket && (
+                    <FileExplorer
+                      selectedBucket={selectedBucket}
+                      files={files}
+                      folders={folders}
+                      loading={filesLoading}
+                      uploading={uploading}
+                      currentPath={currentPath}
+                      onFileUpload={handleFileUpload}
+                      onNavigateToFolder={navigateToFolder}
+                      onNavigateBack={navigateBack}
+                      onNavigateToPath={navigateToPath}
+                      onNavigateToRoot={navigateToRoot}
+                      onDownloadFile={handleDownloadFile}
+                      onPreviewFile={handlePreviewFile}
+                      onSelectFileForRename={handleSelectFileForRename}
+                      onSelectFileForDelete={handleSelectFileForDelete}
+                      CreateFolderDialogTrigger={
+                        <Dialog open={isCreateFolderOpen} onOpenChange={setIsCreateFolderOpen}>
+                          <DialogTrigger asChild>
+                            <Button variant="outline">
+                              <FolderPlus className="mr-2 h-4 w-4" />
+                              Create Folder
+                            </Button>
+                          </DialogTrigger>
+                        </Dialog>
+                      }
+                    />
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="knowledge" className="mt-6">
+              <KnowledgeBaseManager />
+            </TabsContent>
+          </Tabs>
         </div>
 
         {/* Dialogs */}
