@@ -30,17 +30,23 @@ const Hero = () => {
         </>
       )}
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <AvatarChat />
+      <div className="flex flex-col gap-4 items-center">
+        {/* First row - Chat button */}
+        <div>
+          <AvatarChat />
+        </div>
 
-        <Button asChild variant="outline">
-          <a href="https://www.linkedin.com/in/qichaowang/" target="_blank" rel="noopener noreferrer">
-            View LinkedIn
-          </a>
-        </Button>
-        <Button variant="outline" onClick={handleResumeView}>
-          View Resume
-        </Button>
+        {/* Second row - LinkedIn and Resume buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button asChild variant="outline">
+            <a href="https://www.linkedin.com/in/qichaowang/" target="_blank" rel="noopener noreferrer">
+              View LinkedIn
+            </a>
+          </Button>
+          <Button variant="outline" onClick={handleResumeView}>
+            View Resume
+          </Button>
+        </div>
       </div>
     </section>
   );
