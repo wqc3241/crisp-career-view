@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      documents: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          embedding: string | null
+          id: number
+          metadata: Json | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          embedding?: string | null
+          id?: number
+          metadata?: Json | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          embedding?: string | null
+          id?: number
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -70,6 +94,19 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      match_documents: {
+        Args: {
+          match_count: number
+          match_threshold: number
+          query_embedding: string
+        }
+        Returns: {
+          content: string
+          id: number
+          metadata: Json
+          similarity: number
+        }[]
       }
     }
     Enums: {
