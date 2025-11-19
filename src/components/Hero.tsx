@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { RESUME_FILE_PATH, RESUME_BUCKET } from "@/constants/config";
+import AvatarChat from "@/components/chat/AvatarChat";
 
 const Hero = () => {
   const { user, isAdmin } = useAuth();
@@ -29,8 +30,10 @@ const Hero = () => {
         </>
       )}
 
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button asChild>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <AvatarChat />
+
+        <Button asChild variant="outline">
           <a href="https://www.linkedin.com/in/qichaowang/" target="_blank" rel="noopener noreferrer">
             View LinkedIn
           </a>
@@ -44,4 +47,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
