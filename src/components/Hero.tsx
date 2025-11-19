@@ -13,7 +13,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-4 sm:pb-6 text-center">
+    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-2 sm:pb-4 text-center">
       {user ? (
         <div className="mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">Welcome back{isAdmin ? ", Admin" : ""}!</h2>
