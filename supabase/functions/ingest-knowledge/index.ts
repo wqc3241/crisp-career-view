@@ -44,6 +44,37 @@ serve(async (req) => {
         Tags: ${item.tags ? item.tags.join(', ') : ''}
       `.trim();
 
+            // Check for existing document with same metadata title/name and type to prevent duplicates
+            // We'll delete the old one and insert the new one (upsert-like behavior for RAG)
+            const itemTitle = item.title || item.name;
+            const itemType = item.type;
+
+            if (itemTitle && itemType) {
+                // Note: This requires a metadata column index for performance in production, 
+                // but for this scale it's fine.
+                // We use a raw query or filter on metadata column if possible, 
+                // but Supabase JS client makes it easy to filter by metadata values if they are top-level json keys
+                // However, metadata is a jsonb column. 
+
+                // Strategy: Delete any existing document that matches this specific item's identity
+                // This ensures we don't have duplicates and we always have the latest version
+                const { error: deleteError } = await supabase
+                    .from('documents')
+                    .delete()
+                    .contains('metadata', { title: itemTitle, type: itemType });
+
+                if (deleteError) {
+                    console.warn('Error checking/deleting duplicates:', deleteError);
+                }
+                // Also try matching by 'name' if 'title' is missing in metadata structure
+                if (!item.title && item.name) {
+                    await supabase
+                        .from('documents')
+                        .delete()
+                        .contains('metadata', { name: item.name, type: itemType });
+                }
+            }
+
             const embeddingResponse = await openai.createEmbedding({
                 model: 'text-embedding-3-small',
                 input: content,

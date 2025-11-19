@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { resumeData } from "@/constants/resumeData";
 import { companies, sideProjects } from "@/constants/projectData";
 import { Loader2, Database, RefreshCw } from "lucide-react";
 
@@ -15,8 +16,44 @@ const KnowledgeBase = () => {
         try {
             // Prepare data for ingestion
             const itemsToIngest = [
+                // Career Experience from Project Data
                 ...companies.map(c => ({ ...c, type: 'Career Experience' })),
-                ...sideProjects.map(p => ({ ...p, type: 'Side Project' }))
+                // Side Projects
+                ...sideProjects.map(p => ({ ...p, type: 'Side Project' })),
+                // Resume Personal Info
+                {
+                    title: "Contact & Personal Info",
+                    type: "Personal Info",
+                    description: resumeData.personalInfo.summary,
+                    keyImpact: [
+                        `Phone: ${resumeData.personalInfo.phone}`,
+                        `Email: ${resumeData.personalInfo.email}`,
+                        `Location: ${resumeData.personalInfo.location}`,
+                        `LinkedIn: ${resumeData.personalInfo.linkedin}`,
+                        `Portfolio: ${resumeData.personalInfo.portfolio}`
+                    ]
+                },
+                // Resume Skills
+                {
+                    title: "Professional Skills",
+                    type: "Skills",
+                    description: "List of technical and professional skills",
+                    tags: resumeData.skills
+                },
+                // Resume Education
+                ...resumeData.education.map(edu => ({
+                    title: edu.school,
+                    type: "Education",
+                    description: `${edu.degree} (${edu.period})`,
+                    keyImpact: [`Degree: ${edu.degree}`, `School: ${edu.school}`, `Period: ${edu.period}`]
+                })),
+                // Resume Experience (Detailed)
+                ...resumeData.experience.map(exp => ({
+                    title: exp.company,
+                    type: "Resume Experience",
+                    description: `${exp.role} (${exp.period})`,
+                    keyImpact: exp.description
+                }))
             ];
 
             const { data, error } = await supabase.functions.invoke('ingest-knowledge', {
