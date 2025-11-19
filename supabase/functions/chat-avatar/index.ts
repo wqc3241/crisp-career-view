@@ -27,6 +27,44 @@ serve(async (req) => {
     }
 
     const configuration = new Configuration({ apiKey: openAiKey });
+    const openai = new OpenAIApi(configuration);
+
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // 2. Fetch ALL documents (Full Context Mode)
+    const { data: documents, error: fetchError } = await supabase
+      .from('documents')
+      .select('content');
+
+    if (fetchError) {
+      console.error("Fetch error:", fetchError);
+      throw fetchError;
+    }
+
+    console.log(`Loaded ${documents?.length || 0} documents for full context.`);
+
+    // 3. Construct the prompt with ALL context
+    let contextText = "";
+    if (documents && documents.length > 0) {
+      contextText = documents.map((doc: any) => doc.content).join("\n---\n");
+    } else {
+      console.log("No documents found in the database.");
+    }
+
+    const systemPrompt = `You are Qichao Wang’s digital avatar. You have access to his ENTIRE professional background, including resume, projects, and skills.
+    
+    Your goal is to demonstrate a thorough, holistic understanding of Qichao's experience.
+    - Connect the dots between different experiences (e.g., how his payment background at BlueSnap relates to his financial work at Lucid).
+    - Answer questions with confidence, using specific details from the provided context.
+    - If a user asks a broad question, synthesize information from multiple sources.
+    - Keep answers conversational but professional.
+    
+    Context:
+    ${contextText}
+    `;
+
     const completionResponse = await openai.createChatCompletion({
       model: "gpt-4o-mini",
       messages: [
