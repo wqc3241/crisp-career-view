@@ -1,4 +1,5 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface Message {
     id: string;
@@ -19,36 +20,39 @@ export const useAvatarChat = () => {
     const [isTyping, setIsTyping] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
 
-    // Mock knowledge base response
     const generateResponse = async (userMessage: string) => {
         setIsTyping(true);
 
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        try {
+            const { data, error } = await supabase.functions.invoke('chat-avatar', {
+                body: { query: userMessage },
+            });
 
-        let response = "I'm not sure about that, but I can tell you about Qichao's work at Lucid Motors or his side projects.";
+            if (error) throw error;
 
-        const lowerMsg = userMessage.toLowerCase();
-        if (lowerMsg.includes('experience') || lowerMsg.includes('work')) {
-            response = "Qichao has extensive experience as a Product Manager at Lucid Motors, BlueSnap, and Harmony Plus. He specializes in financial services, payments, and EdTech.";
-        } else if (lowerMsg.includes('project') || lowerMsg.includes('side')) {
-            response = "He has built several impressive AI projects like Cinely.AI (batch image editing) and Talkify (language learning). You can check them out in the AI Projects tab!";
-        } else if (lowerMsg.includes('skill') || lowerMsg.includes('tech')) {
-            response = "He is proficient in Product Strategy, Data Analytics, and AI/LLM integration. On the technical side, he works with React, Python, and various AI APIs.";
-        } else if (lowerMsg.includes('contact') || lowerMsg.includes('email')) {
-            response = "You can reach out to him via LinkedIn or check his resume for contact details.";
+            const response = data.reply || "I'm having trouble connecting to my brain right now. Please try again later.";
+
+            const newMessage: Message = {
+                id: Date.now().toString(),
+                role: 'assistant',
+                content: response,
+                timestamp: new Date(),
+            };
+
+            setMessages(prev => [...prev, newMessage]);
+            speak(response);
+        } catch (error) {
+            console.error('Error calling chat function:', error);
+            const errorMessage: Message = {
+                id: Date.now().toString(),
+                role: 'assistant',
+                content: "Sorry, I encountered an error while thinking. Please try again.",
+                timestamp: new Date(),
+            };
+            setMessages(prev => [...prev, errorMessage]);
+        } finally {
+            setIsTyping(false);
         }
-
-        const newMessage: Message = {
-            id: Date.now().toString(),
-            role: 'assistant',
-            content: response,
-            timestamp: new Date(),
-        };
-
-        setMessages(prev => [...prev, newMessage]);
-        setIsTyping(false);
-        speak(response);
     };
 
     const sendMessage = useCallback(async (content: string) => {

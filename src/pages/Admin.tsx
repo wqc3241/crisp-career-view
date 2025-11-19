@@ -150,60 +150,17 @@ const Admin = () => {
             <Button variant="outline" onClick={handleSignOut}>
               <LogOut className="mr-2 h-4 w-4" />
               Sign Out
-            </Button>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>File Management</CardTitle>
-              <CardDescription>Upload and manage files in storage buckets</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <BucketSelector
-                buckets={buckets}
-                selectedBucket={selectedBucket}
-                onBucketChange={setSelectedBucket}
-                isCreateBucketOpen={isCreateBucketOpen}
-                onCreateBucketOpenChange={setIsCreateBucketOpen}
-                newBucketName={newBucketName}
-                onNewBucketNameChange={setNewBucketName}
-                isPublicBucket={isPublicBucket}
-                onIsPublicBucketChange={setIsPublicBucket}
-                fileSizeLimit={fileSizeLimit}
-                onFileSizeLimitChange={setFileSizeLimit}
-                allowedMimeTypes={allowedMimeTypes}
-                onAllowedMimeTypesChange={setAllowedMimeTypes}
-                onCreateBucket={handleCreateBucket}
-                uploading={bucketsLoading}
-              />
-
-              {selectedBucket && (
-                <FileExplorer
-                  selectedBucket={selectedBucket}
-                  currentPath={currentPath}
-                  loading={filesLoading}
-                  uploading={uploading}
-                  folders={folders}
-                  files={files}
-                  onFileUpload={handleFileUpload}
-                  onNavigateToFolder={navigateToFolder}
-                  onNavigateBack={navigateBack}
-                  onNavigateToPath={navigateToPath}
-                  onNavigateToRoot={navigateToRoot}
-                  onPreviewFile={(file) => previewFile(file.name)}
-                  onSelectFileForRename={handleSelectFileForRename}
-                  onDownloadFile={(file) => downloadFile(file.name)}
-                  onSelectFileForDelete={handleSelectFileForDelete}
-                  CreateFolderDialogTrigger={
-                    <Dialog open={isCreateFolderOpen} onOpenChange={setIsCreateFolderOpen}>
-                      <DialogTrigger asChild>
-                        <Button variant="outline">
-                          <FolderPlus className="mr-2 h-4 w-4" />
-                          Create Folder
-                        </Button>
-                      </DialogTrigger>
-                    </Dialog>
-                  }
+              onSelectFileForDelete={handleSelectFileForDelete}
+              CreateFolderDialogTrigger={
+                <Dialog open={isCreateFolderOpen} onOpenChange={setIsCreateFolderOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <FolderPlus className="mr-2 h-4 w-4" />
+                      Create Folder
+                    </Button>
+                  </DialogTrigger>
+                </Dialog>
+              }
                 />
               )}
             </CardContent>
