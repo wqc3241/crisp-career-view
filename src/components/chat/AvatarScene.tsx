@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
 
 interface AvatarSceneProps {
     isSpeaking: boolean;
@@ -15,8 +14,12 @@ const AvatarScene = ({ isSpeaking }: AvatarSceneProps) => {
 
             {/* Placeholder for 3D Scene */}
             <div className="text-center p-6 z-10">
-                <div className={`w-32 h-32 mx-auto mb-4 rounded-full bg-blue-500/20 border-4 border-blue-400 flex items-center justify-center transition-all duration-300 ${isSpeaking ? 'scale-110 shadow-[0_0_30px_rgba(96,165,250,0.6)]' : 'shadow-[0_0_15px_rgba(96,165,250,0.3)]'}`}>
-                    <div className={`w-24 h-24 rounded-full bg-blue-400/80 transition-all duration-150 ${isSpeaking ? 'scale-90' : 'scale-100'}`} />
+                <div className={`w-32 h-32 mx-auto mb-4 rounded-full border-4 border-blue-400 flex items-center justify-center transition-all duration-300 overflow-hidden ${isSpeaking ? 'scale-110 shadow-[0_0_30px_rgba(96,165,250,0.6)]' : 'shadow-[0_0_15px_rgba(96,165,250,0.3)]'}`}>
+                    <img
+                        src="/profile-pic.jpg"
+                        alt="Qichao Wang"
+                        className="w-full h-full object-cover"
+                    />
                 </div>
                 <h3 className="text-white font-bold text-xl mb-2">Virtual Qichao</h3>
                 <p className="text-blue-200 text-sm max-w-xs mx-auto">
