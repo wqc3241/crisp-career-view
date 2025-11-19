@@ -44,8 +44,8 @@ serve(async (req) => {
     // 3. Search for relevant documents
     const { data: documents, error: searchError } = await supabase.rpc("match_documents", {
       query_embedding: embedding,
-      match_threshold: 0.1, // Lowered from 0.5 to ensure retrieval
-      match_count: 5,
+      match_threshold: 0.1,
+      match_count: 10, // Increased from 5 to 10 to get more context
     });
 
     if (searchError) {
@@ -59,11 +59,14 @@ serve(async (req) => {
     let contextText = "";
     if (documents && documents.length > 0) {
       contextText = documents.map((doc: any) => doc.content).join("\n---\n");
+    } else {
+      console.log("No documents found matching the criteria.");
     }
 
-    const systemPrompt = `You are Qichao Wang’s digital avatar. Always answer questions ONLY using information in the knowledge base. 
-regardless what question that user is asking, always return the most relevant answers from your understanding of the context.
-Never respond with general statements or create answers without source content.
+    const systemPrompt = `You are Qichao Wang’s digital avatar. Use the provided context to answer questions about his experience, skills, and projects.
+    If the context contains relevant information, use it to form a comprehensive answer.
+    If the context is empty or irrelevant, politely state that you don't have that specific information but offer to discuss his known projects (Lucid Motors, BlueSnap, etc.).
+    
     Keep your answers conversational, professional, and concise (under 3 sentences if possible).
     
     Context:
