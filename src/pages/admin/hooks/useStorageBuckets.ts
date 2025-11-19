@@ -11,7 +11,22 @@ export const useStorageBuckets = () => {
 
     const loadBuckets = async () => {
         try {
-            const { data, error } = await supabase.functions.invoke('list-buckets');
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (!session) {
+                toast({
+                    title: 'Authentication required',
+                    description: 'Please sign in to access this feature',
+                    variant: 'destructive',
+                });
+                return;
+            }
+
+            const { data, error } = await supabase.functions.invoke('list-buckets', {
+                headers: {
+                    Authorization: `Bearer ${session.access_token}`,
+                },
+            });
 
             if (error) {
                 toast({
@@ -47,8 +62,23 @@ export const useStorageBuckets = () => {
 
         setLoading(true);
 
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+            toast({
+                title: 'Authentication required',
+                description: 'Please sign in to access this feature',
+                variant: 'destructive',
+            });
+            setLoading(false);
+            return false;
+        }
+
         const { error } = await supabase.functions.invoke('list-buckets', {
             method: 'POST',
+            headers: {
+                Authorization: `Bearer ${session.access_token}`,
+            },
             body: {
                 bucketName,
                 options
