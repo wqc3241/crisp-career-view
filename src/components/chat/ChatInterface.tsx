@@ -5,15 +5,17 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Send, Mic, User, Bot } from 'lucide-react';
 import { Message } from '@/hooks/useAvatarChat';
 import { cn } from '@/lib/utils';
+import Turnstile from 'react-turnstile';
 
 interface ChatInterfaceProps {
     messages: Message[];
     isTyping: boolean;
-    onSendMessage: (message: string) => void;
+    onSendMessage: (message: string, captchaToken: string) => void;
 }
 
 const ChatInterface = ({ messages, isTyping, onSendMessage }: ChatInterfaceProps) => {
     const [inputValue, setInputValue] = useState('');
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -24,8 +26,8 @@ const ChatInterface = ({ messages, isTyping, onSendMessage }: ChatInterfaceProps
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (inputValue.trim()) {
-            onSendMessage(inputValue);
+        if (inputValue.trim() && captchaToken) {
+            onSendMessage(inputValue, captchaToken);
             setInputValue('');
         }
     };
@@ -81,6 +83,12 @@ const ChatInterface = ({ messages, isTyping, onSendMessage }: ChatInterfaceProps
             </ScrollArea>
 
             <div className="p-4 border-t bg-background">
+                <div className="mb-2 flex justify-center">
+                    <Turnstile
+                        sitekey="0x4AAAAAACB6xzHT3xzLpxdS" // Cloudflare Test Site Key
+                        onVerify={(token) => setCaptchaToken(token)}
+                    />
+                </div>
                 <form onSubmit={handleSubmit} className="flex gap-2">
                     <Input
                         value={inputValue}
@@ -88,7 +96,7 @@ const ChatInterface = ({ messages, isTyping, onSendMessage }: ChatInterfaceProps
                         placeholder="Ask me anything..."
                         className="flex-1"
                     />
-                    <Button type="submit" size="icon" disabled={!inputValue.trim() || isTyping}>
+                    <Button type="submit" size="icon" disabled={!inputValue.trim() || isTyping || !captchaToken}>
                         <Send size={18} />
                     </Button>
                 </form>

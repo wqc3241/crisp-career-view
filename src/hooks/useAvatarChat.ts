@@ -20,12 +20,12 @@ export const useAvatarChat = () => {
     const [isTyping, setIsTyping] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
 
-    const generateResponse = async (userMessage: string) => {
+    const generateResponse = async (userMessage: string, captchaToken: string) => {
         setIsTyping(true);
 
         try {
             const { data, error } = await supabase.functions.invoke('chat-avatar', {
-                body: { query: userMessage },
+                body: { query: userMessage, captchaToken },
             });
 
             if (error) throw error;
@@ -55,7 +55,7 @@ export const useAvatarChat = () => {
         }
     };
 
-    const sendMessage = useCallback(async (content: string) => {
+    const sendMessage = useCallback(async (content: string, captchaToken: string) => {
         const userMsg: Message = {
             id: Date.now().toString(),
             role: 'user',
@@ -64,7 +64,7 @@ export const useAvatarChat = () => {
         };
 
         setMessages(prev => [...prev, userMsg]);
-        await generateResponse(content);
+        await generateResponse(content, captchaToken);
     }, []);
 
     const speak = (text: string) => {
