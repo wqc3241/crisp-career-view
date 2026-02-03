@@ -31,6 +31,14 @@ const Header = () => {
           >
             LinkedIn
           </a>
+          <a
+            href="https://github.com/wqc3241"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-foreground hover:text-primary transition-colors"
+          >
+            GitHub
+          </a>
           <button
             onClick={handleResumeDownload}
             className="text-sm text-foreground hover:text-primary transition-colors"
