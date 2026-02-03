@@ -43,6 +43,11 @@ const Hero = () => {
               LinkedIn
             </a>
           </Button>
+          <Button asChild variant="outline">
+            <a href="https://github.com/wqc3241" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+          </Button>
           <Button variant="outline" onClick={handleResumeView}>
             Resume
           </Button>
