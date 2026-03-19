@@ -23,15 +23,20 @@ import { toast } from 'sonner';
 const GitHubSyncCard = () => {
   const [syncing, setSyncing] = useState(false);
   const [lastResult, setLastResult] = useState<string[] | null>(null);
+  const [screenshotSummary, setScreenshotSummary] = useState<{ captured: number; remaining: number } | null>(null);
 
   const handleSync = async () => {
     setSyncing(true);
     setLastResult(null);
+    setScreenshotSummary(null);
     toast.info('GitHub sync started — this may take a few minutes...');
     try {
       const { data, error } = await supabase.functions.invoke('sync-github-projects');
       if (error) throw error;
       setLastResult(data?.results || ['Sync completed']);
+      if (data?.screenshotSummary) {
+        setScreenshotSummary(data.screenshotSummary);
+      }
       toast.success(`Sync complete: ${data?.results?.length || 0} repos processed`);
     } catch (e: any) {
       toast.error(`Sync failed: ${e.message}`);
@@ -47,6 +52,7 @@ const GitHubSyncCard = () => {
         <CardTitle>GitHub Project Sync</CardTitle>
         <CardDescription>
           Sync projects from GitHub, generate AI descriptions, and capture screenshots.
+          Screenshots are captured incrementally (5 per sync). Click multiple times to fill all.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -54,10 +60,24 @@ const GitHubSyncCard = () => {
           <RefreshCw className={`mr-2 h-4 w-4 ${syncing ? 'animate-spin' : ''}`} />
           {syncing ? 'Syncing...' : 'Re-sync GitHub Projects'}
         </Button>
+        {screenshotSummary && (
+          <div className="rounded-md border p-3 bg-muted text-sm">
+            <p className="font-medium">Screenshot Progress</p>
+            <p className="text-muted-foreground">
+              Captured: {screenshotSummary.captured} this run • 
+              Remaining: {screenshotSummary.remaining} projects still need screenshots
+            </p>
+            {screenshotSummary.remaining > 0 && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Click "Re-sync" again to capture the next batch.
+              </p>
+            )}
+          </div>
+        )}
         {lastResult && (
           <div className="mt-4 max-h-64 overflow-auto rounded-md border p-3 text-xs font-mono bg-muted">
             {lastResult.map((r, i) => (
-              <div key={i} className={r.includes('error') || r.includes('Error') ? 'text-destructive' : 'text-muted-foreground'}>
+              <div key={i} className={r.includes('error') || r.includes('Error') ? 'text-destructive' : r.includes('screenshot') ? 'text-primary' : 'text-muted-foreground'}>
                 {r}
               </div>
             ))}

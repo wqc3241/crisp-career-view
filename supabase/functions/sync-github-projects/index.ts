@@ -12,6 +12,7 @@ const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const FIRECRAWL_API_URL = "https://api.firecrawl.dev/v1/scrape";
 const SCREENSHOT_BUCKET = "project";
 const SCREENSHOT_PREFIX = "github-screenshots";
+const SCREENSHOT_BATCH_LIMIT = 5;
 
 async function captureScreenshot(url: string, firecrawlApiKey: string): Promise<string | null> {
   try {
@@ -34,7 +35,6 @@ async function captureScreenshot(url: string, firecrawlApiKey: string): Promise<
     }
 
     const data = await res.json();
-    // Firecrawl v1 nests inside data.data
     const screenshot = data?.data?.screenshot || data?.screenshot;
     return screenshot || null;
   } catch (e) {
@@ -63,7 +63,6 @@ async function getInternalLinks(url: string, firecrawlApiKey: string): Promise<s
     const data = await res.json();
     const links: string[] = data?.data?.links || data?.links || [];
     
-    // Filter to same-origin internal links, skip anchors/assets
     const baseUrl = new URL(url);
     return links.filter((link: string) => {
       try {
@@ -95,7 +94,6 @@ async function uploadScreenshotToStorage(
     let bytes: Uint8Array;
 
     if (base64Data.startsWith("http://") || base64Data.startsWith("https://")) {
-      // It's a URL — download the image
       const imgRes = await fetch(base64Data);
       if (!imgRes.ok) {
         console.error(`Failed to download screenshot from URL: ${imgRes.status}`);
@@ -145,7 +143,6 @@ async function captureProjectScreenshots(
 ): Promise<string[]> {
   const imageUrls: string[] = [];
 
-  // Screenshot 1: main page
   console.log(`Capturing main screenshot for ${slug}: ${url}`);
   const mainScreenshot = await captureScreenshot(url, firecrawlApiKey);
   if (mainScreenshot) {
@@ -153,16 +150,13 @@ async function captureProjectScreenshots(
     if (publicUrl) imageUrls.push(publicUrl);
   }
 
-  // Rate limit delay
   await new Promise((r) => setTimeout(r, 2000));
 
-  // Try to get internal links for additional screenshots
   const internalLinks = await getInternalLinks(url, firecrawlApiKey);
   console.log(`Found ${internalLinks.length} internal links for ${slug}`);
 
   await new Promise((r) => setTimeout(r, 2000));
 
-  // Screenshot 2-3: first two internal pages
   const subpages = internalLinks.slice(0, 2);
   for (let i = 0; i < subpages.length; i++) {
     console.log(`Capturing sub-screenshot ${i + 2} for ${slug}: ${subpages[i]}`);
@@ -193,7 +187,7 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    // 1. Fetch all public repos
+    // ========== PHASE 1: Sync AI content for ALL repos (fast, no Firecrawl) ==========
     const reposRes = await fetch(
       `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,
       { headers: { Accept: "application/vnd.github.v3+json" } }
@@ -208,7 +202,28 @@ serve(async (req) => {
       if (repo.fork || repo.archived) continue;
       repoNames.add(repo.name);
 
-      // 2. Fetch README
+      const slug = repo.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+      // Check if project already exists with AI content
+      const { data: existing } = await supabase
+        .from("github_projects")
+        .select("id, images")
+        .eq("repo_name", repo.name)
+        .maybeSingle();
+
+      // Skip AI generation if project already exists (just update links/visibility)
+      if (existing) {
+        await supabase.from("github_projects").update({
+          github_link: repo.html_url,
+          demo_link: repo.homepage || null,
+          is_visible: true,
+          last_synced_at: new Date().toISOString(),
+        }).eq("repo_name", repo.name);
+        results.push(`${repo.name}: updated (existing)`);
+        continue;
+      }
+
+      // Fetch README for new projects
       let readmeContent = "";
       try {
         const readmeRes = await fetch(
@@ -224,7 +239,7 @@ serve(async (req) => {
         // No README
       }
 
-      // 3. Generate structured content via AI
+      // Generate AI content
       const prompt = `You are generating structured product page data for a portfolio website. Based on the following GitHub repository information, generate a JSON object.
 
 Repository name: ${repo.name}
@@ -351,27 +366,13 @@ Important: Make the content professional, specific to the actual project, and en
         const aiData = await aiRes.json();
         const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
         if (!toolCall) {
-          console.error(`No tool call response for ${repo.name}`);
           results.push(`${repo.name}: No tool call in AI response`);
           continue;
         }
 
         const generated = JSON.parse(toolCall.function.arguments);
-        const slug = repo.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-        // 4. Capture screenshots using Firecrawl
-        const screenshotUrl = repo.homepage || repo.html_url;
-        console.log(`Capturing screenshots for ${repo.name} from ${screenshotUrl}`);
-        const imageUrls = await captureProjectScreenshots(
-          screenshotUrl,
-          slug,
-          FIRECRAWL_API_KEY,
-          supabase,
-          supabaseUrl
-        );
-        console.log(`Got ${imageUrls.length} screenshots for ${repo.name}`);
-
-        // 5. Upsert into github_projects
+        // Upsert AI content WITHOUT images (preserve existing images)
         const { error } = await supabase.from("github_projects").upsert(
           {
             repo_name: repo.name,
@@ -390,7 +391,6 @@ Important: Make the content professional, specific to the actual project, and en
             card_description: generated.card_description,
             github_link: repo.html_url,
             demo_link: repo.homepage || null,
-            images: imageUrls,
             last_synced_at: new Date().toISOString(),
           },
           { onConflict: "repo_name" }
@@ -400,18 +400,15 @@ Important: Make the content professional, specific to the actual project, and en
           console.error(`DB error for ${repo.name}:`, error);
           results.push(`${repo.name}: DB error`);
         } else {
-          results.push(`${repo.name}: synced (${imageUrls.length} screenshots)`);
+          results.push(`${repo.name}: AI content synced`);
         }
       } catch (e) {
         console.error(`Error processing ${repo.name}:`, e);
         results.push(`${repo.name}: error`);
       }
-
-      // Small delay between repos
-      await new Promise((r) => setTimeout(r, 1500));
     }
 
-    // 6. Mark removed repos as not visible
+    // Mark removed repos as not visible
     const { data: existingProjects } = await supabase
       .from("github_projects")
       .select("repo_name")
@@ -429,7 +426,55 @@ Important: Make the content professional, specific to the actual project, and en
       }
     }
 
-    return new Response(JSON.stringify({ success: true, results }), {
+    // ========== PHASE 2: Capture screenshots for projects missing images ==========
+    const { data: missingImages } = await supabase
+      .from("github_projects")
+      .select("repo_name, slug, demo_link, github_link, images")
+      .eq("is_visible", true)
+      .or("images.is.null,images.eq.{}");
+
+    const projectsNeedingScreenshots = (missingImages || []).filter(
+      (p: any) => !p.images || p.images.length === 0
+    );
+
+    const totalMissing = projectsNeedingScreenshots.length;
+    const batch = projectsNeedingScreenshots.slice(0, SCREENSHOT_BATCH_LIMIT);
+    let screenshottedCount = 0;
+
+    for (const project of batch) {
+      const screenshotUrl = project.demo_link || project.github_link;
+      console.log(`[Phase 2] Capturing screenshots for ${project.repo_name} from ${screenshotUrl}`);
+
+      const imageUrls = await captureProjectScreenshots(
+        screenshotUrl,
+        project.slug,
+        FIRECRAWL_API_KEY,
+        supabase,
+        supabaseUrl
+      );
+
+      if (imageUrls.length > 0) {
+        const { error } = await supabase
+          .from("github_projects")
+          .update({ images: imageUrls })
+          .eq("repo_name", project.repo_name);
+
+        if (error) {
+          console.error(`Failed to update images for ${project.repo_name}:`, error);
+          results.push(`${project.repo_name}: screenshot upload failed`);
+        } else {
+          screenshottedCount++;
+          results.push(`${project.repo_name}: ${imageUrls.length} screenshots captured`);
+        }
+      } else {
+        results.push(`${project.repo_name}: no screenshots captured`);
+      }
+    }
+
+    const remaining = totalMissing - screenshottedCount;
+    results.push(`--- Screenshot summary: ${screenshottedCount}/${batch.length} captured, ${remaining} still need screenshots ---`);
+
+    return new Response(JSON.stringify({ success: true, results, screenshotSummary: { captured: screenshottedCount, remaining } }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (e) {
