@@ -54,7 +54,7 @@ const Projects = () => {
                     key={project.id}
                     title={project.title}
                     description={project.card_description || project.description}
-                    image={project.card_image || "/placeholder.svg"}
+                    image={project.card_image || (project.images && project.images.length > 0 ? project.images[0] : "/placeholder.svg")}
                     tags={project.tags || []}
                     link={`/projects/${project.slug}`}
                   />
