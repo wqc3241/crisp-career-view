@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { LogOut, FolderPlus } from 'lucide-react';
+import { LogOut, FolderPlus, RefreshCw } from 'lucide-react';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BucketSelector } from './admin/components/BucketSelector';
@@ -17,6 +17,8 @@ import { useStorageBuckets } from './admin/hooks/useStorageBuckets';
 import { useStorageFiles } from './admin/hooks/useStorageFiles';
 import { StorageFile } from './admin/types';
 import { DEFAULT_FILE_SIZE_LIMIT } from './admin/constants';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const Admin = () => {
   const { signOut, user, isAdmin } = useAuth();
