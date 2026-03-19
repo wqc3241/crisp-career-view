@@ -13,6 +13,7 @@ import Talkify from "./pages/sideprojects/Talkify";
 import MedicalBillRCM from "./pages/sideprojects/MedicalBillRCM";
 import ConstructionEstimator from "./pages/sideprojects/ConstructionEstimator";
 import NLPBrochure from "./pages/sideprojects/NLPBrochure";
+import DynamicProduct from "./pages/sideprojects/DynamicProduct";
 import LucidMotors from "./pages/career/LucidMotors";
 import Bluesnap from "./pages/career/Bluesnap";
 import HarmonyPlus from "./pages/career/HarmonyPlus";
@@ -37,6 +38,7 @@ const App = () => {
               <Route path="/products/medical-bill-rcm" element={<MedicalBillRCM />} />
               <Route path="/products/construction-estimator" element={<ConstructionEstimator />} />
               <Route path="/products/nlp-brochure" element={<NLPBrochure />} />
+              <Route path="/projects/:slug" element={<DynamicProduct />} />
               <Route path="/career/lucid-motors" element={<LucidMotors />} />
               <Route path="/career/bluesnap" element={<Bluesnap />} />
               <Route path="/career/harmony-plus" element={<HarmonyPlus />} />
