@@ -92,9 +92,21 @@ async function uploadScreenshotToStorage(
   supabaseUrl: string
 ): Promise<string | null> {
   try {
-    // base64Data might have a data:image prefix, strip it
-    const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
-    const bytes = base64Decode(cleanBase64);
+    // Handle both data URLs and raw base64
+    let bytes: Uint8Array;
+    if (base64Data.startsWith("data:")) {
+      // Fetch the data URL to get raw bytes
+      const res = await fetch(base64Data);
+      const arrayBuffer = await res.arrayBuffer();
+      bytes = new Uint8Array(arrayBuffer);
+    } else {
+      // Raw base64 string - decode manually
+      const binaryString = atob(base64Data);
+      bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+    }
     const filePath = `${SCREENSHOT_PREFIX}/${slug}/screenshot-${index}.png`;
 
     const { error } = await supabase.storage
