@@ -235,6 +235,10 @@ const Admin = () => {
             <TabsContent value="knowledge" className="mt-6">
               <KnowledgeBaseManager />
             </TabsContent>
+
+            <TabsContent value="github" className="mt-6">
+              <GitHubSyncCard />
+            </TabsContent>
           </Tabs>
         </div>
 
