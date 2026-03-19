@@ -1,56 +1,51 @@
 
 
-## Plan: Dynamic GitHub Projects (Keeping Existing Static Projects)
+## Plan: Auto-Generate Screenshots for GitHub Projects
 
-### Summary
-Add dynamically generated project cards from GitHub alongside the existing 5 static side projects. The "AI Projects" tab will show both: static projects first, then a "From GitHub" section with auto-generated ones.
+### Problem
+Currently, synced GitHub projects have empty `images` arrays. The user wants 2-3 actual screenshots of each project's live web app, captured during the sync process.
 
-### Step 1: Create `github_projects` table
+### Approach
 
-Table with columns matching `ProductTemplate` props:
-- `id` (uuid PK), `repo_name` (text, unique), `slug` (text, unique)
-- `title`, `tagline`, `description`, `vision` (text)
-- `images`, `painpoints`, `tech_stack`, `future_improvements`, `tags` (text[])
-- `customer_segments`, `features`, `metrics` (jsonb arrays)
-- `demo_link`, `github_link`, `test_email`, `test_password` (text, nullable)
-- `card_image`, `card_description` (text, nullable) — for the card view
-- `is_visible` (boolean, default true), `display_order` (int, default 0)
-- `last_synced_at`, `created_at`, `updated_at` (timestamptz)
+Use **Firecrawl's screenshot format** to capture real screenshots of each project's demo website. For projects without a demo link, use the GitHub repo page as a fallback. Screenshots are uploaded to the existing `project` storage bucket and their public URLs stored in the `images` column.
 
-**RLS**: Public SELECT (anonymous visitors). Admin-only INSERT/UPDATE/DELETE via `has_role()`.
+### Prerequisites
 
-### Step 2: Create `sync-github-projects` Edge Function
+Connect the **Firecrawl** connector — it supports a `screenshot` format that captures full-page screenshots of any URL. This is the cleanest way to get real website screenshots from an edge function (no headless browser needed).
 
-1. Fetch public repos from `https://api.github.com/users/wqc3241/repos`
-2. For each repo, fetch README via GitHub API
-3. Call Lovable AI (Gemini 2.5 Flash) with a prompt to generate JSON matching `ProductTemplate` props — tagline, vision, 4 painpoints, 3 customer segments, 4 features, tech stack, 2 metrics, 5 future improvements, tags, and a short card description
-4. Upsert into `github_projects` (match on `repo_name`)
-5. Mark removed repos as `is_visible = false`
+### Step 1: Connect Firecrawl
 
-### Step 3: Daily cron job
+Use the Firecrawl connector to get screenshot capabilities in the edge function.
 
-`pg_cron` + `pg_net` to call the edge function once per day.
+### Step 2: Update `sync-github-projects` Edge Function
 
-### Step 4: Update Frontend
+After generating AI content for each repo, add a screenshot capture step:
 
-**`src/hooks/useGithubProjects.ts`** — React Query hook fetching from `github_projects` where `is_visible = true`, ordered by `display_order`.
+1. Determine the target URL: use `repo.homepage` (demo link) if available, otherwise use `repo.html_url` (GitHub page)
+2. Call Firecrawl's scrape endpoint with `formats: ['screenshot']` for the main page — this gives screenshot #1
+3. If the project has a demo link, also scrape 1-2 subpages:
+   - Parse the page HTML/links to find internal navigation links (using Firecrawl's `links` format)
+   - Screenshot the first 2 internal links found — these become screenshots #2 and #3
+4. Decode the base64 screenshots and upload to the `project` storage bucket under `github-screenshots/{slug}/`
+5. Store the public URLs in the `images` array during upsert
 
-**`src/components/Projects.tsx`** — In the "AI Projects" tab, show existing static `sideProjects` cards first, then a divider ("More from GitHub"), then dynamically loaded project cards below. Both use the same `ProjectCard` component.
+### Step 3: Handle Edge Cases
 
-**`src/pages/sideprojects/DynamicProduct.tsx`** — New component for route `/products/:slug` that fetches a row by slug and passes it to the existing `ProductTemplate`.
+- **No demo link**: Screenshot the GitHub repo page (1 image) + generate 1-2 AI images using Lovable AI's image generation model as supplementary visuals
+- **Firecrawl rate limits**: Add delays between screenshot calls; process screenshots sequentially
+- **Large base64 data**: Upload directly to storage, don't pass through AI
 
-**`src/App.tsx`** — Add a new route `<Route path="/products/:slug" element={<DynamicProduct />} />` alongside the existing 5 static routes (keep them all).
-
-### Files Summary
+### Files Changed
 
 | Action | File |
 |--------|------|
-| Create | `supabase/functions/sync-github-projects/index.ts` |
-| Create | `src/hooks/useGithubProjects.ts` |
-| Create | `src/pages/sideprojects/DynamicProduct.tsx` |
-| Modify | `src/components/Projects.tsx` — add dynamic section below static |
-| Modify | `src/App.tsx` — add dynamic route |
-| Migration | Create `github_projects` table + RLS + cron job |
+| Modify | `supabase/functions/sync-github-projects/index.ts` — add screenshot capture logic |
 
-All existing static project files and routes remain untouched.
+### Technical Details
+
+- Firecrawl screenshot returns base64 PNG via `data.data.screenshot`
+- Screenshots uploaded to `project` bucket at path `github-screenshots/{slug}/screenshot-{n}.png`
+- Public URL constructed from Supabase storage URL
+- Existing `images` column (text[]) already supports this — no schema change needed
+- Delay of ~2s between Firecrawl calls to respect rate limits
 
