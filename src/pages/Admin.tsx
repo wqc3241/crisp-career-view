@@ -168,9 +168,10 @@ const Admin = () => {
           </div>
 
           <Tabs defaultValue="storage" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="storage">Storage Management</TabsTrigger>
               <TabsTrigger value="knowledge">Knowledge Base</TabsTrigger>
+              <TabsTrigger value="github">GitHub Sync</TabsTrigger>
             </TabsList>
 
             <TabsContent value="storage" className="mt-6">
