@@ -92,6 +92,7 @@ async function uploadScreenshotToStorage(
   supabaseUrl: string
 ): Promise<string | null> {
   try {
+    console.log(`Screenshot data starts with: ${base64Data.substring(0, 50)}, length: ${base64Data.length}`);
     // Handle both data URLs and raw base64
     let bytes: Uint8Array;
     if (base64Data.startsWith("data:")) {
