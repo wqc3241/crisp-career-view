@@ -1,6 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { decode as base64Decode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -93,9 +92,29 @@ async function uploadScreenshotToStorage(
   supabaseUrl: string
 ): Promise<string | null> {
   try {
-    // base64Data might have a data:image prefix, strip it
-    const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
-    const bytes = base64Decode(cleanBase64);
+    let bytes: Uint8Array;
+
+    if (base64Data.startsWith("http://") || base64Data.startsWith("https://")) {
+      // It's a URL — download the image
+      const imgRes = await fetch(base64Data);
+      if (!imgRes.ok) {
+        console.error(`Failed to download screenshot from URL: ${imgRes.status}`);
+        return null;
+      }
+      const arrayBuffer = await imgRes.arrayBuffer();
+      bytes = new Uint8Array(arrayBuffer);
+    } else if (base64Data.startsWith("data:")) {
+      const res = await fetch(base64Data);
+      const arrayBuffer = await res.arrayBuffer();
+      bytes = new Uint8Array(arrayBuffer);
+    } else {
+      const binaryString = atob(base64Data);
+      bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+    }
+
     const filePath = `${SCREENSHOT_PREFIX}/${slug}/screenshot-${index}.png`;
 
     const { error } = await supabase.storage
