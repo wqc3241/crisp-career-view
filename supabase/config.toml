@@ -1,1 +1,4 @@
 project_id = "gaegumosojstjkfjetmu"
+
+[functions.sync-github-projects]
+verify_jwt = false

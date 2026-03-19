@@ -38,6 +38,93 @@ export type Database = {
         }
         Relationships: []
       }
+      github_projects: {
+        Row: {
+          card_description: string | null
+          card_image: string | null
+          created_at: string
+          customer_segments: Json | null
+          demo_link: string | null
+          description: string
+          display_order: number
+          features: Json | null
+          future_improvements: string[] | null
+          github_link: string
+          id: string
+          images: string[] | null
+          is_visible: boolean
+          last_synced_at: string | null
+          metrics: Json | null
+          painpoints: string[] | null
+          repo_name: string
+          slug: string
+          tagline: string
+          tags: string[] | null
+          tech_stack: string[] | null
+          test_email: string | null
+          test_password: string | null
+          title: string
+          updated_at: string
+          vision: string
+        }
+        Insert: {
+          card_description?: string | null
+          card_image?: string | null
+          created_at?: string
+          customer_segments?: Json | null
+          demo_link?: string | null
+          description?: string
+          display_order?: number
+          features?: Json | null
+          future_improvements?: string[] | null
+          github_link?: string
+          id?: string
+          images?: string[] | null
+          is_visible?: boolean
+          last_synced_at?: string | null
+          metrics?: Json | null
+          painpoints?: string[] | null
+          repo_name: string
+          slug: string
+          tagline?: string
+          tags?: string[] | null
+          tech_stack?: string[] | null
+          test_email?: string | null
+          test_password?: string | null
+          title: string
+          updated_at?: string
+          vision?: string
+        }
+        Update: {
+          card_description?: string | null
+          card_image?: string | null
+          created_at?: string
+          customer_segments?: Json | null
+          demo_link?: string | null
+          description?: string
+          display_order?: number
+          features?: Json | null
+          future_improvements?: string[] | null
+          github_link?: string
+          id?: string
+          images?: string[] | null
+          is_visible?: boolean
+          last_synced_at?: string | null
+          metrics?: Json | null
+          painpoints?: string[] | null
+          repo_name?: string
+          slug?: string
+          tagline?: string
+          tags?: string[] | null
+          tech_stack?: string[] | null
+          test_email?: string | null
+          test_password?: string | null
+          title?: string
+          updated_at?: string
+          vision?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
