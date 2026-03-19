@@ -20,6 +20,54 @@ import { DEFAULT_FILE_SIZE_LIMIT } from './admin/constants';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
+const GitHubSyncCard = () => {
+  const [syncing, setSyncing] = useState(false);
+  const [lastResult, setLastResult] = useState<string[] | null>(null);
+
+  const handleSync = async () => {
+    setSyncing(true);
+    setLastResult(null);
+    toast.info('GitHub sync started — this may take a few minutes...');
+    try {
+      const { data, error } = await supabase.functions.invoke('sync-github-projects');
+      if (error) throw error;
+      setLastResult(data?.results || ['Sync completed']);
+      toast.success(`Sync complete: ${data?.results?.length || 0} repos processed`);
+    } catch (e: any) {
+      toast.error(`Sync failed: ${e.message}`);
+      setLastResult([`Error: ${e.message}`]);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>GitHub Project Sync</CardTitle>
+        <CardDescription>
+          Sync projects from GitHub, generate AI descriptions, and capture screenshots.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <Button onClick={handleSync} disabled={syncing}>
+          <RefreshCw className={`mr-2 h-4 w-4 ${syncing ? 'animate-spin' : ''}`} />
+          {syncing ? 'Syncing...' : 'Re-sync GitHub Projects'}
+        </Button>
+        {lastResult && (
+          <div className="mt-4 max-h-64 overflow-auto rounded-md border p-3 text-xs font-mono bg-muted">
+            {lastResult.map((r, i) => (
+              <div key={i} className={r.includes('error') || r.includes('Error') ? 'text-destructive' : 'text-muted-foreground'}>
+                {r}
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+};
+
 const Admin = () => {
   const { signOut, user, isAdmin } = useAuth();
   const navigate = useNavigate();
