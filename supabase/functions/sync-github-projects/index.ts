@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { decode as base64Decode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -9,6 +10,153 @@ const corsHeaders = {
 
 const GITHUB_USER = "wqc3241";
 const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const FIRECRAWL_API_URL = "https://api.firecrawl.dev/v1/scrape";
+const SCREENSHOT_BUCKET = "project";
+const SCREENSHOT_PREFIX = "github-screenshots";
+
+async function captureScreenshot(url: string, firecrawlApiKey: string): Promise<string | null> {
+  try {
+    const res = await fetch(FIRECRAWL_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${firecrawlApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url,
+        formats: ["screenshot"],
+        waitFor: 3000,
+      }),
+    });
+
+    if (!res.ok) {
+      console.error(`Firecrawl screenshot error for ${url}: ${res.status}`);
+      return null;
+    }
+
+    const data = await res.json();
+    // Firecrawl v1 nests inside data.data
+    const screenshot = data?.data?.screenshot || data?.screenshot;
+    return screenshot || null;
+  } catch (e) {
+    console.error(`Screenshot capture failed for ${url}:`, e);
+    return null;
+  }
+}
+
+async function getInternalLinks(url: string, firecrawlApiKey: string): Promise<string[]> {
+  try {
+    const res = await fetch(FIRECRAWL_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${firecrawlApiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        url,
+        formats: ["links"],
+        onlyMainContent: true,
+      }),
+    });
+
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    const links: string[] = data?.data?.links || data?.links || [];
+    
+    // Filter to same-origin internal links, skip anchors/assets
+    const baseUrl = new URL(url);
+    return links.filter((link: string) => {
+      try {
+        const u = new URL(link);
+        return (
+          u.origin === baseUrl.origin &&
+          u.pathname !== baseUrl.pathname &&
+          !u.pathname.match(/\.(png|jpg|jpeg|gif|svg|css|js|ico|pdf|zip)$/i) &&
+          u.pathname !== "/" &&
+          u.pathname.length > 1
+        );
+      } catch {
+        return false;
+      }
+    });
+  } catch {
+    return [];
+  }
+}
+
+async function uploadScreenshotToStorage(
+  supabase: any,
+  base64Data: string,
+  slug: string,
+  index: number,
+  supabaseUrl: string
+): Promise<string | null> {
+  try {
+    // base64Data might have a data:image prefix, strip it
+    const cleanBase64 = base64Data.replace(/^data:image\/\w+;base64,/, "");
+    const bytes = base64Decode(cleanBase64);
+    const filePath = `${SCREENSHOT_PREFIX}/${slug}/screenshot-${index}.png`;
+
+    const { error } = await supabase.storage
+      .from(SCREENSHOT_BUCKET)
+      .upload(filePath, bytes, {
+        contentType: "image/png",
+        upsert: true,
+      });
+
+    if (error) {
+      console.error(`Storage upload error for ${filePath}:`, error);
+      return null;
+    }
+
+    return `${supabaseUrl}/storage/v1/object/public/${SCREENSHOT_BUCKET}/${filePath}`;
+  } catch (e) {
+    console.error(`Upload failed for ${slug} screenshot ${index}:`, e);
+    return null;
+  }
+}
+
+async function captureProjectScreenshots(
+  url: string,
+  slug: string,
+  firecrawlApiKey: string,
+  supabase: any,
+  supabaseUrl: string
+): Promise<string[]> {
+  const imageUrls: string[] = [];
+
+  // Screenshot 1: main page
+  console.log(`Capturing main screenshot for ${slug}: ${url}`);
+  const mainScreenshot = await captureScreenshot(url, firecrawlApiKey);
+  if (mainScreenshot) {
+    const publicUrl = await uploadScreenshotToStorage(supabase, mainScreenshot, slug, 1, supabaseUrl);
+    if (publicUrl) imageUrls.push(publicUrl);
+  }
+
+  // Rate limit delay
+  await new Promise((r) => setTimeout(r, 2000));
+
+  // Try to get internal links for additional screenshots
+  const internalLinks = await getInternalLinks(url, firecrawlApiKey);
+  console.log(`Found ${internalLinks.length} internal links for ${slug}`);
+
+  await new Promise((r) => setTimeout(r, 2000));
+
+  // Screenshot 2-3: first two internal pages
+  const subpages = internalLinks.slice(0, 2);
+  for (let i = 0; i < subpages.length; i++) {
+    console.log(`Capturing sub-screenshot ${i + 2} for ${slug}: ${subpages[i]}`);
+    const subScreenshot = await captureScreenshot(subpages[i], firecrawlApiKey);
+    if (subScreenshot) {
+      const publicUrl = await uploadScreenshotToStorage(supabase, subScreenshot, slug, i + 2, supabaseUrl);
+      if (publicUrl) imageUrls.push(publicUrl);
+    }
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+
+  return imageUrls;
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -18,6 +166,9 @@ serve(async (req) => {
   try {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
+
+    const FIRECRAWL_API_KEY = Deno.env.get("FIRECRAWL_API_KEY");
+    if (!FIRECRAWL_API_KEY) throw new Error("FIRECRAWL_API_KEY not configured");
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -48,10 +199,10 @@ serve(async (req) => {
         if (readmeRes.ok) {
           const readmeData = await readmeRes.json();
           const decoded = atob(readmeData.content.replace(/\n/g, ""));
-          readmeContent = decoded.substring(0, 8000); // Limit for AI context
+          readmeContent = decoded.substring(0, 8000);
         }
       } catch {
-        // No README, will use repo description
+        // No README
       }
 
       // 3. Generate structured content via AI
@@ -189,7 +340,19 @@ Important: Make the content professional, specific to the actual project, and en
         const generated = JSON.parse(toolCall.function.arguments);
         const slug = repo.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-        // 4. Upsert into github_projects
+        // 4. Capture screenshots using Firecrawl
+        const screenshotUrl = repo.homepage || repo.html_url;
+        console.log(`Capturing screenshots for ${repo.name} from ${screenshotUrl}`);
+        const imageUrls = await captureProjectScreenshots(
+          screenshotUrl,
+          slug,
+          FIRECRAWL_API_KEY,
+          supabase,
+          supabaseUrl
+        );
+        console.log(`Got ${imageUrls.length} screenshots for ${repo.name}`);
+
+        // 5. Upsert into github_projects
         const { error } = await supabase.from("github_projects").upsert(
           {
             repo_name: repo.name,
@@ -208,7 +371,7 @@ Important: Make the content professional, specific to the actual project, and en
             card_description: generated.card_description,
             github_link: repo.html_url,
             demo_link: repo.homepage || null,
-            images: [],
+            images: imageUrls,
             last_synced_at: new Date().toISOString(),
           },
           { onConflict: "repo_name" }
@@ -218,18 +381,18 @@ Important: Make the content professional, specific to the actual project, and en
           console.error(`DB error for ${repo.name}:`, error);
           results.push(`${repo.name}: DB error`);
         } else {
-          results.push(`${repo.name}: synced`);
+          results.push(`${repo.name}: synced (${imageUrls.length} screenshots)`);
         }
       } catch (e) {
         console.error(`Error processing ${repo.name}:`, e);
         results.push(`${repo.name}: error`);
       }
 
-      // Small delay to avoid rate limits
+      // Small delay between repos
       await new Promise((r) => setTimeout(r, 1500));
     }
 
-    // 5. Mark removed repos as not visible
+    // 6. Mark removed repos as not visible
     const { data: existingProjects } = await supabase
       .from("github_projects")
       .select("repo_name")
