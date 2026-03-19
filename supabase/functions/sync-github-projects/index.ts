@@ -92,22 +92,29 @@ async function uploadScreenshotToStorage(
   supabaseUrl: string
 ): Promise<string | null> {
   try {
-    console.log(`Screenshot data starts with: ${base64Data.substring(0, 50)}, length: ${base64Data.length}`);
-    // Handle both data URLs and raw base64
     let bytes: Uint8Array;
-    if (base64Data.startsWith("data:")) {
-      // Fetch the data URL to get raw bytes
+
+    if (base64Data.startsWith("http://") || base64Data.startsWith("https://")) {
+      // It's a URL — download the image
+      const imgRes = await fetch(base64Data);
+      if (!imgRes.ok) {
+        console.error(`Failed to download screenshot from URL: ${imgRes.status}`);
+        return null;
+      }
+      const arrayBuffer = await imgRes.arrayBuffer();
+      bytes = new Uint8Array(arrayBuffer);
+    } else if (base64Data.startsWith("data:")) {
       const res = await fetch(base64Data);
       const arrayBuffer = await res.arrayBuffer();
       bytes = new Uint8Array(arrayBuffer);
     } else {
-      // Raw base64 string - decode manually
       const binaryString = atob(base64Data);
       bytes = new Uint8Array(binaryString.length);
       for (let i = 0; i < binaryString.length; i++) {
         bytes[i] = binaryString.charCodeAt(i);
       }
     }
+
     const filePath = `${SCREENSHOT_PREFIX}/${slug}/screenshot-${index}.png`;
 
     const { error } = await supabase.storage
