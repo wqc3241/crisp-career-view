@@ -1,51 +1,39 @@
 
 
-## Plan: Auto-Generate Screenshots for GitHub Projects
+## Plan: Fix Screenshot Generation for All GitHub Projects
 
 ### Problem
-Currently, synced GitHub projects have empty `images` arrays. The user wants 2-3 actual screenshots of each project's live web app, captured during the sync process.
+The sync function processes repos sequentially, taking ~15-20s per repo for screenshots. With ~28 repos, it far exceeds the edge function timeout (~60s), so only 8-10 projects get screenshots before the function is killed.
 
-### Approach
+### Solution: Process Only Projects Missing Images
 
-Use **Firecrawl's screenshot format** to capture real screenshots of each project's demo website. For projects without a demo link, use the GitHub repo page as a fallback. Screenshots are uploaded to the existing `project` storage bucket and their public URLs stored in the `images` column.
+Instead of re-screenshotting all projects every sync, split the logic so screenshots are only captured for projects that don't already have images. This makes each sync run incremental — it picks up where the last one left off.
 
-### Prerequisites
+### Changes
 
-Connect the **Firecrawl** connector — it supports a `screenshot` format that captures full-page screenshots of any URL. This is the cleanest way to get real website screenshots from an edge function (no headless browser needed).
+**File: `supabase/functions/sync-github-projects/index.ts`**
 
-### Step 1: Connect Firecrawl
+1. **Separate AI content sync from screenshot capture**: First loop through all repos and upsert AI content (fast, no Firecrawl calls). Then query the DB for projects with empty `images` arrays and process only those for screenshots.
 
-Use the Firecrawl connector to get screenshot capabilities in the edge function.
+2. **Batch limit**: Process at most 5 projects per invocation to stay within the timeout. The admin can click "Re-sync" multiple times to progressively fill in all screenshots.
 
-### Step 2: Update `sync-github-projects` Edge Function
+3. **Skip already-screenshotted projects**: Before capturing, check if `images` array already has entries — skip those entirely.
 
-After generating AI content for each repo, add a screenshot capture step:
+### Flow
 
-1. Determine the target URL: use `repo.homepage` (demo link) if available, otherwise use `repo.html_url` (GitHub page)
-2. Call Firecrawl's scrape endpoint with `formats: ['screenshot']` for the main page — this gives screenshot #1
-3. If the project has a demo link, also scrape 1-2 subpages:
-   - Parse the page HTML/links to find internal navigation links (using Firecrawl's `links` format)
-   - Screenshot the first 2 internal links found — these become screenshots #2 and #3
-4. Decode the base64 screenshots and upload to the `project` storage bucket under `github-screenshots/{slug}/`
-5. Store the public URLs in the `images` array during upsert
-
-### Step 3: Handle Edge Cases
-
-- **No demo link**: Screenshot the GitHub repo page (1 image) + generate 1-2 AI images using Lovable AI's image generation model as supplementary visuals
-- **Firecrawl rate limits**: Add delays between screenshot calls; process screenshots sequentially
-- **Large base64 data**: Upload directly to storage, don't pass through AI
-
-### Files Changed
-
-| Action | File |
-|--------|------|
-| Modify | `supabase/functions/sync-github-projects/index.ts` — add screenshot capture logic |
+```text
+Sync invocation:
+  1. Fetch GitHub repos → upsert AI content for ALL (fast)
+  2. Query DB: SELECT where images = '{}' LIMIT 5
+  3. For each: capture 2-3 screenshots via Firecrawl
+  4. Update images in DB
+  5. Return: "synced 28 repos, screenshotted 5/17 remaining"
+```
 
 ### Technical Details
 
-- Firecrawl screenshot returns base64 PNG via `data.data.screenshot`
-- Screenshots uploaded to `project` bucket at path `github-screenshots/{slug}/screenshot-{n}.png`
-- Public URL constructed from Supabase storage URL
-- Existing `images` column (text[]) already supports this — no schema change needed
-- Delay of ~2s between Firecrawl calls to respect rate limits
+- AI content upsert preserves existing `images` (won't overwrite with empty array)
+- Screenshot batch limit of 5 keeps runtime under ~50s (5 × ~10s each)
+- Admin panel sync button shows how many still need screenshots, encouraging repeat clicks
+- No schema changes needed
 
