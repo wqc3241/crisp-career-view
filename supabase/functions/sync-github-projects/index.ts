@@ -218,6 +218,7 @@ serve(async (req) => {
           demo_link: repo.homepage || null,
           is_visible: true,
           last_synced_at: new Date().toISOString(),
+          repo_created_at: repo.created_at || null,
         }).eq("repo_name", repo.name);
         results.push(`${repo.name}: updated (existing)`);
         continue;
