@@ -1,10 +1,11 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProjectCard from "./ProjectCard";
 import CompanyListItem from "./CompanyListItem";
+import GithubProjectListItem from "./GithubProjectListItem";
 import { companies, sideProjects } from "@/constants/projectData";
 import { useGithubProjects } from "@/hooks/useGithubProjects";
 import { Skeleton } from "@/components/ui/skeleton";
-
+import { useMemo } from "react";
 const Projects = () => {
   const { data: githubProjects, isLoading } = useGithubProjects();
 
