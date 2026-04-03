@@ -51,13 +51,13 @@ const Projects = () => {
           )}
 
           {featuredProjects.length > 0 && (
-            <div className="mt-10">
-              <div className="flex items-center gap-4 mb-6">
+            <div className="mt-6">
+              <div className="flex items-center gap-4 mb-4">
                 <div className="h-px flex-1 bg-border" />
                 <span className="text-sm text-muted-foreground font-medium">More from GitHub</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {featuredProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
