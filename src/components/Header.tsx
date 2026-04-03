@@ -2,16 +2,12 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { useLatestResume } from "@/hooks/useLatestResume";
 
 const Header = () => {
   const { user, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
-
-  const handleResumeDownload = () => {
-    const { data } = supabase.storage.from('resumes').getPublicUrl('QichaoWangResume.pdf');
-    window.open(data.publicUrl, '_blank');
-  };
+  const { data: resumeUrl } = useLatestResume();
 
   const handleSignOut = async () => {
     await signOut();
