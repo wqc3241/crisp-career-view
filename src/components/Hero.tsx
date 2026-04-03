@@ -19,6 +19,9 @@ const Hero = () => {
             Qichao Wang
             <span className="text-primary font-medium text-lg sm:text-xl ml-2">· Product /AI Builder</span>
           </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Building AI-powered products that solve real problems — from concept to launch.
+          </p>
         </div>
       )}
 
