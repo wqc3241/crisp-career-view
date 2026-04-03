@@ -35,7 +35,6 @@ export const useGithubProjects = () => {
         .from("github_projects")
         .select("*")
         .eq("is_visible", true)
-        .order("display_order", { ascending: true })
         .order("created_at", { ascending: false });
 
       if (error) throw error;
