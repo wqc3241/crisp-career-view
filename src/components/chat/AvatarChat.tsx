@@ -12,10 +12,10 @@ const AvatarChat = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          size="lg"
-          className="gap-2 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 border-0"
+          size="sm"
+          className="gap-1.5 shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 border-0 text-xs"
         >
-          <MessageCircle className="w-5 h-5" />
+          <MessageCircle className="w-4 h-4" />
           Chat with Virtual Me
         </Button>
       </DialogTrigger>
