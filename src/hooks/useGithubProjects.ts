@@ -25,6 +25,7 @@ export interface GithubProject {
   tags: string[];
   is_visible: boolean;
   display_order: number;
+  repo_created_at: string | null;
 }
 
 export const useGithubProjects = () => {
@@ -35,7 +36,7 @@ export const useGithubProjects = () => {
         .from("github_projects")
         .select("*")
         .eq("is_visible", true)
-        .order("created_at", { ascending: false });
+        .order("repo_created_at", { ascending: false, nullsFirst: false });
 
       if (error) throw error;
 

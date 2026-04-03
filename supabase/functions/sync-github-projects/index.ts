@@ -218,6 +218,7 @@ serve(async (req) => {
           demo_link: repo.homepage || null,
           is_visible: true,
           last_synced_at: new Date().toISOString(),
+          repo_created_at: repo.created_at || null,
         }).eq("repo_name", repo.name);
         results.push(`${repo.name}: updated (existing)`);
         continue;
@@ -391,6 +392,7 @@ Important: Make the content professional, specific to the actual project, and en
             card_description: generated.card_description,
             github_link: repo.html_url,
             demo_link: repo.homepage || null,
+            repo_created_at: repo.created_at || null,
             last_synced_at: new Date().toISOString(),
           },
           { onConflict: "repo_name" }
