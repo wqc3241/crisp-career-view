@@ -13,7 +13,7 @@ interface GithubProjectListItemProps {
 const GithubProjectListItem = ({ title, description, tags, slug }: GithubProjectListItemProps) => {
   return (
     <Link to={`/projects/${slug}`}>
-      <div className="group flex items-start gap-4 py-2 px-1 hover:bg-accent/30 transition-all duration-300 rounded">
+      <div className="group flex items-start gap-4 py-3 px-1 hover:bg-accent/30 transition-all duration-300 border-b border-border/50 last:border-b-0">
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-4">
             <h3 className="text-base font-semibold text-foreground group-hover:text-primary transition-colors truncate">
