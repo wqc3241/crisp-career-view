@@ -79,7 +79,7 @@ const Projects = () => {
                 <span className="text-sm text-muted-foreground font-medium">Other Projects</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="space-y-2">
+              <div className="divide-y divide-border">
                 {otherProjects.map((project) => (
                   <GithubProjectListItem
                     key={project.id}
