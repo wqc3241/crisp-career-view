@@ -1,0 +1,1 @@
+ALTER TABLE public.github_projects ADD COLUMN repo_created_at timestamp with time zone;

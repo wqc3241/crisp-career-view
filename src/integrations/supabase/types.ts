@@ -56,6 +56,7 @@ export type Database = {
           last_synced_at: string | null
           metrics: Json | null
           painpoints: string[] | null
+          repo_created_at: string | null
           repo_name: string
           slug: string
           tagline: string
@@ -84,6 +85,7 @@ export type Database = {
           last_synced_at?: string | null
           metrics?: Json | null
           painpoints?: string[] | null
+          repo_created_at?: string | null
           repo_name: string
           slug: string
           tagline?: string
@@ -112,6 +114,7 @@ export type Database = {
           last_synced_at?: string | null
           metrics?: Json | null
           painpoints?: string[] | null
+          repo_created_at?: string | null
           repo_name?: string
           slug?: string
           tagline?: string
