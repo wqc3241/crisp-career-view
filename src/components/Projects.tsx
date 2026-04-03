@@ -33,7 +33,7 @@ const Projects = () => {
         </TabsContent>
         <TabsContent value="side" className="mt-0">
           {/* Static projects */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {sideProjects.map((project) => (
               <ProjectCard key={project.title} {...project} />
             ))}
@@ -42,9 +42,9 @@ const Projects = () => {
           {/* Dynamic GitHub projects */}
           {isLoading && (
             <div className="mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[1, 2, 3].map((i) => (
-                  <Skeleton key={i} className="h-64 rounded-lg" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-48 rounded-lg" />
                 ))}
               </div>
             </div>
@@ -57,7 +57,7 @@ const Projects = () => {
                 <span className="text-sm text-muted-foreground font-medium">More from GitHub</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {featuredProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
