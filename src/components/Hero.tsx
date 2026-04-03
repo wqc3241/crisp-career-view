@@ -1,13 +1,11 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { RESUME_FILE_PATH, RESUME_BUCKET } from "@/constants/config";
 import AvatarChat from "@/components/chat/AvatarChat";
 import { Linkedin, Github, FileText } from "lucide-react";
+import { useLatestResume } from "@/hooks/useLatestResume";
 
 const Hero = () => {
   const { user, isAdmin } = useAuth();
-
-  const resumeUrl = supabase.storage.from(RESUME_BUCKET).getPublicUrl(RESUME_FILE_PATH).data.publicUrl;
+  const { data: resumeUrl } = useLatestResume();
 
   return (
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-center">
@@ -32,9 +30,11 @@ const Hero = () => {
         <a href="https://github.com/wqc3241" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
           <Github size={20} />
         </a>
-        <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
-          <FileText size={20} />
-        </a>
+        {resumeUrl && (
+          <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
+            <FileText size={20} />
+          </a>
+        )}
       </div>
     </section>
   );

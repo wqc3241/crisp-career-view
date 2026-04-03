@@ -35,12 +35,16 @@ const Header = () => {
           >
             GitHub
           </a>
-          <button
-            onClick={handleResumeDownload}
-            className="text-sm text-foreground hover:text-primary transition-colors"
-          >
-            Resume
-          </button>
+          {resumeUrl && (
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm text-foreground hover:text-primary transition-colors"
+            >
+              Resume
+            </a>
+          )}
           
           {user && (
             <>
