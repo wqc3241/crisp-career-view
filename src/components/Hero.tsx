@@ -29,19 +29,15 @@ const Hero = () => {
 
       <div className="flex flex-row flex-wrap items-center justify-center gap-3">
         <AvatarChat />
-        <Button asChild variant="outline" size="sm">
-          <a href="https://www.linkedin.com/in/qichaowang/" target="_blank" rel="noopener noreferrer">
-            LinkedIn
-          </a>
-        </Button>
-        <Button asChild variant="outline" size="sm">
-          <a href="https://github.com/wqc3241" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>
-        </Button>
-        <Button variant="outline" size="sm" onClick={handleResumeView}>
-          Resume
-        </Button>
+        <a href="https://www.linkedin.com/in/qichaowang/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
+          <Linkedin size={20} />
+        </a>
+        <a href="https://github.com/wqc3241" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
+          <Github size={20} />
+        </a>
+        <button onClick={handleResumeView} className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
+          <FileText size={20} />
+        </button>
       </div>
     </section>
   );
