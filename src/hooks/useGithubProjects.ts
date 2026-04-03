@@ -25,6 +25,7 @@ export interface GithubProject {
   tags: string[];
   is_visible: boolean;
   display_order: number;
+  repo_created_at: string | null;
 }
 
 export const useGithubProjects = () => {
