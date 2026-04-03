@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { RESUME_FILE_PATH, RESUME_BUCKET } from "@/constants/config";
 import AvatarChat from "@/components/chat/AvatarChat";
+import { Linkedin, Github, FileText } from "lucide-react";
 
 const Hero = () => {
   const { user, isAdmin } = useAuth();
