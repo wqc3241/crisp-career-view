@@ -18,7 +18,7 @@ const Projects = () => {
     [githubProjects]
   );
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
       <Tabs defaultValue="side" className="w-full">
         <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
           <TabsTrigger value="career">Career</TabsTrigger>
