@@ -37,46 +37,23 @@ const Projects = () => {
             {sideProjects.map((project) => (
               <ProjectCard key={project.title} {...project} />
             ))}
+            {featuredProjects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                title={project.title}
+                description={project.card_description || project.description}
+                image={project.card_image || (project.images && project.images.length > 0 ? project.images[0] : "/placeholder.svg")}
+                tags={project.tags || []}
+                link={`/projects/${project.slug}`}
+              />
+            ))}
           </div>
-
-          {/* Dynamic GitHub projects */}
-          {isLoading && (
-            <div className="mt-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-48 rounded-lg" />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {featuredProjects.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="h-px flex-1 bg-border" />
-                <span className="text-sm text-muted-foreground font-medium">More from GitHub</span>
-                <div className="h-px flex-1 bg-border" />
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {featuredProjects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    title={project.title}
-                    description={project.card_description || project.description}
-                    image={project.card_image || (project.images && project.images.length > 0 ? project.images[0] : "/placeholder.svg")}
-                    tags={project.tags || []}
-                    link={`/projects/${project.slug}`}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
 
           {otherProjects.length > 0 && (
             <div className="mt-6">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-px flex-1 bg-border" />
-                <span className="text-sm text-muted-foreground font-medium">Other Projects</span>
+                <span className="text-sm text-muted-foreground font-medium">More from GitHub</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
               <div className="divide-y divide-border">
