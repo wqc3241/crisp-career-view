@@ -1,30 +1,46 @@
 
 
-## Plan: Split GitHub Projects into Card View and List View
+## Plan: Compact Top Section
 
-### What Changes
-In the AI Projects tab, GitHub projects will be split into two groups:
+The goal is to reduce the vertical space the hero takes so project content is visible without scrolling.
 
-1. **Card view (top)** — Projects that have a `demo_link` (meaning screenshots are from the actual deployed app)
-2. **List view (bottom)** — Projects without a `demo_link` (screenshots are from the GitHub page or missing entirely), shown in a compact list format below a divider
+### Changes
 
-### File Changes
+**`src/components/Hero.tsx`**
+- Remove the large name heading and subtitle (already in the Header)
+- Remove the descriptive paragraph
+- Keep only the "Chat with Virtual Me" button and the LinkedIn/GitHub/Resume buttons, but lay them out in a single horizontal row instead of two stacked rows
+- Reduce padding significantly (e.g. `pt-4 pb-2`)
+- For logged-in users, simplify to a single-line welcome
 
-**`src/components/Projects.tsx`**
-- Split `githubProjects` into two arrays:
-  - `featuredProjects` = projects where `demo_link` is not null/empty
-  - `otherProjects` = the rest
-- Render `featuredProjects` in the existing card grid (under "More from GitHub")
-- Render `otherProjects` in a compact list view (under a second divider like "Other Projects") using a new `GithubProjectListItem` component
+**`src/components/Header.tsx`**
+- Add the subtitle "Experienced Product Manager" next to or below the name in the header
+- Move the "Chat with Virtual Me" button into the header nav area (small size, inline with other links)
 
-**`src/components/GithubProjectListItem.tsx`** (new file)
-- Compact list item similar to `CompanyListItem` but adapted for GitHub projects
-- Shows: title, description (truncated), tags, and a chevron link to `/projects/{slug}`
-- No image/screenshot displayed
-- Clickable, links to the project detail page
+### Resulting Layout
 
-### Technical Details
-- The heuristic for "has a formal screenshot" is simply: `demo_link` is truthy. From the data, projects with `demo_link` have real app screenshots; those without captured the GitHub repo page instead.
-- Currently ~6 projects have `demo_link`, the remaining ~40+ will go to list view.
-- Sort order within each group remains `repo_created_at DESC`.
+```text
+┌─────────────────────────────────────────────────────────┐
+│ Qichao Wang · Experienced Product Manager    LinkedIn │
+│                                    GitHub Resume [Chat]│
+├─────────────────────────────────────────────────────────┤
+│         [ Career ]  [ AI Projects ]                     │
+│                                                         │
+│  Project cards...                                       │
+```
+
+The Hero section effectively becomes just a thin strip with the action buttons, or is removed entirely with everything merged into the Header. The tabs content starts much higher on the page.
+
+### Alternative (simpler)
+Instead of merging into the header, just shrink the Hero:
+- Reduce heading to `text-2xl`
+- Remove the paragraph entirely
+- Put Chat + LinkedIn + GitHub + Resume all on one row
+- Minimal padding (`py-4`)
+
+### Recommendation
+Go with the simpler approach — keep Hero but make it minimal: one line for name+title, one row for all buttons. This preserves the current component structure while cutting the hero height roughly in half.
+
+### Files Modified
+- `src/components/Hero.tsx` — shrink heading, remove paragraph, single-row buttons
 
