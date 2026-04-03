@@ -20,7 +20,7 @@ const Header = () => {
 
   return (
     <header className="border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex justify-between items-center">
         <h1 className="text-xl font-bold text-foreground">Qichao Wang</h1>
         <nav className="flex gap-4 items-center">
           <a

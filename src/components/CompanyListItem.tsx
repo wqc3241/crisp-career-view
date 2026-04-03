@@ -34,7 +34,7 @@ const CompanyListItem = ({ name, logo, roleTitle, keyImpact, tags, link }: Compa
             ))}
           </ul>
 
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="flex flex-wrap gap-2 mt-3">
             {tags.map((tag) => (
               <Badge key={tag} variant="secondary" className="text-xs">
                 {tag}

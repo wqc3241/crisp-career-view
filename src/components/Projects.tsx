@@ -73,13 +73,13 @@ const Projects = () => {
           )}
 
           {otherProjects.length > 0 && (
-            <div className="mt-10">
-              <div className="flex items-center gap-4 mb-6">
+            <div className="mt-6">
+              <div className="flex items-center gap-4 mb-4">
                 <div className="h-px flex-1 bg-border" />
                 <span className="text-sm text-muted-foreground font-medium">Other Projects</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {otherProjects.map((project) => (
                   <GithubProjectListItem
                     key={project.id}

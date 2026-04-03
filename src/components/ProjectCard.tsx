@@ -19,9 +19,9 @@ const ProjectCard = ({ title, description, image, tags, link }: ProjectCardProps
           className="w-full h-full object-contain"
         />
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-foreground mb-3">{title}</h3>
-        <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+      <div className="p-4">
+        <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
+        <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
           {description}
         </p>
         <div className="flex flex-wrap gap-2">
