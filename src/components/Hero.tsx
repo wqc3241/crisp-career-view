@@ -17,7 +17,7 @@ const Hero = () => {
         <div className="mb-3">
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
             Qichao Wang
-            <span className="text-primary font-medium text-lg sm:text-xl ml-2">· Experienced Product Manager</span>
+            <span className="text-primary font-medium text-lg sm:text-xl ml-2">· Product /AI Builder</span>
           </h1>
         </div>
       )}
