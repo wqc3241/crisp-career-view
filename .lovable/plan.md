@@ -1,39 +1,30 @@
 
 
-## Plan: Fix Screenshot Generation for All GitHub Projects
+## Plan: Split GitHub Projects into Card View and List View
 
-### Problem
-The sync function processes repos sequentially, taking ~15-20s per repo for screenshots. With ~28 repos, it far exceeds the edge function timeout (~60s), so only 8-10 projects get screenshots before the function is killed.
+### What Changes
+In the AI Projects tab, GitHub projects will be split into two groups:
 
-### Solution: Process Only Projects Missing Images
+1. **Card view (top)** — Projects that have a `demo_link` (meaning screenshots are from the actual deployed app)
+2. **List view (bottom)** — Projects without a `demo_link` (screenshots are from the GitHub page or missing entirely), shown in a compact list format below a divider
 
-Instead of re-screenshotting all projects every sync, split the logic so screenshots are only captured for projects that don't already have images. This makes each sync run incremental — it picks up where the last one left off.
+### File Changes
 
-### Changes
+**`src/components/Projects.tsx`**
+- Split `githubProjects` into two arrays:
+  - `featuredProjects` = projects where `demo_link` is not null/empty
+  - `otherProjects` = the rest
+- Render `featuredProjects` in the existing card grid (under "More from GitHub")
+- Render `otherProjects` in a compact list view (under a second divider like "Other Projects") using a new `GithubProjectListItem` component
 
-**File: `supabase/functions/sync-github-projects/index.ts`**
-
-1. **Separate AI content sync from screenshot capture**: First loop through all repos and upsert AI content (fast, no Firecrawl calls). Then query the DB for projects with empty `images` arrays and process only those for screenshots.
-
-2. **Batch limit**: Process at most 5 projects per invocation to stay within the timeout. The admin can click "Re-sync" multiple times to progressively fill in all screenshots.
-
-3. **Skip already-screenshotted projects**: Before capturing, check if `images` array already has entries — skip those entirely.
-
-### Flow
-
-```text
-Sync invocation:
-  1. Fetch GitHub repos → upsert AI content for ALL (fast)
-  2. Query DB: SELECT where images = '{}' LIMIT 5
-  3. For each: capture 2-3 screenshots via Firecrawl
-  4. Update images in DB
-  5. Return: "synced 28 repos, screenshotted 5/17 remaining"
-```
+**`src/components/GithubProjectListItem.tsx`** (new file)
+- Compact list item similar to `CompanyListItem` but adapted for GitHub projects
+- Shows: title, description (truncated), tags, and a chevron link to `/projects/{slug}`
+- No image/screenshot displayed
+- Clickable, links to the project detail page
 
 ### Technical Details
-
-- AI content upsert preserves existing `images` (won't overwrite with empty array)
-- Screenshot batch limit of 5 keeps runtime under ~50s (5 × ~10s each)
-- Admin panel sync button shows how many still need screenshots, encouraging repeat clicks
-- No schema changes needed
+- The heuristic for "has a formal screenshot" is simply: `demo_link` is truthy. From the data, projects with `demo_link` have real app screenshots; those without captured the GitHub repo page instead.
+- Currently ~6 projects have `demo_link`, the remaining ~40+ will go to list view.
+- Sort order within each group remains `repo_created_at DESC`.
 
