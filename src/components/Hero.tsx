@@ -7,10 +7,7 @@ import { Linkedin, Github, FileText } from "lucide-react";
 const Hero = () => {
   const { user, isAdmin } = useAuth();
 
-  const handleResumeView = () => {
-    const { data } = supabase.storage.from(RESUME_BUCKET).getPublicUrl(RESUME_FILE_PATH);
-    window.open(data.publicUrl, "_blank");
-  };
+  const resumeUrl = supabase.storage.from(RESUME_BUCKET).getPublicUrl(RESUME_FILE_PATH).data.publicUrl;
 
   return (
     <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 text-center">
@@ -35,9 +32,9 @@ const Hero = () => {
         <a href="https://github.com/wqc3241" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
           <Github size={20} />
         </a>
-        <button onClick={handleResumeView} className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
+        <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
           <FileText size={20} />
-        </button>
+        </a>
       </div>
     </section>
   );
