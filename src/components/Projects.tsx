@@ -53,7 +53,7 @@ const Projects = () => {
             <div className="mt-6">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-px flex-1 bg-border" />
-                <span className="text-sm text-muted-foreground font-medium">Other Projects</span>
+                <span className="text-sm text-muted-foreground font-medium">More from GitHub</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
               <div className="divide-y divide-border">
