@@ -14,7 +14,7 @@ interface CompanyListItemProps {
 const CompanyListItem = ({ name, logo, roleTitle, keyImpact, tags, link }: CompanyListItemProps) => {
   return (
     <Link to={link}>
-      <div className="group flex flex-col sm:flex-row items-start gap-4 sm:gap-6 p-6 rounded-lg border border-border bg-card hover:bg-accent/50 transition-all duration-300 hover:shadow-lg">
+      <div className="group flex flex-col sm:flex-row items-start gap-3 sm:gap-4 p-4 rounded-lg border border-border bg-card hover:bg-accent/50 transition-all duration-300 hover:shadow-lg">
         <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-background border border-border">
           <img src={logo} alt={`${name} logo`} className="w-full h-full object-cover" />
         </div>
@@ -28,13 +28,13 @@ const CompanyListItem = ({ name, logo, roleTitle, keyImpact, tags, link }: Compa
             <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
           </div>
 
-          <ul className="text-foreground mt-3 leading-relaxed list-disc pl-5 space-y-1">
+          <ul className="text-foreground mt-2 leading-relaxed list-disc pl-5 space-y-1">
             {keyImpact.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
           </ul>
 
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="flex flex-wrap gap-2 mt-3">
             {tags.map((tag) => (
               <Badge key={tag} variant="secondary" className="text-xs">
                 {tag}

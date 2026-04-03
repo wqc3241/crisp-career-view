@@ -18,9 +18,9 @@ const Projects = () => {
     [githubProjects]
   );
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
       <Tabs defaultValue="side" className="w-full">
-        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-12">
+        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
           <TabsTrigger value="career">Career</TabsTrigger>
           <TabsTrigger value="side">AI Projects</TabsTrigger>
         </TabsList>
@@ -33,7 +33,7 @@ const Projects = () => {
         </TabsContent>
         <TabsContent value="side" className="mt-0">
           {/* Static projects */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {sideProjects.map((project) => (
               <ProjectCard key={project.title} {...project} />
             ))}
@@ -42,7 +42,7 @@ const Projects = () => {
           {/* Dynamic GitHub projects */}
           {isLoading && (
             <div className="mt-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {[1, 2, 3].map((i) => (
                   <Skeleton key={i} className="h-64 rounded-lg" />
                 ))}
@@ -51,13 +51,13 @@ const Projects = () => {
           )}
 
           {featuredProjects.length > 0 && (
-            <div className="mt-10">
-              <div className="flex items-center gap-4 mb-6">
+            <div className="mt-6">
+              <div className="flex items-center gap-4 mb-4">
                 <div className="h-px flex-1 bg-border" />
                 <span className="text-sm text-muted-foreground font-medium">More from GitHub</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {featuredProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
@@ -73,13 +73,13 @@ const Projects = () => {
           )}
 
           {otherProjects.length > 0 && (
-            <div className="mt-10">
-              <div className="flex items-center gap-4 mb-6">
+            <div className="mt-6">
+              <div className="flex items-center gap-4 mb-4">
                 <div className="h-px flex-1 bg-border" />
                 <span className="text-sm text-muted-foreground font-medium">Other Projects</span>
                 <div className="h-px flex-1 bg-border" />
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {otherProjects.map((project) => (
                   <GithubProjectListItem
                     key={project.id}
