@@ -32,9 +32,9 @@ const Hero = () => {
         <a href="https://github.com/wqc3241" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="GitHub">
           <Github size={20} />
         </a>
-        <button onClick={handleResumeView} className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
+        <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Resume">
           <FileText size={20} />
-        </button>
+        </a>
       </div>
     </section>
   );
