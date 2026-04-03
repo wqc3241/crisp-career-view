@@ -28,7 +28,7 @@ const CompanyListItem = ({ name, logo, roleTitle, keyImpact, tags, link }: Compa
             <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
           </div>
 
-          <ul className="text-foreground mt-3 leading-relaxed list-disc pl-5 space-y-1">
+          <ul className="text-foreground mt-2 leading-relaxed list-disc pl-5 space-y-1">
             {keyImpact.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
